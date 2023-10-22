@@ -30,8 +30,3 @@ npx playwright test
 ```
 npx playwright test {testfilename.ts}
 ```
-
-## Desicsion Log
-TBU
-
-## License? TBD
