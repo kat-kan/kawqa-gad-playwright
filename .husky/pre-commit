@@ -13,8 +13,8 @@ errorMessage="${Red}Branch name validation failed.\n\nBranch names in this proje
 $validBranchRegex\nYour commit will be rejected now :-( \n 
 Please follow the convention described on Notion. 
 
-You should rename your branch to a valid name and try again:
-${Color_Off}Example: \"tests/ISSUE-16_Branch_Name\".\n"
+You should rename your branch to a valid name via cmd \"git branch -m Incorrect_Branch_Name Correct_Branch_Name\" and try again:
+${Color_Off}Example of a correct branch name: \"tests/ISSUE-16_Branch_Name\".\n"
 
 if [[ ! $localBranchName =~ $validBranchRegex ]]
 then
