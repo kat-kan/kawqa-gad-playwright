@@ -2,7 +2,12 @@
   "devDependencies": {
     "@playwright/test": "^1.39.0",
     "@types/node": "^20.8.7",
+    "dotenv": "^16.3.1",
     "typescript": "^5.2.2"
   },
-  "scripts": {}
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npm run test -- --headed",
+    "show-report": "npx playwright show-report"
+  }
 }
