@@ -24,22 +24,15 @@
    git clone https://github.com/kat-kan/kawqa-gad-playwright.git
    ```
 2. install dependencies:
-   ```
-   npm install
-   ```
+   `npm install`
+3. setup Playwright with:
+   `npx playwright install --with-deps chromium`
+4. copy application main URL as value of `BASE_URL` variable in `.env` file
+5. add user email and user password to the `.env` file
 
-more info on how to add changes to the repo - see our [Contribution Guidlines](https://github.com/kat-kan/kawqa-gad-playwright/blob/CONTRIBUTION.md/)
+More info on how to add changes to the repo - see our [Contribution Guidelines](https://github.com/kat-kan/kawqa-gad-playwright/blob/CONTRIBUTION.md/)
 
 ### Running Tests
 
-- to run all tests:
-
-```
-npx playwright test
-```
-
-- to run a specific test:
-
-```
-npx playwright test {testfilename.ts}
-```
+- to run all tests: `npx playwright test`
+- to run a specific test: `npx playwright test {testfilename.ts}`
