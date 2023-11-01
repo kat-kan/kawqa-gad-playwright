@@ -4,5 +4,23 @@
     "@types/node": "^20.8.7",
     "typescript": "^5.2.2"
   },
-  "scripts": {}
+  "scripts": {},
+  "authors": [
+    {
+      "name": "Katarzyna",
+      "url": "https://github.com/kat-kan"
+    },
+    {
+      "name": "Emily",
+      "url": "https://github.com/bugITwhisperer"
+    },
+    {
+      "name": "Karolina",
+      "url": "https://github.com/KarolinaZakrzewska"
+    },
+    {
+      "name": "Adam",
+      "url": "https://github.com/adamcegielka"
+    }
+  ]
 }
