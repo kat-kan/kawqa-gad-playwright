@@ -3,13 +3,15 @@ import { testUser } from "../../src/fixtures/api/auth";
 
 test.describe("Login endpoint tests", async () => {
   let accessToken = "";
-  const expectedResponseCode = 200;
-
+  let baseURL = process.env.BASE_URL;
+  
   test("Login endpoint returns 200OK for correct login credentials", async ({
     request,
   }) => {
+    const expectedResponseCode = 200;
+
     //When POST request is send to LOGIN endpoint
-    const response = await request.post(`${process.env.BASE_URL}/api/login`, {
+    const response = await request.post(`${baseURL}/api/login`, {
       // And request body in JSON format is used with proper login credentials
       data: {
         email: testUser.userEmail,
@@ -42,7 +44,7 @@ test.describe("Login endpoint tests", async () => {
     const expectedErrorMessage = "Incorrect email or password";
 
     //When POST request is send to LOGIN endpoint
-    const response = await request.post(`${process.env.BASE_URL}/api/login`, {
+    const response = await request.post(`${baseURL}/api/login`, {
       // And request body in JSON format is used with proper login credentials
       data: {
         email: testUser.userEmail,
@@ -66,7 +68,7 @@ test.describe("Login endpoint tests", async () => {
     const expectedResponseCode = 400;
 
     //When POST request is send to LOGIN endpoint
-    const response = await request.post(`${process.env.BASE_URL}/api/login`, {
+    const response = await request.post(`${baseURL}/api/login`, {
       // And request body in JSON format is used with incorrect login credentials
       data: {
         email: '" \" "\\\\<email@email.',
