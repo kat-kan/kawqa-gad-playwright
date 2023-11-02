@@ -30,7 +30,7 @@ test.describe("Login endpoint tests", async () => {
     // And access_token should not be empty
     expect(body.access_token?.length).toBeGreaterThan(0);
 
-    // saving access token
+    // saving access token for next tests
     //console.log(JSON.stringify(body));
     accessToken = `Bearer ${body.access_token}`;
     //console.log(accessToken);
