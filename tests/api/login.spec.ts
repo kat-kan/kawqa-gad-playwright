@@ -60,25 +60,4 @@ test.describe("Login endpoint tests", async () => {
     const body = await response.json();
     expect(body.message).toBe(expectedErrorMessage);
   });
-
-  // SKIPPED - does not work - 401 is returned, WILL BE REMOVED
-  test.skip("Login endpoint returns 400BadRequest for incorrect JSON format", async ({
-    request,
-  }) => {
-    const expectedResponseCode = 400;
-
-    //When POST request is send to LOGIN endpoint
-    const response = await request.post(`${baseURL}/api/login`, {
-      // And request body in JSON format is used with incorrect login credentials
-      data: {
-        email: '" \" "\\\\<email@email.',
-        password: testUser.userPassword,
-      },
-
-    });
-
-    //Then status code should be 400
-    const code = response.status();
-    expect(code).toBe(expectedResponseCode);
-  });
 });
