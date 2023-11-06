@@ -5,7 +5,7 @@ let articlesID = 3;
 let articleTitle = "What is agile software development?";
 let articleDate = "2021-07-25";
 
-test.only("GET - find comments by ID", async ({ page }) => {
+test.only("GET - find articles by ID", async ({ page }) => {
     const response = await page.goto(`${baseURL}/api/articles/${articlesID}`);
     if (response === null) {
         throw new Error("Response is null");
