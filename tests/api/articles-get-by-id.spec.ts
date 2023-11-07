@@ -5,7 +5,7 @@ let articleID = 3;
 let articleTitle = "What is agile software development?";
 let articleDate = "2021-07-25";
 
-test.only("GET/articles/3 - validate article information", async ({ request }) => {
+test("GET/articles/3 - validate article information", async ({ request }) => {
     const response = await request.get(`${baseURL}/api/articles/${articleID}`);
     const responseBody = await response.json();
     
