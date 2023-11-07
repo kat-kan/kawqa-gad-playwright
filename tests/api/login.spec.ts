@@ -10,7 +10,7 @@ test.describe("Login endpoint tests", async () => {
   }) => {
     const expectedResponseCode = 200;
 
-    // When POST request is send to LOGIN endpoint
+    // When POST request is sent to LOGIN endpoint
     const response = await request.post(`${baseURL}/api/login`, {
       // And request body in JSON format is used with proper login credentials
       data: {
