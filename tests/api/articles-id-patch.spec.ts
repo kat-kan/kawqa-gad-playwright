@@ -13,7 +13,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     setHeaders = await createHeaders();
   });
 
-  test("Should return OK Status Code when updating article", async ({ request }) => {
+  test("Should return OK status code when updating article", async ({ request }) => {
     const expectedResponseCode = 200;
 
     // When PATCH request is sent to ARTICLES/1 endpoint with payload
