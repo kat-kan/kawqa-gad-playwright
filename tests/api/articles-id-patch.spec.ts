@@ -13,7 +13,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     setHeaders = await createHeaders();
   });
 
-  test("Articles/1 endpoint returns 200 OK and updates title and content of the article w/ id=1", async ({ request }) => {
+  test("Should return OK Status Code when updating article", async ({ request }) => {
     const expectedResponseCode = 200;
 
     // When PATCH request is sent to ARTICLES/1 endpoint with payload
@@ -41,7 +41,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(body.body).toBe(newContent);
   });
 
-  test("Articles/0 endpoint returns 404 NotFound", async ({ request }) => {
+  test("Should return NotFound status code when trying to update article", async ({ request }) => {
     const expectedResponseCode = 404;
 
     // When PATCH request is sent to ARTICLES/1 endpoint with payload
