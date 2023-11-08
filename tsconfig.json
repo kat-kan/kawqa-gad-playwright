@@ -7,7 +7,6 @@
         "baseUrl": "./",
         "moduleResolution": "node",
         "module": "commonjs",
-        "typeRoots": ["node_modules/@types"],
         "paths": {
           // ==== Independent ===
           "@_api/*": ["api/*"],
