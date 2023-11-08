@@ -22,7 +22,6 @@ export async function createToken(setEmail?: string, setPassword?: string): Prom
 
   const body = await response.json();
   accessToken = body.access_token;
-  console.log(accessToken);
   return accessToken;
 }
 
@@ -38,7 +37,7 @@ export async function createHeaders(): Promise<APIRequestContext> {
     Authorization: `Bearer ${setTokenInHeaders}`
   },
 
-    console.log(requestHeaders);
+    console.log(`Request Headers are the following: \n ${requestHeaders}`);
   return requestHeaders;
 }
 
