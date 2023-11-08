@@ -41,7 +41,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(body.body).toBe(newContent);
   });
 
-  test("Returns NotFound status code when trying to update article", async ({ request }) => {
+  test("Returns NotFound status code when trying to update non-existing article", async ({ request }) => {
     const expectedResponseCode = 404;
 
     // When PATCH request is sent to ARTICLES/1 endpoint with payload
