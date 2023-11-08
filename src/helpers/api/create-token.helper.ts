@@ -1,5 +1,5 @@
 import { APIRequestContext, request } from "@playwright/test";
-import { testUser } from "../../fixtures/api/auth";
+import { testUser } from "@_src_fixtures_api/auth";
 
 export async function createToken(setEmail?: string, setPassword?: string): Promise<string> {
     if (!setEmail) {
