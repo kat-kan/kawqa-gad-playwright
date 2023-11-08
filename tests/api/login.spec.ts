@@ -5,7 +5,7 @@ test.describe("POST login endpoint tests", async () => {
   let accessToken = "";
   let baseURL = process.env.BASE_URL;
 
-  test("Should return OK status code when logging in with correct credentials", async ({
+  test("Returns OK status code when logging in with correct credentials", async ({
     request,
   }) => {
     const expectedResponseCode = 200;
@@ -36,7 +36,7 @@ test.describe("POST login endpoint tests", async () => {
     //console.log(accessToken);
   });
 
-  test("Should return Unauthorized status code when logging in with incorrect credentials", async ({
+  test("Returns Unauthorized status code when logging in with incorrect credentials", async ({
     request,
   }) => {
     const incorrectPassword = "wrongPassword";

@@ -13,7 +13,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     setHeaders = await createHeaders();
   });
 
-  test("Should return OK status code when updating article", async ({ request }) => {
+  test("Returns OK status code when updating article", async ({ request }) => {
     const expectedResponseCode = 200;
 
     // When PATCH request is sent to ARTICLES/1 endpoint with payload
@@ -41,7 +41,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(body.body).toBe(newContent);
   });
 
-  test("Should return NotFound status code when trying to update article", async ({ request }) => {
+  test("Returns NotFound status code when trying to update article", async ({ request }) => {
     const expectedResponseCode = 404;
 
     // When PATCH request is sent to ARTICLES/1 endpoint with payload
@@ -58,7 +58,6 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
 
     // Then response status code should be 404
     const code = response.status();
-    //console.log(`response.status is: ${code}`);
     expect(code).toBe(expectedResponseCode);
   });
 });
