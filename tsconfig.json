@@ -1,0 +1,24 @@
+{
+    "compileOnSave": true,
+    "ts-node": {
+      "require": ["tsconfig-paths/register"]
+    },
+    "compilerOptions": {
+        "baseUrl": "./",
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "typeRoots": ["node_modules/@types"],
+        "paths": {
+          // ==== Independent ===
+          "@_api/*": ["api/*"],
+          // ==== API ===
+          "@_src_api/*": ["src/api/*"],
+          "@_src_fixtures_api/*": ["src/fixtures/api/*"],
+          "@_src_helpers_api/*": ["src/helpers/api/*"],
+        },
+        "lib": ["es2023", "dom"],
+    },
+    "exclude": ["node_modules"],
+    "allowJs": true
+  }
+  
