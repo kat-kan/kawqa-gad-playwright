@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { createHeaders } from "../../src/helpers/api/create-token.helper";
+import { testUser } from "../../src/fixtures/api/auth";
 
 test.describe("PATCH articles/{id} endpoint tests", async () => {
   let baseURL = process.env.BASE_URL;
@@ -21,6 +22,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
       headers: setHeaders,
       // And request body in JSON format is used with a new title and a new content
       data: {
+        "user_id": testUser.userId,
         "title": newTitle,
         "body": newContent
       }
@@ -48,6 +50,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
       headers: setHeaders,
       // And request body in JSON format is used with a new title and a new content
       data: {
+        "user_id": testUser.userId,
         "title": newTitle,
         "body": newContent
       }
