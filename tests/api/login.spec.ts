@@ -1,11 +1,11 @@
 import { test, expect } from "@playwright/test";
 import { testUser } from "../../src/fixtures/api/auth";
 
-test.describe("POST login endpoint tests", async () => {
-  let accessToken = "";
+test.describe("Login endpoint tests", async () => {
+  let accessToken;
   let baseURL = process.env.BASE_URL;
 
-  test("Returns OK status code when logging in with correct credentials", async ({
+  test("Login endpoint returns 200 OK for correct login credentials", async ({
     request,
   }) => {
     const expectedResponseCode = 200;
