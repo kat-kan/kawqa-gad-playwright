@@ -1,11 +1,11 @@
 import { test, expect } from "@playwright/test";
 import { testUser } from "../../src/fixtures/api/auth";
 
-test.describe("Login endpoint tests", async () => {
+test.describe("POST login endpoint tests", async () => {
   let accessToken = "";
   let baseURL = process.env.BASE_URL;
 
-  test("Login endpoint returns 200 OK for correct login credentials", async ({
+  test("Should return OK status code when using correct login credentials", async ({
     request,
   }) => {
     const expectedResponseCode = 200;
@@ -36,7 +36,7 @@ test.describe("Login endpoint tests", async () => {
     //console.log(accessToken);
   });
 
-  test("Login endpoint returns 401 Unauthorized for incorrect login credentials", async ({
+  test("Should return Unauthorized status code when using incorrect login credentials", async ({
     request,
   }) => {
     const incorrectPassword = "wrongPassword";
