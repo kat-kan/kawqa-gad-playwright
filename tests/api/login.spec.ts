@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { testUser } from "../../src/fixtures/api/auth";
+import { testUser } from "@_src_fixtures_api/auth";
 
 test.describe("Login endpoint tests", async () => {
   let accessToken;
