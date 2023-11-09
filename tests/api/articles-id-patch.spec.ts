@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { createHeaders } from "../../src/helpers/api/create-token.helper";
-import { testUser } from "../../src/fixtures/api/auth";
+import { createHeaders } from "@_src_helpers_api/create-token.helper";
+import { testUser } from "@_src_fixtures_api/auth";
 
 test.describe("PATCH articles/{id} endpoint tests", async () => {
   let baseURL = process.env.BASE_URL;
@@ -30,7 +30,6 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
 
     // Then response status code should be 200
     const code = response.status();
-    //console.log(`response.status is: ${code}`);
     expect(code).toBe(expectedResponseCode);
 
     // And response body should have a new title
