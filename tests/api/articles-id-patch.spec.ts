@@ -1,19 +1,20 @@
-import { test, expect } from "@playwright/test";
-import { createHeaders } from "@_src_helpers_api/create-token.helper";
-import { testUser } from "@_src_fixtures_api/auth";
+import { test, expect } from '@playwright/test';
+import { createHeaders } from '@_src_helpers_api/create-token.helper';
+import { testUser } from '@_src_fixtures_api/auth';
 
-test.describe("PATCH articles/{id} endpoint tests", async () => {
+test.describe('PATCH articles/{id} endpoint tests', async () => {
   let baseURL = process.env.BASE_URL;
   let setHeaders: any;
-  const newTitle = "How to start writing effective test cases in Gherkin";
-  const newContent = "Start with a Feature Description:\nBegin each Gherkin feature file with a high-level description\n of the feature you are testing. This provides context for the scenarios that follow\n Example: \nFeature: User Authentication \nAs a user,\nI want to be able to log in to my account,\nSo that I can access my personalized content.";
+  const newTitle = 'How to start writing effective test cases in Gherkin';
+  const newContent =
+    'Start with a Feature Description:\nBegin each Gherkin feature file with a high-level description\n of the feature you are testing. This provides context for the scenarios that follow\n Example: \nFeature: User Authentication \nAs a user,\nI want to be able to log in to my account,\nSo that I can access my personalized content.';
 
   test.beforeAll(async () => {
     // Given token is created
     setHeaders = await createHeaders();
   });
 
-  test("Returns OK status code when updating article", async ({ request }) => {
+  test('Returns OK status code when updating article', async ({ request }) => {
     const expectedResponseCode = 200;
 
     // When PATCH request is sent to ARTICLES/1 endpoint with payload
@@ -22,10 +23,10 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
       headers: setHeaders,
       // And request body in JSON format is used with a new title and a new content
       data: {
-        "user_id": testUser.userId,
-        "title": newTitle,
-        "body": newContent
-      }
+        user_id: testUser.userId,
+        title: newTitle,
+        body: newContent,
+      },
     });
 
     // Then response status code should be 200
@@ -40,7 +41,9 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(body.body).toBe(newContent);
   });
 
-  test("Returns NotFound status code when trying to update non-existing article", async ({ request }) => {
+  test('Returns NotFound status code when trying to update non-existing article', async ({
+    request,
+  }) => {
     const expectedResponseCode = 404;
 
     // When PATCH request is sent to ARTICLES/1 endpoint with payload
@@ -49,10 +52,10 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
       headers: setHeaders,
       // And request body in JSON format is used with a new title and a new content
       data: {
-        "user_id": testUser.userId,
-        "title": newTitle,
-        "body": newContent
-      }
+        user_id: testUser.userId,
+        title: newTitle,
+        body: newContent,
+      },
     });
 
     // Then response status code should be 404
