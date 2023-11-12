@@ -1,22 +1,38 @@
 import { test, expect } from "@playwright/test";
 
-let baseURL = process.env.BASE_URL;
-let articleID = 3;
-let articleTitle = "What is agile software development?";
-let articleDate = "2021-07-25";
+test.describe("GET/articles/{id} Find article by ID", () => {
+  let baseURL = process.env.BASE_URL;
 
-test.only("GET/articles/ return OK status code by ID", async ({ request }) => {
-  const response = await request.get(`${baseURL}/api/articles/${articleID}`);
-  const responseBody = await response.json();
+  test.skip("get list of articles", async ({ request }) => {
+    const response = await request.get(`${baseURL}/api/articles`);
+    console.log(await response.json());
+  });
 
-  expect(response.status()).toBe(200);
+  test("return OK status code", async ({ request }) => {
+    const statusCode = 200;
+    const articleID = 3;
+    const articleTitle = "What is agile software development?";
+    const articleDate = "2021-07-25";
 
-  const expectedData = {
-    title: articleTitle,
-    date: expect.stringMatching(articleDate),
-  };
+    const response = await request.get(`${baseURL}/api/articles/${articleID}`);
+    const responseBody = await response.json();
 
-  expect(responseBody).toMatchObject(expectedData);
+    expect(response.status()).toBe(statusCode);
 
-  console.log(await response.json());
+    const expectedData = {
+      title: articleTitle,
+      date: expect.stringMatching(articleDate),
+    };
+
+    expect(responseBody).toMatchObject(expectedData);
+  });
+
+  test("return 404 code", async ({ request }) => {
+    const statusCode = 404;
+    const articleID = -1;
+
+    const response = await request.get(`${baseURL}/api/articles/${articleID}`);
+
+    expect(response.status()).toBe(statusCode);
+  });
 });
