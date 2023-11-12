@@ -4,7 +4,7 @@ import { testUser } from "@_src_fixtures_api/auth";
 
 test.describe("DELETE/articles/{id} Deletes an article", () => {
   const baseURL: string = process.env.BASE_URL;
-  const articlesEndpoint: string = "/api/articles";
+  const articlesEndpoint: string = "/api/articles/";
   let setHeaders: any;
 
   const articleTitle: string = "New Article";
