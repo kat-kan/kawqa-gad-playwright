@@ -1,12 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("GET/articles/{id} Find article by ID", () => {
-  let baseURL = process.env.BASE_URL;
-
-  test.skip("get list of articles", async ({ request }) => {
-    const response = await request.get(`${baseURL}/api/articles`);
-    console.log(await response.json());
-  });
+test.describe.only("GET/articles/{id} Find article by ID", () => {
+  const baseURL: string = process.env.BASE_URL;
+  const articlesEndpoint: string = "/api/articles/";
 
   test("return OK status code", async ({ request }) => {
     const statusCode = 200;
@@ -14,7 +10,7 @@ test.describe("GET/articles/{id} Find article by ID", () => {
     const articleTitle = "What is agile software development?";
     const articleDate = "2021-07-25";
 
-    const response = await request.get(`${baseURL}/api/articles/${articleID}`);
+    const response = await request.get(`${baseURL + articlesEndpoint + articleID}`);
     const responseBody = await response.json();
 
     expect(response.status()).toBe(statusCode);
@@ -31,8 +27,13 @@ test.describe("GET/articles/{id} Find article by ID", () => {
     const statusCode = 404;
     const articleID = -1;
 
-    const response = await request.get(`${baseURL}/api/articles/${articleID}`);
+    const response = await request.get(`${baseURL + articlesEndpoint + articleID}`);
 
     expect(response.status()).toBe(statusCode);
+  });
+
+  test.skip("get list of articles", async ({ request }) => {
+    const response = await request.get(`${baseURL + articlesEndpoint}`);
+    console.log(await response.json());
   });
 });
