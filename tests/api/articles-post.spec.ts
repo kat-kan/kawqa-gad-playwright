@@ -3,19 +3,20 @@ import { createHeaders } from "@_src_helpers_api/create-token.helper";
 import test, { APIResponse, expect } from "@playwright/test";
 
 test.describe("POST articles tests", async () => {
-  let baseURL: string = process.env.BASE_URL;
-  let setHeaders: any;
-  let articlesEndpoint: string = "/api/articles";
-  let articleTitle: string =
+  const baseURL: string = process.env.BASE_URL;
+  const articlesEndpoint: string = "/api/articles";
+  const articleTitle: string =
     "Quick Error Handling Guide: What to Do When Coffee Leaks on Your Keyboard";
-  let articleBody: string =
+  const articleBody: string =
     "Ah, the joys of being a programmer - navigating through the intricate world of code with the constant companionship of our trusted caffeinated beverages. But what happens when that comforting cup of coffee turns against us, staging a daring escape onto our precious keyboards? Fear not, for we present to you the Quick Error Handling Guide for such a perilous situation.";
-  let articleDate: string = "2024-06-30T15:44:31Z";
-  let articleImage: string = "coffee.jpg";
+  const articleDate: string = "2024-06-30T15:44:31Z";
+  const articleImage: string = "coffee.jpg";
+  let setHeaders: any;
 
   test.beforeAll(async () => {
     setHeaders = await createHeaders();
   });
+
   test("Returns 201 Created after creating article", async ({ request }) => {
     const response: APIResponse = await request.post(
       `${baseURL + articlesEndpoint}`,
@@ -30,8 +31,7 @@ test.describe("POST articles tests", async () => {
         },
       }
     );
-    const responseBody = await response.json();
-    console.log(responseBody);
+    const responseBody: any = await response.json();
 
     expect.soft(response.status()).toBe(201);
     expect.soft(responseBody.user_id).toBe(testUser.userId);
@@ -41,6 +41,7 @@ test.describe("POST articles tests", async () => {
     expect.soft(responseBody.image).toBe(articleImage);
     expect.soft(responseBody.id).not.toBeNull;
   });
+
   test("Returns 400 Bad Request after sending malformed JSON", async ({
     request,
   }) => {
@@ -61,6 +62,7 @@ test.describe("POST articles tests", async () => {
 
     expect(response.status()).toBe(400);
   });
+
   test("Returns 422 Unprocessable content after sending article with missing required information", async ({
     request,
   }) => {
@@ -79,6 +81,7 @@ test.describe("POST articles tests", async () => {
 
     expect(response.status()).toBe(422);
   });
+
   test("Returns 422 Unprocessable content after sending article JSON with too long value", async ({
     request,
   }) => {
@@ -99,6 +102,7 @@ test.describe("POST articles tests", async () => {
 
     expect(response.status()).toBe(422);
   });
+
   test("Returns 401 Unauthorized after sending article JSON with missing userId", async ({
     request,
   }) => {
