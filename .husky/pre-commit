@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo -e "Branch name validation started ..."
+localBranchName="$(git rev-parse --abbrev-ref HEAD)"
+validBranchRegex="^(chore|tests|docs)\/(ISSUE\-[0-9]+\_)+[a-zA-Z0-9_-]+$"
+
+Red="\033[0;31m" 
+Green="\033[0;32m"
+Color_Off="\033[0m"
+
+errorMessage="${Red}Branch name validation failed.\n\nBranch names in this project must adhere to this contract: \
+$validBranchRegex\nYour commit will be rejected now :-( \n 
+Please follow the convention described on Notion. 
+
+You should rename your branch to a valid name via cmd \"git branch -m Incorrect_Branch_Name Correct_Branch_Name\" and try again:
+${Color_Off}Example of a correct branch name: \"tests/ISSUE-16_Post_Login_endpoint_tests\" \n where Post_Login_endpoint_tests describes scope of changes.\n"
+
+if [[ ! $localBranchName =~ $validBranchRegex ]]
+then
+    echo -e "$errorMessage" >&2
+    exit 1
+fi
+
+echo -e "${Green}Branch name validation passed.${Color_Off}"
+exit 0
