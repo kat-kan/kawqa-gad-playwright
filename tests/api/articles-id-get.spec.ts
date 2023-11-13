@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe.only("GET/articles/{id} Find article by ID", () => {
+test.describe("GET/articles/{id} Find article by ID", () => {
   const baseURL: string = process.env.BASE_URL;
   const articlesEndpoint: string = "/api/articles/";
 
