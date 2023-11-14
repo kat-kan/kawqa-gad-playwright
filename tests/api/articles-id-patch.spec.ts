@@ -9,7 +9,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
   const newContent = "Start with a Feature Description:\nBegin each Gherkin feature file with a high-level description\n of the feature you are testing. This provides context for the scenarios that follow\n Example: \nFeature: User Authentication \nAs a user,\nI want to be able to log in to my account,\nSo that I can access my personalized content.";
 
   test.beforeAll(async () => {
-    setHeaders = await createHeaders('regular');
+    setHeaders = await createHeaders();
   });
 
   test("Returns 200 OK status code when updating article", async ({ request }) => {
