@@ -1,6 +1,6 @@
-import { APIResponse, test, expect } from "@playwright/test";
-import { createToken, createHeaders, createInvalidHeaders } from "@_src_helpers_api/create-token.helper";
-import { testUser } from "@_src_fixtures_api/auth";
+import { test, APIResponse, expect } from "@playwright/test";
+import { createHeaders, createInvalidHeaders } from "@_src_helpers_api/create-token.helper";
+import { testUsers } from "@_src_fixtures_api/auth";
 
 test.describe("PATCH articles/{id} endpoint tests", async () => {
   let baseURL = process.env.BASE_URL;
@@ -24,7 +24,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
       headers: setHeaders,
       data: {
-        "user_id": testUser.userId,
+        "user_id": testUsers.regularUser.id,
         "title": newTitle,
         "body": newContent
       }
@@ -35,6 +35,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(code).toBe(expectedResponseCode);
 
     const body = await response.json();
+    console.log(body);
     expect(body.title).toBe(newTitle);
     expect(body.body).toBe(newContent);
   });
@@ -47,7 +48,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/0`, {
       headers: setHeaders,
       data: {
-        "user_id": testUser.userId,
+        "user_id": testUsers.regularUser.id,
         "title": newTitle,
         "body": newContent
       }
@@ -67,7 +68,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
       headers: setInvalidHeaders,
       data: {
-        "user_id": testUser.userId,
+        "user_id": testUsers.regularUser.id,
         "title": newTitle,
         "body": newContent
       }
@@ -90,7 +91,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/2`, {
       headers: setHeaders,
       data: {
-        "user_id": testUser.userId,
+        "user_id": testUsers.regularUser.id,
         "title": newTitle,
         "body": newContent
       }
@@ -108,7 +109,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
   test("Returns 400 Bad Request status code when trying to update existing article with malformed JSON", async ({ request }) => {
     // Given
     const malformedJson: string = `{
-        "user_id": "${testUser.userId}",
+        "user_id": "${testUsers.regularUser.id}",
         "title: ${newTitle},
         "body": "${newContent}" 
       }`;
@@ -125,7 +126,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(code).toBe(expectedResponseCode);
   });
 
-  /* The 2nd time the request is run it returns 401 Unauthorized status code and the request to {baseURL}/api/restoreDB has to be sent to restore DB to the default one */
+  /* Before running the test, the request {baseURL}/api/restoreDB has to be sent to restore DB to the default one */
   test("Returns 422 Unprocessable Entity status code when trying to update existing article with title that exceeds length limit", async ({ request }) => {
     // Given
     setHeaders = await createHeaders();
@@ -136,7 +137,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
       headers: setHeaders,
       data: {
-        "user_id": testUser.userId,
+        "user_id": testUsers.regularUser.id,
         "title": `${newTitleExceedingLengthLimit}`
       }
     });
@@ -150,19 +151,19 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
+  /* Before running the test, the request {baseURL}/api/restoreDB has to be sent to restore DB to the default one */
   test("Returns 200 OK status code when updating as admin existing article with title that normally exceeds length limit", async ({ request }) => {
     // Given
-    let token = await createToken("admin", "admin");
+    let adminToken = await createHeaders('admin');
     const expectedResponseCode = 200;
 
     // When 
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${adminToken}`
       },
       data: {
-        "user_id": testUser.userId,
         "title": `${newTitleExceedingLengthLimit}`
       }
     });
