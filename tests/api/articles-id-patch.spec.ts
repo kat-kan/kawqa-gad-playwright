@@ -10,16 +10,21 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
   let newTitleExceedingLengthLimit = "test".repeat(10001);
 
   test.beforeAll(async () => {
+    console.log('BeforeAll--start')
     setHeadersForRegularUser = await createHeaders('regular');
     setHeadersForAdmin = await createHeaders('admin');
     setInvalidHeaders = await createInvalidHeaders();
+    console.log('BeforeAll--end')
   });
 
-  /* The 2nd time the request is run it returns 401 Unauthorized status code and the request to {baseURL}/api/restoreDB has to be sent to restore DB to the default one
- The request works always only with admin credentials */
+  /* Importante! 
+  Request to {baseURL}/api/restoreDB has to be sent to restore DB to the default one
+  The request ALWAYS returns 200 OK only with admin credentials */
   test("Returns 200 OK status code when updating article", async ({ request }) => {
     // Given
     const expectedResponseCode = 200;
+    // you have to uncomment the below line:
+    // await request.get(`${baseURL}/api/restoreDB`);
 
     // When
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
@@ -127,13 +132,15 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(code).toBe(expectedResponseCode);
   });
 
-  /* Before running the test, the request {baseURL}/api/restoreDB has to be sent to restore DB to the default one */
+  /* Importante! 
+  Request to {baseURL}/api/restoreDB has to be sent to restore DB to the default one
+  */
   test("Returns 422 Unprocessable Entity status code when trying to update existing article with title that exceeds length limit", async ({ request }) => {
     // Given
     const expectedResponseCode = 422;
     const expectedErrorMessage = 'One of field is invalid (empty, invalid or too long) or there are some additional fields: Field validation: \"title\" longer than \"10000\"';
     // you have to uncomment the below line:
-    // await request.post(`${baseURL}/api/restoreDB`);
+    // await request.get(`${baseURL}/api/restoreDB`);
 
     // When 
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
@@ -153,16 +160,18 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
-  /* Before running the test, the request {baseURL}/api/restoreDB has to be sent to restore DB to the default one */
+  /* Importante! 
+  Request to {baseURL}/api/restoreDB has to be sent to restore DB to the default one
+ */
   test("Returns 200 OK status code when updating as admin existing article with title that normally exceeds length limit", async ({ request }) => {
     // Given
     const expectedResponseCode = 200;
     // you have to uncomment the below line:
-    // await request.post(`${baseURL}/api/restoreDB`);
+    // await request.get(`${baseURL}/api/restoreDB`);
 
     // When 
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
-      headers: { setHeadersForAdmin },
+      headers: setHeadersForAdmin,
       data: {
         "title": `${newTitleExceedingLengthLimit}`
       }
