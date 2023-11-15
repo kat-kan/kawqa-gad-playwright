@@ -29,7 +29,7 @@ export async function createToken(userType: string): Promise<string> {
     return accessToken;
 }
 
-export async function createHeaders(userType: string = 'regular') {
+export async function createHeaders(userType: string) {
     let requestHeaders;
     let setTokenInHeaders;
 
