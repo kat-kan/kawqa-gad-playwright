@@ -132,7 +132,8 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     // Given
     const expectedResponseCode = 422;
     const expectedErrorMessage = 'One of field is invalid (empty, invalid or too long) or there are some additional fields: Field validation: \"title\" longer than \"10000\"';
-    // you have to uncomment this line: await request.post(`${baseURL}/api/restoreDB`);
+    // you have to uncomment the below line:
+    // await request.post(`${baseURL}/api/restoreDB`);
 
     // When 
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
@@ -156,8 +157,8 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
   test("Returns 200 OK status code when updating as admin existing article with title that normally exceeds length limit", async ({ request }) => {
     // Given
     const expectedResponseCode = 200;
-    // you have to uncomment this line:
-    await request.post(`${baseURL}/api/restoreDB`);
+    // you have to uncomment the below line:
+    // await request.post(`${baseURL}/api/restoreDB`);
 
     // When 
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
