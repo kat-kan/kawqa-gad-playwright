@@ -4,13 +4,14 @@ import { testUsers } from "@_src_fixtures_api/auth";
 
 test.describe("PATCH articles/{id} endpoint tests", async () => {
   let baseURL = process.env.BASE_URL;
-  let setHeaders, setInvalidHeaders;
+  let setHeaders, setInvalidHeaders, setHeadersForAdmin;
   const newTitle = "How to start writing effective test cases in Gherkin";
   const newContent = "Start with a Feature Description:\nBegin each Gherkin feature file with a high-level description\n of the feature you are testing. This provides context for the scenarios that follow\n Example: \nFeature: User Authentication \nAs a user,\nI want to be able to log in to my account,\nSo that I can access my personalized content.";
   let newTitleExceedingLengthLimit = "test".repeat(10001);
 
   test.beforeAll(async () => {
-    setHeaders = await createHeaders();
+    setHeaders = await createHeaders('regular');
+    setHeadersForAdmin = await createHeaders('admin');
     setInvalidHeaders = await createInvalidHeaders();
   });
 
@@ -129,9 +130,9 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
   /* Before running the test, the request {baseURL}/api/restoreDB has to be sent to restore DB to the default one */
   test("Returns 422 Unprocessable Entity status code when trying to update existing article with title that exceeds length limit", async ({ request }) => {
     // Given
-    setHeaders = await createHeaders();
     const expectedResponseCode = 422;
     const expectedErrorMessage = 'One of field is invalid (empty, invalid or too long) or there are some additional fields: Field validation: \"title\" longer than \"10000\"';
+    // you have to uncomment this line: await request.post(`${baseURL}/api/restoreDB`);
 
     // When 
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
@@ -154,15 +155,12 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
   /* Before running the test, the request {baseURL}/api/restoreDB has to be sent to restore DB to the default one */
   test("Returns 200 OK status code when updating as admin existing article with title that normally exceeds length limit", async ({ request }) => {
     // Given
-    let adminToken = await createHeaders('admin');
     const expectedResponseCode = 200;
+    // you have to uncomment this line: await request.post(`${baseURL}/api/restoreDB`);
 
     // When 
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminToken}`
-      },
+      headers: { setHeadersForAdmin },
       data: {
         "title": `${newTitleExceedingLengthLimit}`
       }
