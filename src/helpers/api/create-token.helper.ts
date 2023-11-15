@@ -41,8 +41,7 @@ export async function createHeaders(userType: string) {
         Authorization: `Bearer ${setTokenInHeaders}`
     },
 
-        console.log(`Request Headers are the following: \n`);
-    console.log(requestHeaders);
+        console.log(`Request Headers for ${userType} are the following: \n ${JSON.stringify(requestHeaders, null, 2)} \n ----`);
     return requestHeaders;
 }
 
