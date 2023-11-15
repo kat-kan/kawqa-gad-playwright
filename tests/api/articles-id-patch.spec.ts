@@ -4,13 +4,13 @@ import { testUsers } from "@_src_fixtures_api/auth";
 
 test.describe("PATCH articles/{id} endpoint tests", async () => {
   let baseURL = process.env.BASE_URL;
-  let setHeaders, setInvalidHeaders, setHeadersForAdmin;
+  let setHeadersForRegularUser, setInvalidHeaders, setHeadersForAdmin;
   const newTitle = "How to start writing effective test cases in Gherkin";
   const newContent = "Start with a Feature Description:\nBegin each Gherkin feature file with a high-level description\n of the feature you are testing. This provides context for the scenarios that follow\n Example: \nFeature: User Authentication \nAs a user,\nI want to be able to log in to my account,\nSo that I can access my personalized content.";
   let newTitleExceedingLengthLimit = "test".repeat(10001);
 
   test.beforeAll(async () => {
-    setHeaders = await createHeaders('regular');
+    setHeadersForRegularUser = await createHeaders('regular');
     setHeadersForAdmin = await createHeaders('admin');
     setInvalidHeaders = await createInvalidHeaders();
   });
@@ -23,7 +23,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
 
     // When
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
-      headers: setHeaders,
+      headers: setHeadersForRegularUser,
       data: {
         "user_id": testUsers.regularUser.id,
         "title": newTitle,
@@ -47,7 +47,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
 
     // When
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/0`, {
-      headers: setHeaders,
+      headers: setHeadersForRegularUser,
       data: {
         "user_id": testUsers.regularUser.id,
         "title": newTitle,
@@ -90,7 +90,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     const expectedErrorMessage = 'Access token for given user is invalid!';
     // When
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/2`, {
-      headers: setHeaders,
+      headers: setHeadersForRegularUser,
       data: {
         "user_id": testUsers.regularUser.id,
         "title": newTitle,
@@ -118,7 +118,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
 
     // When
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
-      headers: setHeaders,
+      headers: setHeadersForRegularUser,
       data: malformedJson
     });
 
@@ -136,7 +136,7 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
 
     // When 
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
-      headers: setHeaders,
+      headers: setHeadersForRegularUser,
       data: {
         "user_id": testUsers.regularUser.id,
         "title": `${newTitleExceedingLengthLimit}`
@@ -156,7 +156,8 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
   test("Returns 200 OK status code when updating as admin existing article with title that normally exceeds length limit", async ({ request }) => {
     // Given
     const expectedResponseCode = 200;
-    // you have to uncomment this line: await request.post(`${baseURL}/api/restoreDB`);
+    // you have to uncomment this line:
+    await request.post(`${baseURL}/api/restoreDB`);
 
     // When 
     const response: APIResponse = await request.patch(`${baseURL}/api/articles/1`, {
