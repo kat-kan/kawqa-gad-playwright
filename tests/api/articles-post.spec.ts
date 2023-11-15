@@ -1,6 +1,6 @@
-import { testUser } from "@_src_fixtures_api/auth";
+import { testUsers } from "@_src_fixtures_api/auth";
 import { createHeaders } from "@_src_helpers_api/create-token.helper";
-import test, { APIResponse, expect } from "@playwright/test";
+import { test, APIResponse, expect } from "@playwright/test";
 
 test.describe("POST articles tests", async () => {
   const baseURL: string = process.env.BASE_URL;
@@ -19,16 +19,14 @@ test.describe("POST articles tests", async () => {
     setHeaders = await createHeaders();
   });
 
-  test("Returns 201 Created after creating article", async ({
-    request,
-  }) => {
+  test("Returns 201 Created after creating article", async ({ request }) => {
     expectedStatusCode = 201;
     const response: APIResponse = await request.post(
       `${baseURL + articlesEndpoint}`,
       {
         headers: setHeaders,
         data: {
-          user_id: testUser.userId,
+          user_id: testUsers.regularUser.id,
           title: articleTitle,
           body: articleBody,
           date: articleDate,
@@ -39,7 +37,7 @@ test.describe("POST articles tests", async () => {
     const responseBody: any = await response.json();
 
     expect.soft(response.status()).toBe(expectedStatusCode);
-    expect.soft(responseBody.user_id).toBe(testUser.userId);
+    expect.soft(responseBody.user_id).toBe(testUsers.regularUser.id);
     expect.soft(responseBody.title).toBe(articleTitle);
     expect.soft(responseBody.body).toBe(articleBody);
     expect.soft(responseBody.date).toBe(articleDate);
@@ -52,7 +50,7 @@ test.describe("POST articles tests", async () => {
   }) => {
     expectedStatusCode = 400;
     const malformedJson: string = `{
-        "user_id": "${testUser.userId}",
+        "user_id": "${testUsers.regularUser.id}",
         "title: ${articleTitle},  // error: missing closing quotation mark
         "body": "${articleBody}",
         "date": "${articleDate}",
@@ -78,7 +76,7 @@ test.describe("POST articles tests", async () => {
       {
         headers: setHeaders,
         data: {
-          user_id: testUser.userId,
+          user_id: testUsers.regularUser.id,
           title: articleTitle,
           body: articleBody,
           //missing date, image - all keys are required
@@ -99,7 +97,7 @@ test.describe("POST articles tests", async () => {
       {
         headers: setHeaders,
         data: {
-          user_id: testUser.userId,
+          user_id: testUsers.regularUser.id,
           title: exceedingLengthTitle,
           body: articleBody,
           date: articleDate,
