@@ -4,7 +4,8 @@ import { test, APIResponse, expect } from "@playwright/test";
 
 test.describe("POST articles tests", async () => {
   const baseURL: string = process.env.BASE_URL;
-  const articlesEndpoint: string = "/api/articles";
+  const articlesEndpoint: string = "api/articles";
+  const postArticleEndpointUrl: string = `${baseURL}/${articlesEndpoint}`;
   const articleTitle: string =
     "Quick Error Handling Guide: What to Do When Coffee Leaks on Your Keyboard";
   const articleBody: string =
@@ -21,19 +22,16 @@ test.describe("POST articles tests", async () => {
 
   test("Returns 201 Created after creating article", async ({ request }) => {
     expectedStatusCode = 201;
-    const response: APIResponse = await request.post(
-      `${baseURL + articlesEndpoint}`,
-      {
-        headers: setHeaders,
-        data: {
-          user_id: testUsers.regularUser.id,
-          title: articleTitle,
-          body: articleBody,
-          date: articleDate,
-          image: articleImage,
-        },
-      }
-    );
+    const response: APIResponse = await request.post(postArticleEndpointUrl, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: articleTitle,
+        body: articleBody,
+        date: articleDate,
+        image: articleImage,
+      },
+    });
     const responseBody: any = await response.json();
 
     expect.soft(response.status()).toBe(expectedStatusCode);
@@ -56,13 +54,10 @@ test.describe("POST articles tests", async () => {
         "date": "${articleDate}",
         "image": "${articleImage}"
     }`;
-    const response: APIResponse = await request.post(
-      `${baseURL + articlesEndpoint}`,
-      {
-        headers: setHeaders,
-        data: malformedJson,
-      }
-    );
+    const response: APIResponse = await request.post(postArticleEndpointUrl, {
+      headers: setHeaders,
+      data: malformedJson,
+    });
 
     expect(response.status()).toBe(expectedStatusCode);
   });
@@ -71,18 +66,15 @@ test.describe("POST articles tests", async () => {
     request,
   }) => {
     expectedStatusCode = 422;
-    const response: APIResponse = await request.post(
-      `${baseURL + articlesEndpoint}`,
-      {
-        headers: setHeaders,
-        data: {
-          user_id: testUsers.regularUser.id,
-          title: articleTitle,
-          body: articleBody,
-          //missing date, image - all keys are required
-        },
-      }
-    );
+    const response: APIResponse = await request.post(postArticleEndpointUrl, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: articleTitle,
+        body: articleBody,
+        //missing date, image - all keys are required
+      },
+    });
 
     expect(response.status()).toBe(expectedStatusCode);
   });
@@ -92,19 +84,16 @@ test.describe("POST articles tests", async () => {
   }) => {
     expectedStatusCode = 422;
     const exceedingLengthTitle: string = "a".repeat(10001);
-    const response: APIResponse = await request.post(
-      `${baseURL + articlesEndpoint}`,
-      {
-        headers: setHeaders,
-        data: {
-          user_id: testUsers.regularUser.id,
-          title: exceedingLengthTitle,
-          body: articleBody,
-          date: articleDate,
-          image: articleImage,
-        },
-      }
-    );
+    const response: APIResponse = await request.post(postArticleEndpointUrl, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: exceedingLengthTitle,
+        body: articleBody,
+        date: articleDate,
+        image: articleImage,
+      },
+    });
 
     expect(response.status()).toBe(expectedStatusCode);
   });
@@ -113,16 +102,13 @@ test.describe("POST articles tests", async () => {
     request,
   }) => {
     expectedStatusCode = 401;
-    const response: APIResponse = await request.post(
-      `${baseURL + articlesEndpoint}`,
-      {
-        headers: setHeaders,
-        data: {
-          title: articleTitle,
-          body: articleBody,
-        },
-      }
-    );
+    const response: APIResponse = await request.post(postArticleEndpointUrl, {
+      headers: setHeaders,
+      data: {
+        title: articleTitle,
+        body: articleBody,
+      },
+    });
 
     expect(response.status()).toBe(expectedStatusCode);
   });
