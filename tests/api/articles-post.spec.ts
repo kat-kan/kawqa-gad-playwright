@@ -4,8 +4,7 @@ import { test, APIResponse, expect } from "@playwright/test";
 
 test.describe("POST articles tests", async () => {
   const baseURL: string = process.env.BASE_URL;
-  const articlesEndpoint: string = "api/articles";
-  const postArticleEndpointUrl: string = `${baseURL}/${articlesEndpoint}`;
+  const postArticleEndpointUrl: string = `${baseURL}/api/articles`;
   const articleTitle: string =
     "Quick Error Handling Guide: What to Do When Coffee Leaks on Your Keyboard";
   const articleBody: string =
