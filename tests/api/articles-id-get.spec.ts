@@ -1,39 +1,44 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, APIResponse } from "@playwright/test";
 
 test.describe("GET/articles/{id} Find article by ID", () => {
   const baseURL: string = process.env.BASE_URL;
-  const articlesEndpoint: string = "/api/articles/";
 
-  test("return OK status code", async ({ request }) => {
+  test("return OK status code and correct article data", async ({ request }) => {
     const statusCode = 200;
     const articleID = 3;
-    const articleTitle = "What is agile software development?";
-    const articleDate = "2021-07-25";
+    const articleUserID = 3;
+    const articleTitle: string = "What is agile software development?";
+    const articleBody: string =
+      "Agile software development is a set of principles and practices that emphasize collaboration, flexibility, and customer value. Agile software development is based on the Agile Manifesto, which states:\n- Individuals and interactions over processes and tools\n- Working software over comprehensive documentation\n- Customer collaboration over contract negotiation\n- Responding to change over following a plan Agile software development uses iterative and incremental methods, such as Scrum, Kanban, or XP, to deliver software in small batches.";
+    const articleDate: string = "2021-07-25T13:34:00Z";
+    const articleImage: string =
+      ".\\data\\images\\256\\jeremy-hynes-HxxNVun8HEc-unsplash.jpg";
 
-    const response = await request.get(`${baseURL + articlesEndpoint + articleID}`);
+    const response: APIResponse = await request.get(`${baseURL}/api/articles/3`);
     const responseBody = await response.json();
 
     expect(response.status()).toBe(statusCode);
 
     const expectedData = {
+      id: articleID,
+      user_id: articleUserID,
       title: articleTitle,
-      date: expect.stringMatching(articleDate),
+      body: articleBody,
+      date: articleDate,
+      image: articleImage,
     };
 
-    expect(responseBody).toMatchObject(expectedData);
+    expect(responseBody).toEqual(expectedData);
   });
 
-  test("return 404 code", async ({ request }) => {
+  test("return 404 code with specific response body", async ({ request }) => {
     const statusCode = 404;
-    const articleID = -1;
 
-    const response = await request.get(`${baseURL + articlesEndpoint + articleID}`);
+    const response: APIResponse = await request.get(`${baseURL}/api/articles/-1`);
 
     expect(response.status()).toBe(statusCode);
-  });
 
-  test.skip("get list of articles", async ({ request }) => {
-    const response = await request.get(`${baseURL + articlesEndpoint}`);
-    console.log(await response.json());
+    const responseBody = await response.text();
+    expect(responseBody).toBe("{}");
   });
 });
