@@ -4,7 +4,7 @@ import { test, APIResponse, expect } from "@playwright/test";
 
 test.describe("POST articles tests", async () => {
   const baseURL: string = process.env.BASE_URL;
-  const postArticleEndpointUrl: string = `${baseURL}/api/articles`;
+  const articles: string = `${baseURL}/api/articles`;
   const articleTitle: string =
     "Quick Error Handling Guide: What to Do When Coffee Leaks on Your Keyboard";
   const articleBody: string =
@@ -21,7 +21,7 @@ test.describe("POST articles tests", async () => {
 
   test("Returns 201 Created after creating article", async ({ request }) => {
     expectedStatusCode = 201;
-    const response: APIResponse = await request.post(postArticleEndpointUrl, {
+    const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
         user_id: testUsers.regularUser.id,
@@ -53,7 +53,7 @@ test.describe("POST articles tests", async () => {
         "date": "${articleDate}",
         "image": "${articleImage}"
     }`;
-    const response: APIResponse = await request.post(postArticleEndpointUrl, {
+    const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: malformedJson,
     });
@@ -65,7 +65,7 @@ test.describe("POST articles tests", async () => {
     request,
   }) => {
     expectedStatusCode = 422;
-    const response: APIResponse = await request.post(postArticleEndpointUrl, {
+    const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
         user_id: testUsers.regularUser.id,
@@ -83,7 +83,7 @@ test.describe("POST articles tests", async () => {
   }) => {
     expectedStatusCode = 422;
     const exceedingLengthTitle: string = "a".repeat(10001);
-    const response: APIResponse = await request.post(postArticleEndpointUrl, {
+    const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
         user_id: testUsers.regularUser.id,
@@ -101,7 +101,7 @@ test.describe("POST articles tests", async () => {
     request,
   }) => {
     expectedStatusCode = 401;
-    const response: APIResponse = await request.post(postArticleEndpointUrl, {
+    const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
         title: articleTitle,
