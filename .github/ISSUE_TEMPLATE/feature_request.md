@@ -3,18 +3,36 @@ name: Feature Request
 about: Propose an idea for a new feature
 ---
 
-## Description of the New Feature
+<!--
+IMPORTANT! Please double check that such an issue has not been reported already!
+Please fill in as much of the template below as you're able.
+-->
 
-[Brief description of the new feature]
+## ✏️ Description
 
-## Why We Need This Feature
+<!--
+Please describe your idea or suggestion
+-->
 
-[Explanation of why this feature is needed]
+## 🔧 Why We Need This
 
-## Proposed Solution
+<!--
+Explanation of why this is needed
+-->
 
-[Suggested solution or ideas for implementation]
+## 🚀 Proposed Solution
 
-## Additional Information
+<!--
+If you have any ideas for implementation - please go ahead and tell us
+-->
 
-[Any additional information that may help understand the new feature proposal]
+## ✅ Issue reporting checklist
+
+<!--
+Please make sure to review and check all of these items:
+-->
+
+- [ ] I created a descriptive title for this issue
+- [ ] I checked that it hasn't been reported yet
+- [ ] I assigned the issue or added `help-wanted` label
+- [ ] I added appropriate labels

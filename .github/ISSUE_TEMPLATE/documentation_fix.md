@@ -3,18 +3,37 @@ name: Documentation Fix
 about: Reporting corrections or adding information to the documentation
 ---
 
-## Description of Fixes
+<!--
+IMPORTANT! Please double check that such a documentation issue has not been reported already!
+Please fill in as much of the template below as you're able.
+-->
 
-[Brief description of the documentation changes]
+## ✏️ Description
 
-## Documentation Area
+<!--
+Please describe the issue with the documentation or provide additional information to be added.
+-->
 
-[Specify the specific areas that need corrections]
+## 🔧 Why We Need This
 
-## Proposed Changes
+<!--
+Explanation of why this is needed
+-->
 
-[Describe the proposed changes to the documentation]
+## 🚀 Proposed Correction or Addition
 
-## Additional Information
+<!--
+Provide specific details on the corrections or information to be added.
+Include an overview of proposed solutions, with a brief mention of +/- if necessary.
+-->
 
-[Any additional information that may help understand the documentation fix]
+## ✅ Documentation fix checklist
+
+<!--
+Please make sure to review and check all of these items:
+-->
+
+- [ ] I created a descriptive title for this documentation fix
+- [ ] I checked that a similar documentation issue hasn't been reported yet
+- [ ] I assigned the issue or added `help-wanted` label
+- [ ] I assigned the documentation fix or added appropriate labels
