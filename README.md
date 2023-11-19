@@ -27,8 +27,9 @@
    `npm install`
 3. setup Playwright with:
    `npx playwright install --with-deps chromium`
-4. copy application main URL as value of `BASE_URL` variable in `.env` file
-5. add user email and user password to the `.env` file
+4. copy `.env-template` file and change its name to `.env`
+5. if you use localhost version of the GAD application, `BASE_URL` variable in `.env` file should stay intact, otherwise it should be changed to a proper one
+6. add user email and user password to the `.env` file
 
 More info on how to add changes to the repo - see our [Contribution Guidelines](https://github.com/kat-kan/kawqa-gad-playwright/blob/CONTRIBUTION.md/)
 

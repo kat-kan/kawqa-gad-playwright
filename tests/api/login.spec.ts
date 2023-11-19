@@ -8,14 +8,15 @@ test.describe('Login endpoint tests', async () => {
   test('Login endpoint returns 200 OK for correct login credentials', async ({
     request,
   }) => {
+    // Given
     const expectedResponseCode = 200;
 
     // When POST request is sent to LOGIN endpoint
     const response = await request.post(`${baseURL}/api/login`, {
-      // And request body in JSON format is used with proper login credentials
+      // And request body is in JSON format with proper login credentials
       data: {
-        email: testUser.userEmail,
-        password: testUser.userPassword,
+        email: testUsers.regularUser.email,
+        password: testUsers.regularUser.password,
       },
     });
 
@@ -47,7 +48,7 @@ test.describe('Login endpoint tests', async () => {
     const response = await request.post(`${baseURL}/api/login`, {
       // And request body in JSON format is used with proper login credentials
       data: {
-        email: testUser.userEmail,
+        email: testUsers.regularUser.email,
         password: incorrectPassword,
       },
     });
