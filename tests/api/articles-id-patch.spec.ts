@@ -10,11 +10,9 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
   let newTitleExceedingLengthLimit = "test".repeat(10001);
 
   test.beforeAll(async () => {
-    console.log('BeforeAll--start')
     setHeadersForRegularUser = await createHeaders('regular');
     setHeadersForAdmin = await createHeaders('admin');
     setInvalidHeaders = await createInvalidHeaders();
-    console.log('BeforeAll--end')
   });
 
   /* Importante! 
@@ -41,7 +39,6 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(code).toBe(expectedResponseCode);
 
     const body = await response.json();
-    console.log(body);
     expect(body.title).toBe(newTitle);
     expect(body.body).toBe(newContent);
   });
@@ -85,7 +82,6 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(code).toBe(expectedResponseCode);
 
     const body = await response.json();
-    console.log(body);
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
@@ -108,7 +104,6 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(code).toBe(expectedResponseCode);
 
     const body = await response.json();
-    console.log(body);
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
@@ -156,7 +151,6 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(code).toBe(expectedResponseCode);
 
     const body = await response.json();
-    console.log(body);
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
@@ -182,7 +176,6 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(code).toBe(expectedResponseCode);
 
     const body = await response.json();
-    console.log(body);
     expect(body.title).toBe(newTitleExceedingLengthLimit);
   });
 });
