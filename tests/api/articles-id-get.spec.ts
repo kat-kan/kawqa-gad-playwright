@@ -3,7 +3,7 @@ import { test, expect, APIResponse } from "@playwright/test";
 test.describe("GET/articles/{id} Find article by ID", () => {
   const baseURL: string = process.env.BASE_URL;
 
-  test("return OK status code and correct article data", async ({ request }) => {
+  test("returns OK status code and correct article data", async ({ request }) => {
     const statusCode = 200;
     const articleID = 3;
     const articleUserID = 3;
@@ -31,7 +31,7 @@ test.describe("GET/articles/{id} Find article by ID", () => {
     expect(responseBody).toEqual(expectedData);
   });
 
-  test("return 404 code with specific response body", async ({ request }) => {
+  test("returns 404 code with specific response body", async ({ request }) => {
     const statusCode = 404;
 
     const response: APIResponse = await request.get(`${baseURL}/api/articles/-1`);
