@@ -1,5 +1,6 @@
 import { request } from "@playwright/test";
 import { testUsers } from "@_src_fixtures_api/auth";
+import { logConsole } from "@_src_api/utils/log-levels";
 
 export async function createToken(userType: string): Promise<string> {
     let setEmail, setPassword;
@@ -41,8 +42,7 @@ export async function createHeaders(userType: string = 'regular') {
         Authorization: `Bearer ${setTokenInHeaders}`
     },
 
-        console.log(`Request Headers are the following: \n`);
-    console.log(requestHeaders);
+        logConsole(`Request Headers for ${userType} user are the following: \n ${JSON.stringify(requestHeaders, null, 2)} \n ----`);
     return requestHeaders;
 }
 
