@@ -1,9 +1,9 @@
-import { APIRequestContext, request } from "@playwright/test";
-import { testUser } from "@_src_fixtures_api/auth";
+import { APIRequestContext, request } from '@playwright/test';
+import { testUser } from '@_src_fixtures_api/auth';
 
 export async function createToken(
   setEmail?: string,
-  setPassword?: string
+  setPassword?: string,
 ): Promise<string> {
   if (!setEmail) {
     setEmail = testUser.userEmail;
@@ -14,7 +14,7 @@ export async function createToken(
 
   let accessToken;
   let baseURL = process.env.BASE_URL;
-  
+
   const tokenContextRequest = await request.newContext();
   const response = await tokenContextRequest.post(`${baseURL}/api/login`, {
     data: {
@@ -34,11 +34,11 @@ export async function createHeaders(): Promise<APIRequestContext> {
 
   setTokenInHeaders = await createToken(
     testUser.userEmail,
-    testUser.userPassword
+    testUser.userPassword,
   );
 
   (requestHeaders = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     Authorization: `Bearer ${setTokenInHeaders}`,
   }),
     console.log(`Request Headers are the following: \n`);
@@ -50,7 +50,7 @@ export async function createInvalidHeaders(): Promise<APIRequestContext> {
   let requestHeaders;
 
   requestHeaders = {
-    Authorization: "Bearer withInvalidAccessToken",
+    Authorization: 'Bearer withInvalidAccessToken',
   };
 
   return requestHeaders;

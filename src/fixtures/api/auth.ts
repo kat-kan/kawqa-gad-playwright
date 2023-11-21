@@ -1,5 +1,11 @@
-export const testUser = {
-  userEmail: process.env.USER_EMAIL ?? "karolinazak584@gmail.com",
-  userPassword: process.env.USER_PASSWORD ?? "Test123456@",
-  userId: process.env.USER_ID ?? "14",
+export const testUsers = {
+  regularUser: {
+    email: process.env.USER_EMAIL ?? '[NOT SET]',
+    password: process.env.USER_PASSWORD ?? '[NOT SET]',
+    id: process.env.USER_ID ?? '[NOT SET]',
+  },
+  admin: {
+    email: process.env.ADMIN_EMAIL ?? '[NOT SET]',
+    password: process.env.ADMIN_PASSWORD ?? '[NOT SET]',
+  },
 };
