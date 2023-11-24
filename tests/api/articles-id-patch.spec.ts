@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test, APIResponse, expect } from '@playwright/test';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
-import { testUser } from '@_src_fixtures_api/auth';
+import { testUsers } from '@_src_fixtures_api/auth';
 
 test.describe('PATCH articles/{id} endpoint tests', async () => {
   let baseURL = process.env.BASE_URL;
