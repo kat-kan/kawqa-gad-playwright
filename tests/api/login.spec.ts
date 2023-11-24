@@ -5,7 +5,7 @@ test.describe('Login endpoint tests', async () => {
   let accessToken;
   let baseURL = process.env.BASE_URL;
 
-  test('Login endpoint returns 200 OK for correct login credentials', async ({
+  test('Returns 200 OK for correct login credentials', async ({
     request,
   }) => {
     // Given
