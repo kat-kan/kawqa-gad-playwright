@@ -2,12 +2,14 @@
   "devDependencies": {
     "@playwright/test": "^1.39.0",
     "@types/node": "^20.8.7",
+    "@types/winston": "^2.4.4",
     "dotenv": "^16.3.1",
     "husky": "^8.0.3",
     "prettier": "3.0.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "winston": "^3.11.0"
   },
   "scripts": {
     "test": "npx playwright test",
