@@ -1,11 +1,11 @@
-import { test, expect } from "@playwright/test";
-import { testUsers } from "@_src_fixtures_api/auth";
+import { test, expect } from '@playwright/test';
+import { testUsers } from '@_src_fixtures_api/auth';
 
-test.describe("Login endpoint tests", async () => {
+test.describe('Login endpoint tests', async () => {
   let accessToken;
   let baseURL = process.env.BASE_URL;
 
-  test("Returns 200 OK for correct login credentials", async ({
+  test('Returns 200 OK for correct login credentials', async ({
     request,
   }) => {
     // Given
@@ -26,7 +26,7 @@ test.describe("Login endpoint tests", async () => {
 
     // And response body should have "access_token" string
     const body = await response.json();
-    expect(JSON.stringify(body)).toContain("access_token");
+    expect(JSON.stringify(body)).toContain('access_token');
 
     // And access_token should not be empty
     expect(body.access_token?.length).toBeGreaterThan(0);
@@ -37,12 +37,12 @@ test.describe("Login endpoint tests", async () => {
     //console.log(accessToken);
   });
 
-  test("Returns Unauthorized status code when logging in with incorrect credentials", async ({
+  test('Returns Unauthorized status code when logging in with incorrect credentials', async ({
     request,
   }) => {
-    const incorrectPassword = "wrongPassword";
+    const incorrectPassword = 'wrongPassword';
     const expectedResponseCode = 401;
-    const expectedErrorMessage = "Incorrect email or password";
+    const expectedErrorMessage = 'Incorrect email or password';
 
     // When POST request is sent to LOGIN endpoint
     const response = await request.post(`${baseURL}/api/login`, {
