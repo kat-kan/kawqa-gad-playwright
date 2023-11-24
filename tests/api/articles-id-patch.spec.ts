@@ -1,8 +1,8 @@
-import { test, APIResponse, expect } from "@playwright/test";
-import { createHeaders, createInvalidHeaders } from "@_src_helpers_api/create-token.helper";
-import { testUsers } from "@_src_fixtures_api/auth";
+import { test, APIResponse, expect } from '@playwright/test';
+import { createHeaders, createInvalidHeaders } from '@_src_helpers_api/create-token.helper';
+import { testUsers } from '@_src_fixtures_api/auth';
 
-test.describe("PATCH articles/{id} endpoint tests", async () => {
+test.describe('PATCH articles/{id} endpoint tests', async () => {
   let baseURL = process.env.BASE_URL;
   let setHeadersForRegularUser, setInvalidHeaders, setHeadersForAdmin;
   const newTitle = "How to start writing effective test cases in Gherkin";
@@ -43,7 +43,9 @@ test.describe("PATCH articles/{id} endpoint tests", async () => {
     expect(body.body).toBe(newContent);
   });
 
-  test("Returns 404 NotFound status code when trying to update non-existing article", async ({ request }) => {
+  test('Returns 404 NotFound status code when trying to update non-existing article', async ({
+    request,
+  }) => {
     // Given
     const expectedResponseCode = 404;
 
