@@ -31,7 +31,7 @@
 5. if you use localhost version of the GAD application, `BASE_URL` variable in `.env` file should stay intact, otherwise it should be changed to a proper one
 6. add user email and user password to the `.env` file
 
-More info on how to add changes to the repo - see our [Contribution Guidelines](https://github.com/kat-kan/kawqa-gad-playwright/blob/CONTRIBUTION.md/)
+More info on how to add changes to the repo - see our [Contribution Guidelines](https://github.com/kat-kan/kawqa-gad-playwright/blob/CONTRIBUTING.md/)
 
 ### Running Tests
 
