@@ -7,18 +7,31 @@ on:
     branches: [ "main" ]
 
 jobs:
- run-tests:
-   timeout-minutes: 5
-   runs-on: ubuntu-latest
-   steps:
-     - uses: actions/checkout@v3
-     - name: Build GAD Docker image
-       run: docker build -t jaktestowac/gad .
-     - name: Wait for GAD application to start
-       run: sleep 10
+ playwright-api-auto-checks:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    container:
+        image: jaktestowac/gad
+        ports:
+            - 3000:3000
+    steps:
+     - name: Checkout the repository
+       uses: actions/checkout@v3
+     - name: Install node
+       uses: actions/setup-node@v3
+       with:
+         node-version: '18.x'
+     - name: Install dependencies
+       run: npm ci
      - name: Install Playwright Chromium Browser
-       run: docker exec jaktestowac/gad npx playwright install --with-deps chromium
-     - name: Run Playwright API tests
-       run: docker exec jaktestowac/gad npx playwright test
-     - name: Stop Docker container
-       run: docker stop jaktestowac/gad
+       run: npx playwright install --with-deps chromium
+     - name: Run API checks
+       run: npx playwright test
+     - name: Archive tests results
+       if: success() || failure()
+       uses: actions/upload-artifact@v3
+       with: 
+         name: test-report
+         path: |
+           ./playwright-report/**/*.*
+           ./test-results/**/*.*
