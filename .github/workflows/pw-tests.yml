@@ -23,7 +23,8 @@ jobs:
      - name: Install Playwright Chromium Browser
        run: npx playwright install --with-deps chromium
      - name: Copy env-template
-       run: cp env-template ./.env
+       run: |
+         cp env-template .env
      - name: Run API checks
        run: npx playwright test
      - name: Archive tests results
