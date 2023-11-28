@@ -12,10 +12,8 @@ jobs:
     steps:
      - name: Checkout the repository
        uses: actions/checkout@v3
-     - name: Run Docker Container
-       run: docker run -p 3000:3000 jaktestowac/gad:latest
-     - name: Wait for GAD application to start
-       run: sleep 1
+     - name: Run GAD in Docker Image
+       run: docker run -p 3000:3000 jaktestowac/gad
      - name: Install node
        uses: actions/setup-node@v3
        with:
