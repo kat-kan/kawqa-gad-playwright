@@ -13,7 +13,7 @@ jobs:
    steps:
      - uses: actions/checkout@v3
      - name: Build GAD Docker image
-       run: docker build -d -p 3000:3000 jaktestowac/gad
+       run: docker build -t jaktestowac/gad -p 3000:3000
      - name: Wait for GAD application to start
        run: sleep 90
      - name: Install Playwright Chromium Browser
