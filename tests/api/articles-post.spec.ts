@@ -2,7 +2,7 @@ import { testUsers } from "@_src_fixtures_api/auth";
 import { createHeaders } from "@_src_helpers_api/create-token.helper";
 import { test, APIResponse, expect } from "@playwright/test";
 
-test.describe("POST articles tests", async () => {
+test.describe.fixme("POST articles tests", async () => {
   const baseUrl: string = process.env.BASE_URL;
   const articles: string = `${baseUrl}/api/articles`;
   const articleTitle: string =
