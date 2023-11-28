@@ -3,7 +3,7 @@ import { test, expect, APIResponse } from "@playwright/test";
 test.describe.skip("GET/articles/{id} Get by ID", () => {
   const baseURL: string = process.env.BASE_URL;
 
-  test("returns OK status code and correct article data", async ({ request }) => {
+  test.fixme("returns OK status code and correct article data", async ({ request }) => {
     const statusCode = 200;
     const articleID = 3;
     const articleUserID = 3;
