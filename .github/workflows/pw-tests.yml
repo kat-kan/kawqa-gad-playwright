@@ -22,9 +22,9 @@ jobs:
        run: npm ci
      - name: Install Playwright Chromium Browser
        run: npx playwright install --with-deps chromium
-     - name: Copy env-template
+     - name: Create .env file
        run: |
-         cp env-template .env
+         echo "BASE_URL='http://localhost:3000'" > .env
      - name: Run API checks
        run: npx playwright test
      - name: Archive tests results
@@ -36,4 +36,5 @@ jobs:
            ./playwright-report/**/*.*
            ./test-results/**/*.*
      - name: Delete .env
-       run: rm -f .env
+       run: |
+         rm -f .env
