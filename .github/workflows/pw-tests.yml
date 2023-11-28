@@ -23,7 +23,7 @@ jobs:
      - name: Install Playwright Chromium Browser
        run: npx playwright install --with-deps chromium
      - name: Run API checks
-       run: docker exec jaktestowac/gad npx playwright test
+       run: npx playwright test
      - name: Archive tests results
        if: success() || failure()
        uses: actions/upload-artifact@v3
