@@ -3,6 +3,8 @@ name: Run Playwright API Auto-Checks on CI
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
  playwright-api-auto-checks:
