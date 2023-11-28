@@ -11,10 +11,13 @@ jobs:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     container:
-        image: jaktestowac/gad
+        image: jaktestowac/gad:latest
         ports:
             - 3000:3000
+      
     steps:
+     - name: Run Docker Container
+       run: docker run -d --name myapp-container jaktestowac/gad
      - name: Checkout the repository
        uses: actions/checkout@v3
      - name: Install node
@@ -26,7 +29,7 @@ jobs:
      - name: Install Playwright Chromium Browser
        run: npx playwright install --with-deps chromium
      - name: Run API checks
-       run: npx playwright test
+       run: docker exec myapp-container npx playwright test
      - name: Archive tests results
        if: success() || failure()
        uses: actions/upload-artifact@v3
