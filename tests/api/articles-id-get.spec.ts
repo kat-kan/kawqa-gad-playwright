@@ -1,7 +1,6 @@
 import { test, expect, APIResponse } from "@playwright/test";
 
 test.describe.skip("GET/articles/{id} Get by ID", () => {
-  const baseURL = process.env.BASE_URL;
   const articles: string = `/api/articles`;
   
   test.fixme("returns OK status code and correct article data", async ({ request }) => {
