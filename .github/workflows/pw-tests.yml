@@ -1,9 +1,11 @@
-name: Run Playwright API Auto-Checks on CI
-
+name: Playwright API auto-checks
 on:
   push:
     branches: [ "main" ]
-
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - '**/*.md'
 jobs:
  playwright-api-auto-checks:
     runs-on: ubuntu-latest
