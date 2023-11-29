@@ -1,4 +1,4 @@
-# Playwright Tests for GAD application
+# Playwright Tests for GAD application [![Playwright API auto-checks status](https://github.com/kat-kan/kawqa-gad-playwright/actions/workflows/pw-tests.yml/badge.svg?branch=main)](https://github.com/kat-kan/kawqa-gad-playwright/actions/workflows/pw-tests.yml)
 
 ## Installation and setup
 
