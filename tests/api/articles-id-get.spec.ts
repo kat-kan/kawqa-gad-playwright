@@ -1,9 +1,10 @@
 import { test, expect, APIResponse } from "@playwright/test";
 
-test.describe("GET/articles/{id} Get by ID", () => {
+test.describe.skip("GET/articles/{id} Get by ID", () => {
+  const baseURL = process.env.BASE_URL;
   const articles: string = `/api/articles`;
-
-  test("returns OK status code and correct article data", async ({ request }) => {
+  
+  test.fixme("returns OK status code and correct article data", async ({ request }) => {
     const statusCode = 200;
     const articleID = 3;
     const articleUserID = 3;

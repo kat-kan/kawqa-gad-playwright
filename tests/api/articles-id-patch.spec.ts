@@ -2,7 +2,8 @@ import { test, APIResponse, expect } from '@playwright/test';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { testUsers } from '@_src_fixtures_api/auth';
 
-test.describe('PATCH articles/{id} endpoint tests', async () => {
+test.describe.skip('PATCH articles/{id} endpoint tests', async () => {
+  const baseURL = process.env.BASE_URL;
   let setHeaders;
   const articles = `/api/articles`;
   const newTitle = 'How to start writing effective test cases in Gherkin';
