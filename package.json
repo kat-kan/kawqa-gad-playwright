@@ -14,6 +14,7 @@
   "scripts": {
     "test": "npx playwright test",
     "test:headed": "npm run test -- --headed",
-    "show-report": "npx playwright show-report"
+    "show-report": "npx playwright show-report",
+    "format": "npx prettier --write ."
   }
 }
