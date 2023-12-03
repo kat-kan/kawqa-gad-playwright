@@ -21,6 +21,7 @@
     "test": "npx playwright test",
     "test:headed": "npm run test -- --headed",
     "show-report": "npx playwright show-report",
-    "format": "npx prettier --write ."
+    "format": "npx prettier --write .",
+    "lint": "npx eslint . --ext .ts --max-warnings=0"
   }
 }
