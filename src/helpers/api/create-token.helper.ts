@@ -1,12 +1,17 @@
-import { APIRequestContext, request } from "@playwright/test";
-import { testUser } from "@_src_fixtures_api/auth";
+import { request } from "@playwright/test";
+import { testUsers } from "@_src_fixtures_api/auth";
+import { logConsole } from "@_src_api/utils/log-levels";
 
-export async function createToken(setEmail?: string, setPassword?: string): Promise<string> {
-    if (!setEmail) {
-        setEmail = testUser.userEmail;
+export async function createToken(userType: string): Promise<string> {
+    let setEmail, setPassword;
+
+    if (userType === 'regular') {
+        setEmail = testUsers.regularUser.email;
+        setPassword = testUsers.regularUser.password;
     }
-    if (!setPassword) {
-        setPassword = testUser.userPassword;
+    else if (userType === 'admin') {
+        setEmail = testUsers.admin.email;
+        setPassword = testUsers.admin.password;
     }
 
     let accessToken;
@@ -25,11 +30,11 @@ export async function createToken(setEmail?: string, setPassword?: string): Prom
     return accessToken;
 }
 
-export async function createHeaders(): Promise<APIRequestContext> {
+export async function createHeaders(userType: string = 'regular') {
     let requestHeaders;
     let setTokenInHeaders;
 
-    setTokenInHeaders = await createToken(testUser.userEmail, testUser.userPassword);
+    setTokenInHeaders = await createToken(userType);
 
     requestHeaders =
     {
@@ -37,12 +42,11 @@ export async function createHeaders(): Promise<APIRequestContext> {
         Authorization: `Bearer ${setTokenInHeaders}`
     },
 
-        console.log(`Request Headers are the following: \n`);
-    console.log(requestHeaders);
+        logConsole(`Request Headers for ${userType} user are the following: \n ${JSON.stringify(requestHeaders, null, 2)} \n ----`);
     return requestHeaders;
 }
 
-export async function createInvalidHeaders(): Promise<APIRequestContext> {
+export async function createInvalidHeaders() {
     let requestHeaders;
 
     requestHeaders = {
@@ -51,3 +55,4 @@ export async function createInvalidHeaders(): Promise<APIRequestContext> {
 
     return requestHeaders;
 }
+

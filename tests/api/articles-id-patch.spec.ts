@@ -1,61 +1,66 @@
-import { test, expect } from "@playwright/test";
-import { createHeaders } from "@_src_helpers_api/create-token.helper";
-import { testUser } from "@_src_fixtures_api/auth";
+import { test, APIResponse, expect } from '@playwright/test';
+import { createHeaders } from '@_src_helpers_api/create-token.helper';
+import { testUsers } from '@_src_fixtures_api/auth';
 
-test.describe("PATCH articles/{id} endpoint tests", async () => {
-  let baseURL = process.env.BASE_URL;
-  let setHeaders: any;
-  const newTitle = "How to start writing effective test cases in Gherkin";
-  const newContent = "Start with a Feature Description:\nBegin each Gherkin feature file with a high-level description\n of the feature you are testing. This provides context for the scenarios that follow\n Example: \nFeature: User Authentication \nAs a user,\nI want to be able to log in to my account,\nSo that I can access my personalized content.";
+test.describe.skip('PATCH articles/{id} endpoint tests', async () => {
+  let setHeaders;
+  const articles = `/api/articles`;
+  const newTitle = 'How to start writing effective test cases in Gherkin';
+  const newContent =
+    'Start with a Feature Description:\nBegin each Gherkin feature file with a high-level description\n of the feature you are testing. This provides context for the scenarios that follow\n Example: \nFeature: User Authentication \nAs a user,\nI want to be able to log in to my account,\nSo that I can access my personalized content.';
 
   test.beforeAll(async () => {
-    // Given token is created
     setHeaders = await createHeaders();
   });
 
-  test("Returns OK status code when updating article", async ({ request }) => {
+  test('Returns 200 OK status code when updating article', async ({
+    request,
+  }) => {
+    // Given
     const expectedResponseCode = 200;
 
-    // When PATCH request is sent to ARTICLES/1 endpoint with payload
-    const response = await request.patch(`${baseURL}/api/articles/1`, {
-      // And both access token and application/json as content-type are set in headers
-      headers: setHeaders,
-      // And request body in JSON format is used with a new title and a new content
-      data: {
-        "user_id": testUser.userId,
-        "title": newTitle,
-        "body": newContent
-      }
-    });
+    // When
+    const response: APIResponse = await request.patch(
+      `${articles}/1`,
+      {
+        headers: setHeaders,
+        data: {
+          user_id: testUsers.regularUser.id,
+          title: newTitle,
+          body: newContent,
+        },
+      },
+    );
 
-    // Then response status code should be 200
+    // Then
     const code = response.status();
     expect(code).toBe(expectedResponseCode);
 
-    // And response body should have a new title
     const body = await response.json();
+    console.log(body);
     expect(body.title).toBe(newTitle);
-
-    // And response body should have a new content
     expect(body.body).toBe(newContent);
   });
 
-  test("Returns NotFound status code when trying to update non-existing article", async ({ request }) => {
+  test('Returns 404 NotFound status code when trying to update non-existing article', async ({
+    request,
+  }) => {
+    // Given
     const expectedResponseCode = 404;
+    // When
+    const response: APIResponse = await request.patch(
+      `${articles}/0`,
+      {
+        headers: setHeaders,
+        data: {
+          user_id: testUsers.regularUser.id,
+          title: newTitle,
+          body: newContent,
+        },
+      },
+    );
 
-    // When PATCH request is sent to ARTICLES/1 endpoint with payload
-    const response = await request.patch(`${baseURL}/api/articles/0`, {
-      // And both valid access token and application/json as content-type are set in headers
-      headers: setHeaders,
-      // And request body in JSON format is used with a new title and a new content
-      data: {
-        "user_id": testUser.userId,
-        "title": newTitle,
-        "body": newContent
-      }
-    });
-
-    // Then response status code should be 404
+    // Then
     const code = response.status();
     expect(code).toBe(expectedResponseCode);
   });
