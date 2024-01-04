@@ -1,21 +1,21 @@
 # Contributing to KawQA GAD Playwright
 
-Thank you for considering contributing to KawQA GAD Playwright! This project was created by a small group of test automation enthusiasts (we call ourselves "KawQA z automatu"). We welcome contributions in several areas, including code improvements, documentation updates, Code Reviews, architecture advices. 
+Thank you for considering contributing to KawQA GAD Playwright! This project was created by a small group of test automation enthusiasts (we call ourselves "KawQA z automatu"). We welcome contributions in several areas, including code improvements, documentation updates, code reviews, architecture advice. 
 
 ## Project goal
 
 * Creating an awesome automation testing project with Playwright and TypeScript
-* Learning from each other in a friendly, supporting group of enthusiasts
+* As automation enthusiasts, we learn from each other in a friendly supporting manner / environment
 
 ## How to start 
 
-### Run GAD application using free hosting sites or on local
+### Run GAD application using free hosting sites or on local environment
 
 All the information can be found in GAD's [README](https://github.com/jaktestowac/gad-gui-api-demo)
 
 ### Clone the repository
 
-`git clone https://github.com/kat-kan/kawqa-gad-playwright.git`
+```git clone https://github.com/kat-kan/kawqa-gad-playwright.git```
 
 ### Set up the working area
 
@@ -24,12 +24,12 @@ Gdybym przenosiła to chciałabym podzielić to na obowiązkowy setup i rekomend
 
 ### Pull Request rules
 
-1. All contributions are welcome, but please DO NOT create Pull Requests without an issue
+1. All contributions are welcome, but please: a. Join the group first b. DO NOT create Pull Requests without an issue
 2. Please make sure to pull the latest changes from main before you create a PR
 3. Please try to fill in the information in the template carefully. We do not work on this repository on a daily basis and it is very important to provide context and explain your work.
-4. Discussion in your PR is a GOOD THING! Asking questions and suggesting improvements isencouraged.
+4. Discussion in your PR is a GOOD THING! Asking questions and suggesting improvements is encouraged.
 5. Resolving conversations should be done by PR creator and PR should not be merged without conversations being resolved.
-6. Minimum of 2 approvals are demanded to merge.
+6. Minimum of 2 approvals is required to merge.
 
 ### Branch naming rules
 
