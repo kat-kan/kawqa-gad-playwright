@@ -8,10 +8,7 @@ test.describe("POST comments tests", async () => {
   const commentBody: string =
     "What a wonderful article!";
   const commentDate: string = "2024-06-30T15:44:31Z";
-
-  //Given there is at least one article
   const article_id: number = 1;
-   
   let setHeaders: any;
   let expectedStatusCode: number;
 
@@ -24,10 +21,10 @@ test.describe("POST comments tests", async () => {
     //Given
     expectedStatusCode = 201;
 
-    //When user sends POST request to Comments endpoint  
+    //When 
     const response: APIResponse = await request.post(comments, {
       headers: setHeaders,
-    //And request body contains JSON:
+    //And 
       data: {
         user_id: testUsers.regularUser.id,
         article_id: article_id,
@@ -37,21 +34,19 @@ test.describe("POST comments tests", async () => {
     });
      const responseBody = JSON.parse(await response.text())
 
-    //Then user should get 201 response:
+    //Then 
     expect(response.status()).toBe(expectedStatusCode);
-    //And the response should contain user_id in "user_id":
+    //And 
     expect(responseBody.user_id).toBe(testUsers.regularUser.id);
-    ////And the response should contain article_id in "article_id":
+    //And 
     expect(responseBody.article_id).toBe(article_id);
-    //And the response should contain content of comment in "body":
+    //And
     expect(responseBody.body).toBe(commentBody);
-    //And the response should contain date of comment in "date":
+    //And 
     expect(responseBody.date).toBe(commentDate);
-    //And the response should contain id value of a new comment in "id"
-    //And the id should not be empty:
+    //And 
     expect(responseBody.id).not.toBeNull;
   });
-
 
   test("Returns 400 - Bad request after sending comment with malformed JSON", async ({ request }) => {
     
@@ -64,16 +59,15 @@ test.describe("POST comments tests", async () => {
       date: commentDate,
   }`;
 
-    //When user sends POST request to Comments endpoint  
+    //When  
     const response: APIResponse = await request.post(comments, {
       headers: setHeaders,
-     //And request body contains malformed JSON:
+     //And 
       data: malformedJson,
     });
     
-     //Then user should get 400 response:
+     //Then
     expect(response.status()).toBe(expectedStatusCode);
-   
   });
 
 
@@ -82,10 +76,10 @@ test.describe("POST comments tests", async () => {
     //Given 
     expectedStatusCode = 422;
     
-    //When user sends POST request to Comments endpoint  
+    //When  
     const response: APIResponse = await request.post(comments, {
       headers: setHeaders,
-     //And request body contains JSON without body:
+    //And 
       data: {
         user_id: testUsers.regularUser.id,
         article_id: article_id,
@@ -93,8 +87,7 @@ test.describe("POST comments tests", async () => {
       },
     });
    
-     //Then user should get 404 response:
+    //Then 
     expect(response.status()).toBe(expectedStatusCode);
-    
   });
 });
