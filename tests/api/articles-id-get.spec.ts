@@ -1,8 +1,7 @@
 import { test, expect, APIResponse } from "@playwright/test";
 
 test.describe("GET/articles/{id} Get by ID", () => {
-  const baseUrl: string = process.env.BASE_URL;
-  const articles: string = `${baseUrl}/api/articles`;
+  const articles: string = `/api/articles`;
 
   test("returns OK status code and correct article data", async ({ request }) => {
     const statusCode = 200;
