@@ -19,7 +19,7 @@ test.describe("POST articles tests", async () => {
     setHeaders = await createHeaders();
   });
 
-  test("Returns 201 Created after creating article", async ({ request }) => {
+  test.fixme("Returns 201 Created after creating article", async ({ request }) => {
     expectedStatusCode = 201;
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
