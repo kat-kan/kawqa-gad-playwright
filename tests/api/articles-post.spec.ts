@@ -19,7 +19,7 @@ test.describe("POST articles tests", async () => {
     setHeaders = await createHeaders();
   });
 
-  test.fixme("Returns 201 Created after creating article", async ({ request }) => {
+  test("Returns 201 Created after creating article", async ({ request }) => {
     expectedStatusCode = 201;
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
@@ -78,7 +78,7 @@ test.describe("POST articles tests", async () => {
     expect(response.status()).toBe(expectedStatusCode);
   });
 
-  test.fixme("Returns 422 Unprocessable content after sending article JSON with too long value", async ({
+  test("Returns 422 Unprocessable content after sending article JSON with too long value", async ({
     request,
   }) => {
     expectedStatusCode = 422;
@@ -97,7 +97,7 @@ test.describe("POST articles tests", async () => {
     expect(response.status()).toBe(expectedStatusCode);
   });
 
-  test.fixme("Returns 401 Unauthorized after sending article JSON with missing userId", async ({
+  test("Returns 401 Unauthorized after sending article JSON with missing userId", async ({
     request,
   }) => {
     expectedStatusCode = 401;
