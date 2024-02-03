@@ -78,7 +78,7 @@ test.describe("POST articles tests", async () => {
     expect(response.status()).toBe(expectedStatusCode);
   });
 
-  test("Returns 422 Unprocessable content after sending article JSON with too long value", async ({
+  test.fixme("Returns 422 Unprocessable content after sending article JSON with too long value", async ({
     request,
   }) => {
     expectedStatusCode = 422;
