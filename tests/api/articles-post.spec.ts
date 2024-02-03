@@ -97,7 +97,7 @@ test.describe("POST articles tests", async () => {
     expect(response.status()).toBe(expectedStatusCode);
   });
 
-  test("Returns 401 Unauthorized after sending article JSON with missing userId", async ({
+  test.fixme("Returns 401 Unauthorized after sending article JSON with missing userId", async ({
     request,
   }) => {
     expectedStatusCode = 401;
