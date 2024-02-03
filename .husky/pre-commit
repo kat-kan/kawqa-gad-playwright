@@ -3,7 +3,7 @@
 
 echo -e "Branch name validation started ..."
 localBranchName="$(git rev-parse --abbrev-ref HEAD)"
-validBranchRegex="^(chore|tests|docs)\/(ISSUE\-[0-9]+\_)+[a-zA-Z0-9_-]+$"
+validBranchRegex="^(fix|chore|tests|docs)\/(ISSUE\-[0-9]+\_)+[a-zA-Z0-9_-]+$"
 
 Red="\033[0;31m" 
 Green="\033[0;32m"
