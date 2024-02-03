@@ -1,9 +1,10 @@
 import { test, expect, APIResponse } from "@playwright/test";
 
 test.describe("GET/articles/{id} Get by ID", () => {
-  const baseURL: string = process.env.BASE_URL;
+  const baseUrl: string = process.env.BASE_URL;
+  const articles: string = `${baseUrl}/api/articles`;
 
-  test.fixme("returns OK status code and correct article data", async ({ request }) => {
+  test("returns OK status code and correct article data", async ({ request }) => {
     const statusCode = 200;
     const articleID = 3;
     const articleUserID = 3;
@@ -14,7 +15,7 @@ test.describe("GET/articles/{id} Get by ID", () => {
     const articleImage: string =
       ".\\data\\images\\256\\jeremy-hynes-HxxNVun8HEc-unsplash.jpg";
 
-    const response: APIResponse = await request.get(`${baseURL}/api/articles/3`);
+    const response: APIResponse = await request.get(`${articles}/3`);
     const responseBody = await response.json();
 
     expect(response.status()).toBe(statusCode);
@@ -31,10 +32,10 @@ test.describe("GET/articles/{id} Get by ID", () => {
     expect(responseBody).toEqual(expectedData);
   });
 
-  test("returns 404 code with specific response body", async ({ request }) => {
+  test("returns Not Found 404 status code with specific response body", async ({ request }) => {
     const statusCode = 404;
 
-    const response: APIResponse = await request.get(`${baseURL}/api/articles/-1`);
+    const response: APIResponse = await request.get(`${articles}/-1`);
 
     expect(response.status()).toBe(statusCode);
 
