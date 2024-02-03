@@ -3,8 +3,7 @@ import { testUsers } from '@_src_fixtures_api/auth';
 
 test.describe('Login endpoint tests', async () => {
   let accessToken;
-  let baseURL = process.env.BASE_URL;
-
+  const login = `/api/login`;
   test('Returns 200 OK for correct login credentials', async ({
     request,
   }) => {
@@ -12,7 +11,7 @@ test.describe('Login endpoint tests', async () => {
     const expectedResponseCode = 200;
 
     // When
-    const response = await request.post(`${baseURL}/api/login`, {
+    const response = await request.post(login, {
       data: {
         email: testUsers.regularUser.email,
         password: testUsers.regularUser.password,
@@ -27,7 +26,6 @@ test.describe('Login endpoint tests', async () => {
     expect(JSON.stringify(body)).toContain('access_token');
     expect(body.access_token?.length).toBeGreaterThan(0);
 
-    // saving access token for next tests
     accessToken = `Bearer ${body.access_token}`;
   });
 
@@ -40,7 +38,7 @@ test.describe('Login endpoint tests', async () => {
     const expectedErrorMessage = 'Incorrect email or password';
 
     // When
-    const response = await request.post(`${baseURL}/api/login`, {
+    const response = await request.post(login, {
       data: {
         email: testUsers.regularUser.email,
         password: incorrectPassword,

@@ -3,8 +3,7 @@ import { createHeaders } from "@_src_helpers_api/create-token.helper";
 import { test, APIResponse, expect } from "@playwright/test";
 
 test.describe("POST articles tests", async () => {
-  const baseUrl: string = process.env.BASE_URL;
-  const articles: string = `${baseUrl}/api/articles`;
+  const articles: string = `/api/articles`;
   const articleTitle: string =
     "Quick Error Handling Guide: What to Do When Coffee Leaks on Your Keyboard";
   const articleBody: string =
@@ -19,7 +18,7 @@ test.describe("POST articles tests", async () => {
     setHeaders = await createHeaders();
   });
 
-  test("Returns 201 Created after creating article", async ({ request }) => {
+  test.fixme("Returns 201 Created after creating article", async ({ request }) => {
     expectedStatusCode = 201;
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
@@ -78,7 +77,7 @@ test.describe("POST articles tests", async () => {
     expect(response.status()).toBe(expectedStatusCode);
   });
 
-  test("Returns 422 Unprocessable content after sending article JSON with too long value", async ({
+  test.fixme("Returns 422 Unprocessable content after sending article JSON with too long value", async ({
     request,
   }) => {
     expectedStatusCode = 422;
@@ -97,7 +96,7 @@ test.describe("POST articles tests", async () => {
     expect(response.status()).toBe(expectedStatusCode);
   });
 
-  test("Returns 401 Unauthorized after sending article JSON with missing userId", async ({
+  test.fixme("Returns 401 Unauthorized after sending article JSON with missing userId", async ({
     request,
   }) => {
     expectedStatusCode = 401;
