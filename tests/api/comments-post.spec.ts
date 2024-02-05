@@ -1,6 +1,7 @@
 import { testUsers } from "@_src_fixtures_api/auth";
 import { createHeaders } from "@_src_helpers_api/create-token.helper";
 import { test, APIResponse, expect } from "@playwright/test";
+import { HttpStatusCode } from "@_src_api/enums/api-status-code.enum";
 
 test.describe("POST comments tests", async () => {
   const comments: string = `/api/comments`;
@@ -16,9 +17,7 @@ test.describe("POST comments tests", async () => {
   });
 
   test("Returns 201- Created after creating comment", async ({ request }) => {  
-    //Given
-    expectedStatusCode = 201;
-    //When 
+   //When 
     const response: APIResponse = await request.post(comments, {
       headers: setHeaders,
       data: {
@@ -30,7 +29,7 @@ test.describe("POST comments tests", async () => {
     });
      const responseBody = JSON.parse(await response.text())
     //Then 
-    expect(response.status()).toBe(expectedStatusCode);
+    expect(response.status()).toBe(HttpStatusCode.Created);
     expect(responseBody.user_id).toBe(testUsers.regularUser.id);
     expect(responseBody.article_id).toBe(article_id);
     expect(responseBody.body).toBe(commentBody);
@@ -40,7 +39,6 @@ test.describe("POST comments tests", async () => {
 
   test("Returns 400 - Bad request after sending comment with malformed JSON", async ({ request }) => {
     //Given 
-    expectedStatusCode = 400;
     const malformedJson: string = `{
       user_id: testUsers.regularUser.id,
       article_id: "article_id,  
@@ -53,12 +51,10 @@ test.describe("POST comments tests", async () => {
       data: malformedJson,
     });
      //Then
-    expect(response.status()).toBe(expectedStatusCode);
+    expect(response.status()).toBe(HttpStatusCode.BadRequest);
   });
 
   test("Returns 422- Invalid comment supplied after sending comment without body ", async ({ request }) => {   
-     //Given 
-     expectedStatusCode = 422;
     //When  
     const response: APIResponse = await request.post(comments, {
       headers: setHeaders,
@@ -69,6 +65,6 @@ test.describe("POST comments tests", async () => {
       },
     });
     //Then 
-    expect(response.status()).toBe(expectedStatusCode);
+    expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
 });
