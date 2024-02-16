@@ -23,6 +23,7 @@
     "test:ui": "npm run test -- --ui",
     "show-report": "npx playwright show-report",
     "format": "npx prettier --write .",
-    "lint": "npx eslint . --ext .ts --max-warnings=0"
+    "lint": "npx eslint . --ext .ts --max-warnings=0",
+    "prettier": "npx prettier --write ."
   }
 }
