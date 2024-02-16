@@ -19,5 +19,9 @@
         "prettier"
     ],
     "rules": {
+        "no-console": "error",
+        "prettier/prettier": "warn",
+        "indent": ["error", 2]
     }
 }
+
