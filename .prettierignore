@@ -1,5 +1,4 @@
-package-lock.json
-playwright-report
-
-# I added this file because I don't want to go into its configuration and Priettier detects conflicts
-create-token.helper.ts
+node_modules/
+/test-results/
+/playwright-report/
+/playwright/.cache/
