@@ -1,10 +1,11 @@
 import { test, expect, APIResponse } from "@playwright/test";
+import { HttpStatusCode } from "@_src_api/enums/api-status-code.enum";
 
-test.describe.skip("GET/articles/{id} Get by ID", () => {
+test.describe("GET/articles/{id} Get by ID", () => {
   const articles: string = `/api/articles`;
-  
-  test.fixme("returns OK status code and correct article data", async ({ request }) => {
-    const statusCode = 200;
+
+  test("Returns OK status code and correct article data", async ({ request }) => {
+    // Given
     const articleID = 3;
     const articleUserID = 3;
     const articleTitle: string = "What is agile software development?";
@@ -13,12 +14,6 @@ test.describe.skip("GET/articles/{id} Get by ID", () => {
     const articleDate: string = "2021-07-25T13:34:00Z";
     const articleImage: string =
       ".\\data\\images\\256\\jeremy-hynes-HxxNVun8HEc-unsplash.jpg";
-
-    const response: APIResponse = await request.get(`${articles}/3`);
-    const responseBody = await response.json();
-
-    expect(response.status()).toBe(statusCode);
-
     const expectedData = {
       id: articleID,
       user_id: articleUserID,
@@ -28,17 +23,22 @@ test.describe.skip("GET/articles/{id} Get by ID", () => {
       image: articleImage,
     };
 
+    // When
+    const response: APIResponse = await request.get(`${articles}/3`);
+    const responseBody = await response.json();
+
+    // Then
+    expect(response.status()).toBe(HttpStatusCode.Ok);
     expect(responseBody).toEqual(expectedData);
   });
 
-  test("returns Not Found 404 status code with specific response body", async ({ request }) => {
-    const statusCode = 404;
-
+  test("Returns Not Found 404 status code with specific response body", async ({ request }) => {
+    // When
     const response: APIResponse = await request.get(`${articles}/-1`);
-
-    expect(response.status()).toBe(statusCode);
-
     const responseBody = await response.text();
+
+    // Then
+    expect(response.status()).toBe(HttpStatusCode.NotFound);
     expect(responseBody).toBe("{}");
   });
 });

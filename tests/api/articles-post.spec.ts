@@ -1,10 +1,10 @@
+import { test, APIResponse, expect } from "@playwright/test";
 import { testUsers } from "@_src_fixtures_api/auth";
 import { createHeaders } from "@_src_helpers_api/create-token.helper";
-import { test, APIResponse, expect } from "@playwright/test";
+import { HttpStatusCode } from "@_src_api/enums/api-status-code.enum";
 
 test.describe.skip("POST articles tests", async () => {
-  const baseUrl: string = process.env.BASE_URL;
-  const articles: string = `${baseUrl}/api/articles`;
+  const articles: string = `/api/articles`;
   const articleTitle: string =
     "Quick Error Handling Guide: What to Do When Coffee Leaks on Your Keyboard";
   const articleBody: string =
@@ -13,14 +13,13 @@ test.describe.skip("POST articles tests", async () => {
   const articleImage: string =
     "src\\test-data\\images\\Roasted_coffee_beans.jpg";
   let setHeaders: any;
-  let expectedStatusCode: number;
 
   test.beforeAll(async () => {
     setHeaders = await createHeaders();
   });
 
   test("Returns 201 Created after creating article", async ({ request }) => {
-    expectedStatusCode = 201;
+    // When
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
@@ -33,7 +32,8 @@ test.describe.skip("POST articles tests", async () => {
     });
     const responseBody: any = await response.json();
 
-    expect.soft(response.status()).toBe(expectedStatusCode);
+    // Then
+    expect.soft(response.status()).toBe(HttpStatusCode.Created);
     expect.soft(responseBody.user_id).toBe(testUsers.regularUser.id);
     expect.soft(responseBody.title).toBe(articleTitle);
     expect.soft(responseBody.body).toBe(articleBody);
@@ -45,7 +45,7 @@ test.describe.skip("POST articles tests", async () => {
   test("Returns 400 Bad Request after sending malformed JSON", async ({
     request,
   }) => {
-    expectedStatusCode = 400;
+    // Given
     const malformedJson: string = `{
         "user_id": "${testUsers.regularUser.id}",
         "title: ${articleTitle},  // error: missing closing quotation mark
@@ -53,18 +53,21 @@ test.describe.skip("POST articles tests", async () => {
         "date": "${articleDate}",
         "image": "${articleImage}"
     }`;
+
+    // When
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: malformedJson,
     });
 
-    expect(response.status()).toBe(expectedStatusCode);
+    // Then
+    expect(response.status()).toBe(HttpStatusCode.BadRequest);
   });
 
   test("Returns 422 Unprocessable content after sending article with missing required information", async ({
     request,
   }) => {
-    expectedStatusCode = 422;
+    // When
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
@@ -75,14 +78,17 @@ test.describe.skip("POST articles tests", async () => {
       },
     });
 
-    expect(response.status()).toBe(expectedStatusCode);
+    // Then
+    expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
 
   test("Returns 422 Unprocessable content after sending article JSON with too long value", async ({
     request,
   }) => {
-    expectedStatusCode = 422;
+    // Given
     const exceedingLengthTitle: string = "a".repeat(10001);
+
+    // When
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
@@ -94,13 +100,14 @@ test.describe.skip("POST articles tests", async () => {
       },
     });
 
-    expect(response.status()).toBe(expectedStatusCode);
+    // Then
+    expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
 
   test("Returns 401 Unauthorized after sending article JSON with missing userId", async ({
     request,
   }) => {
-    expectedStatusCode = 401;
+    // When
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
@@ -109,6 +116,7 @@ test.describe.skip("POST articles tests", async () => {
       },
     });
 
-    expect(response.status()).toBe(expectedStatusCode);
+    // Then
+    expect(response.status()).toBe(HttpStatusCode.Unauthorized);
   });
 });
