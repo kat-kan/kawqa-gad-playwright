@@ -3,7 +3,7 @@ import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 
-test.describe.skip('PATCH articles/{id} endpoint tests', async () => {
+test.describe('PATCH articles/{id} endpoint tests', async () => {
   let setHeaders;
   const articles = `/api/articles`;
   const newTitle = 'How to start writing effective test cases in Gherkin';

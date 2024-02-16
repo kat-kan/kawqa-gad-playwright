@@ -31,6 +31,7 @@ test.describe('POST articles tests', async () => {
       },
     });
     const responseBody: any = await response.json();
+
     // Then
     expect.soft(response.status()).toBe(HttpStatusCode.Created);
     expect.soft(responseBody.user_id).toBe(testUsers.regularUser.id);
@@ -38,7 +39,7 @@ test.describe('POST articles tests', async () => {
     expect.soft(responseBody.body).toBe(articleBody);
     expect.soft(responseBody.date).toBe(articleDate);
     expect.soft(responseBody.image).toBe(articleImage);
-    expect.soft(responseBody.id).not.toBeNull;
+    expect.soft(responseBody.id).not.toBeNull();
   });
 
   test('Returns 400 Bad Request after sending malformed JSON', async ({
@@ -52,6 +53,7 @@ test.describe('POST articles tests', async () => {
         "date": "${articleDate}",
         "image": "${articleImage}"
     }`;
+
     // When
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
@@ -74,6 +76,7 @@ test.describe('POST articles tests', async () => {
         //missing date, image - all keys are required
       },
     });
+
     // Then
     expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
@@ -83,6 +86,7 @@ test.describe('POST articles tests', async () => {
   }) => {
     // Given
     const exceedingLengthTitle: string = 'a'.repeat(10001);
+
     // When
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
@@ -94,6 +98,7 @@ test.describe('POST articles tests', async () => {
         image: articleImage,
       },
     });
+
     // Then
     expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
@@ -109,6 +114,7 @@ test.describe('POST articles tests', async () => {
         body: articleBody,
       },
     });
+
     // Then
     expect(response.status()).toBe(HttpStatusCode.Unauthorized);
   });
