@@ -14,9 +14,6 @@ export async function createToken(userType: string): Promise<string> {
     setPassword = testUsers.admin.password;
   }
 
-  let accessToken;
-  const baseURL = process.env.BASE_URL;
-
   const tokenContextRequest = await request.newContext();
   const response = await tokenContextRequest.post(`/api/login`, {
     data: {
@@ -26,20 +23,17 @@ export async function createToken(userType: string): Promise<string> {
   });
 
   const body = await response.json();
-  accessToken = body.access_token;
+  const accessToken = body.access_token;
   return accessToken;
 }
 
 export async function createHeaders(userType: string = 'regular') {
   let requestHeaders;
-  let setTokenInHeaders;
+  const setTokenInHeaders = await createToken(userType);
 
-  setTokenInHeaders = await createToken(userType);
-
-  requestHeaders =
-  {
+  requestHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${setTokenInHeaders}`
+    Authorization: `Bearer ${setTokenInHeaders}`,
   },
     logConsole(
       `Request Headers for ${userType} user are the following: \n ${JSON.stringify(
@@ -52,10 +46,8 @@ export async function createHeaders(userType: string = 'regular') {
 }
 
 export async function createInvalidHeaders() {
-  let requestHeaders;
-
-  requestHeaders = {
-    Authorization: "Bearer withInvalidAccessToken",
+  const requestHeaders = {
+    Authorization: `Bearer 'withInvalidAccessToken'`,
   };
 
   return requestHeaders;
