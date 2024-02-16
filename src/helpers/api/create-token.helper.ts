@@ -8,8 +8,7 @@ export async function createToken(userType: string): Promise<string> {
   if (userType === 'regular') {
     setEmail = testUsers.regularUser.email;
     setPassword = testUsers.regularUser.password;
-  }
-  else if (userType === 'admin') {
+  } else if (userType === 'admin') {
     setEmail = testUsers.admin.email;
     setPassword = testUsers.admin.password;
   }
@@ -31,10 +30,10 @@ export async function createHeaders(userType: string = 'regular') {
   let requestHeaders;
   const setTokenInHeaders = await createToken(userType);
 
-  requestHeaders = {
+  (requestHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${setTokenInHeaders}`,
-  },
+  }),
     logConsole(
       `Request Headers for ${userType} user are the following: \n ${JSON.stringify(
         requestHeaders,
@@ -49,6 +48,5 @@ export async function createInvalidHeaders() {
   const requestHeaders = {
     Authorization: `Bearer 'withInvalidAccessToken'`,
   };
-
   return requestHeaders;
 }
