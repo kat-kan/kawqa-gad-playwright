@@ -18,17 +18,14 @@ test.describe.skip('PATCH articles/{id} endpoint tests', async () => {
     request,
   }) => {
     // When
-    const response: APIResponse = await request.patch(
-      `${articles}/1`,
-      {
-        headers: setHeaders,
-        data: {
-          user_id: testUsers.regularUser.id,
-          title: newTitle,
-          body: newContent,
-        },
+    const response: APIResponse = await request.patch(`${articles}/1`, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: newTitle,
+        body: newContent,
       },
-    );
+    });
 
     // Then
     const code = response.status();
@@ -46,17 +43,14 @@ test.describe.skip('PATCH articles/{id} endpoint tests', async () => {
     request,
   }) => {
     // When
-    const response: APIResponse = await request.patch(
-      `${articles}/0`,
-      {
-        headers: setHeaders,
-        data: {
-          user_id: testUsers.regularUser.id,
-          title: newTitle,
-          body: newContent,
-        },
+    const response: APIResponse = await request.patch(`${articles}/0`, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: newTitle,
+        body: newContent,
       },
-    );
+    });
 
     // Then
     const code = response.status();
