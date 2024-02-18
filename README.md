@@ -21,18 +21,7 @@
 
 ### Test Repository Setup
 
-1. ```
-   git clone https://github.com/kat-kan/kawqa-gad-playwright.git
-   ```
-2. install dependencies:
-   `npm install`
-3. setup Playwright with:
-   `npx playwright install --with-deps chromium`
-4. copy `.env-template` file and change its name to `.env`
-5. if you use localhost version of the GAD application, `BASE_URL` variable in `.env` file should stay intact, otherwise it should be changed to a proper one
-6. add user email and user password to the `.env` file
-
-More info on how to add changes to the repo - see our [Contribution Guidelines](https://github.com/kat-kan/kawqa-gad-playwright/blob/CONTRIBUTION.md/)
+Please check information in our [contribution guidelines](https://github.com/kat-kan/kawqa-gad-playwright/blob/main/CONTRIBUTING.md)
 
 ### Running Tests
 
