@@ -27,13 +27,15 @@ export async function createToken(userType: string): Promise<string> {
 }
 
 export async function createHeaders(userType: string = 'regular') {
-  let requestHeaders;
-  const setTokenInHeaders = await createToken(userType);
+  let requestHeaders: { [key: string]: string; };
+  let setTokenInHeaders: string;
 
-  (requestHeaders = {
+  setTokenInHeaders = await createToken(userType);
+
+  requestHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${setTokenInHeaders}`,
-  }),
+  },
     logConsole(
       `Request Headers for ${userType} user are the following: \n ${JSON.stringify(
         requestHeaders,

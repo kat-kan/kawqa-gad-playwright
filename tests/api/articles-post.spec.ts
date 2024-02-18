@@ -12,7 +12,7 @@ test.describe('POST articles tests', async () => {
   const articleDate: string = '2024-06-30T15:44:31Z';
   const articleImage: string =
     'src\\test-data\\images\\Roasted_coffee_beans.jpg';
-  let setHeaders: any;
+  let setHeaders: { [key: string]: string };
 
   test.beforeAll(async () => {
     setHeaders = await createHeaders();
@@ -30,7 +30,7 @@ test.describe('POST articles tests', async () => {
         image: articleImage,
       },
     });
-    const responseBody: any = await response.json();
+    const responseBody: { [key: string]: Object } = await response.json();
 
     // Then
     expect.soft(response.status()).toBe(HttpStatusCode.Created);
