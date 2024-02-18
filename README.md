@@ -20,7 +20,7 @@
 
 ### Test Repository Setup
 
-Please check information in our [contribution guidelines](https://github.com/kat-kan/kawqa-gad-playwright/blob/CONTRIBUTING.md/)
+Please check information in our [contribution guidelines](https://github.com/kat-kan/kawqa-gad-playwright/blob/main/CONTRIBUTING.md)
 
 ### Running Tests
 
