@@ -31,8 +31,8 @@ export async function createToken(userType: string): Promise<string> {
 }
 
 export async function createHeaders(userType: string = 'regular') {
-    let requestHeaders;
-    let setTokenInHeaders;
+    let requestHeaders: { [key: string]: string; };
+    let setTokenInHeaders:string;
 
     setTokenInHeaders = await createToken(userType);
 
@@ -47,7 +47,7 @@ export async function createHeaders(userType: string = 'regular') {
 }
 
 export async function createInvalidHeaders() {
-    let requestHeaders;
+    let requestHeaders:{ [key: string]: string; };
 
     requestHeaders = {
         Authorization: "Bearer withInvalidAccessToken",
