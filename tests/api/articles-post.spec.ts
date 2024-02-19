@@ -36,7 +36,7 @@ test.describe('POST articles tests', async () => {
 
     // Then
     expect.soft(response.status()).toBe(expectedStatusCode);
-    expect.soft(Number(responseBody.user_id)).toEqual(testUsers.regularUser.id);
+    expect.soft(responseBody.user_id.toString()).toEqual((testUsers.regularUser.id).toString());
     expect.soft(responseBody.title).toBe(articleTitle);
     expect.soft(responseBody.body).toBe(articleBody);
     expect.soft(responseBody.date).toBe(articleDate);
