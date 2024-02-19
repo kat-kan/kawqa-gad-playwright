@@ -1,8 +1,9 @@
 import { test, APIResponse, expect } from '@playwright/test';
-import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { testUsers } from '@_src_fixtures_api/auth';
+import { createHeaders } from '@_src_helpers_api/create-token.helper';
+import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 
-test.describe.skip('PATCH articles/{id} endpoint tests', async () => {
+test.describe('PATCH articles/{id} endpoint tests', async () => {
   let setHeaders;
   const articles = `/api/articles`;
   const newTitle = 'How to start writing effective test cases in Gherkin';
@@ -16,28 +17,24 @@ test.describe.skip('PATCH articles/{id} endpoint tests', async () => {
   test('Returns 200 OK status code when updating article', async ({
     request,
   }) => {
-    // Given
-    const expectedResponseCode = 200;
-
     // When
-    const response: APIResponse = await request.patch(
-      `${articles}/1`,
-      {
-        headers: setHeaders,
-        data: {
-          user_id: testUsers.regularUser.id,
-          title: newTitle,
-          body: newContent,
-        },
+    const response: APIResponse = await request.patch(`${articles}/1`, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: newTitle,
+        body: newContent,
       },
-    );
+    });
 
     // Then
     const code = response.status();
-    expect(code).toBe(expectedResponseCode);
+    expect(code).toBe(HttpStatusCode.Ok);
 
+    // When
     const body = await response.json();
-    console.log(body);
+
+    // Then
     expect(body.title).toBe(newTitle);
     expect(body.body).toBe(newContent);
   });
@@ -45,23 +42,18 @@ test.describe.skip('PATCH articles/{id} endpoint tests', async () => {
   test('Returns 404 NotFound status code when trying to update non-existing article', async ({
     request,
   }) => {
-    // Given
-    const expectedResponseCode = 404;
     // When
-    const response: APIResponse = await request.patch(
-      `${articles}/0`,
-      {
-        headers: setHeaders,
-        data: {
-          user_id: testUsers.regularUser.id,
-          title: newTitle,
-          body: newContent,
-        },
+    const response: APIResponse = await request.patch(`${articles}/0`, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: newTitle,
+        body: newContent,
       },
-    );
+    });
 
     // Then
     const code = response.status();
-    expect(code).toBe(expectedResponseCode);
+    expect(code).toBe(HttpStatusCode.NotFound);
   });
 });

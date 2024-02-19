@@ -1,7 +1,7 @@
+import { test, APIResponse, expect } from '@playwright/test';
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
-import { test, APIResponse, expect } from '@playwright/test';
 
 test.describe('POST articles tests', async () => {
   const articles: string = `/api/articles`;
@@ -20,6 +20,7 @@ test.describe('POST articles tests', async () => {
   });
 
   test('Returns 201 Created after creating article', async ({ request }) => {
+    // When
     expectedStatusCode = HttpStatusCode.Created;
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
@@ -33,18 +34,20 @@ test.describe('POST articles tests', async () => {
     });
     const responseBody: { [key: string]: Object } = await response.json();
 
+    // Then
     expect.soft(response.status()).toBe(expectedStatusCode);
     expect.soft(responseBody.user_id).toBe(testUsers.regularUser.id);
     expect.soft(responseBody.title).toBe(articleTitle);
     expect.soft(responseBody.body).toBe(articleBody);
     expect.soft(responseBody.date).toBe(articleDate);
     expect.soft(responseBody.image).toBe(articleImage);
-    expect.soft(responseBody.id).not.toBeNull;
+    expect.soft(responseBody.id).not.toBeNull();
   });
 
   test('Returns 400 Bad Request after sending malformed JSON', async ({
     request,
   }) => {
+    // Given
     expectedStatusCode = HttpStatusCode.BadRequest;
     const malformedJson: string = `{
         "user_id": "${testUsers.regularUser.id}",
@@ -53,17 +56,20 @@ test.describe('POST articles tests', async () => {
         "date": "${articleDate}",
         "image": "${articleImage}"
     }`;
+
+    // When
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: malformedJson,
     });
-
+    // Then
     expect(response.status()).toBe(expectedStatusCode);
   });
 
   test('Returns 422 Unprocessable content after sending article with missing required information', async ({
     request,
   }) => {
+    // When
     expectedStatusCode = HttpStatusCode.UnprocessableEntity;
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
@@ -75,14 +81,18 @@ test.describe('POST articles tests', async () => {
       },
     });
 
+    // Then
     expect(response.status()).toBe(expectedStatusCode);
   });
 
   test('Returns 422 Unprocessable content after sending article JSON with too long value', async ({
     request,
   }) => {
+    // Given
     expectedStatusCode = HttpStatusCode.UnprocessableEntity;
     const exceedingLengthTitle: string = 'a'.repeat(10001);
+
+    // When
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
@@ -94,12 +104,14 @@ test.describe('POST articles tests', async () => {
       },
     });
 
+    // Then
     expect(response.status()).toBe(expectedStatusCode);
   });
 
   test('Returns 422 Unprocessable content after sending article JSON with missing userId', async ({
     request,
   }) => {
+    // When
     expectedStatusCode = HttpStatusCode.UnprocessableEntity;
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
@@ -109,6 +121,7 @@ test.describe('POST articles tests', async () => {
       },
     });
 
+    // Then
     expect(response.status()).toBe(expectedStatusCode);
   });
 });

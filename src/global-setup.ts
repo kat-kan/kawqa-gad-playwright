@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import baseURL from '../playwright.config';
-import { logConsole } from "@_src_api/utils/log-levels";
+import { logConsole } from '@_src_api/utils/log-levels';
 
 async function globalSetup(): Promise<void> {
   dotenv.config({ override: true });
