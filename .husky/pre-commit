@@ -24,6 +24,3 @@ fi
 
 echo -e "${Green}Branch name validation passed.${Color_Off}"
 exit 0;
-
-npm run lint;
-npm run format;
