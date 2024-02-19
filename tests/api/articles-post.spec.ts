@@ -32,7 +32,7 @@ test.describe('POST articles tests', async () => {
         image: articleImage,
       },
     });
-    const responseBody: { [key: string]: string } = await response.json();
+    const responseBody: { [key: string]: String } = await response.json();
 
     // Then
     expect.soft(response.status()).toBe(expectedStatusCode);
