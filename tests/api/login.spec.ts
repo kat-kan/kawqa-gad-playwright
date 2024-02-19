@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { testUsers } from '@_src_fixtures_api/auth';
+import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 
 test.describe('Login endpoint tests', async () => {
   let accessToken;
@@ -8,7 +9,7 @@ test.describe('Login endpoint tests', async () => {
     request,
   }) => {
     // Given
-    const expectedResponseCode = 200;
+    const expectedResponseCode = HttpStatusCode.Ok;
 
     // When
     const response = await request.post(login, {
@@ -34,7 +35,7 @@ test.describe('Login endpoint tests', async () => {
   }) => {
     // Given
     const incorrectPassword = 'wrongPassword';
-    const expectedResponseCode = 401;
+    const expectedResponseCode = HttpStatusCode.Unauthorized;
     const expectedErrorMessage = 'Incorrect email or password';
 
     // When
