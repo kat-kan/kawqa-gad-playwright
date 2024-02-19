@@ -10,7 +10,6 @@ test.describe("POST comments tests", async () => {
   const commentDate: string = "2024-06-30T15:44:31Z";
   const article_id: number = 1;
   let setHeaders: any;
-  let expectedStatusCode: number;
 
   test.beforeAll(async () => {
     setHeaders = await createHeaders();
@@ -27,8 +26,8 @@ test.describe("POST comments tests", async () => {
         date: commentDate,
       },
     });
-     const responseBody = JSON.parse(await response.text())
-    //Then 
+      const responseBody = JSON.parse(await response.text())
+       //Then 
     expect(response.status()).toBe(HttpStatusCode.Created);
     expect(responseBody.user_id).toBe(testUsers.regularUser.id);
     expect(responseBody.article_id).toBe(article_id);
