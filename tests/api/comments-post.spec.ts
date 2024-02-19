@@ -67,3 +67,4 @@ test.describe("POST comments tests", async () => {
     expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
 });
+
