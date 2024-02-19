@@ -32,7 +32,7 @@ test.describe('POST articles tests', async () => {
         image: articleImage,
       },
     });
-    const responseBody: { [key: string]: Object } = await response.json();
+    const responseBody: { [key: string]: string } = await response.json();
 
     // Then
     expect.soft(response.status()).toBe(expectedStatusCode);
@@ -41,7 +41,7 @@ test.describe('POST articles tests', async () => {
     expect.soft(responseBody.body).toBe(articleBody);
     expect.soft(responseBody.date).toBe(articleDate);
     expect.soft(responseBody.image).toBe(articleImage);
-    expect.soft(responseBody.id).not.toBeNull();
+    expect.soft(responseBody.id).toBeTruthy();
   });
 
   test('Returns 400 Bad Request after sending malformed JSON', async ({
