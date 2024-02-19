@@ -2,8 +2,7 @@ name: Run Playwright API Auto-Checks on CI
 
 on:
   push:
-    branches: ['main']
-
+    branches: ['main', 'tests/ISSUE*']
 jobs:
   playwright-api-auto-checks:
     runs-on: ubuntu-latest
