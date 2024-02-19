@@ -1,7 +1,7 @@
+import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
-import { test, APIResponse, expect } from '@playwright/test';
-import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { APIResponse, expect, test } from '@playwright/test';
 
 test.describe('POST comments tests', async () => {
   const comments: string = `/api/comments`;
