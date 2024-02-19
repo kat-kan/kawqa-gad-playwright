@@ -8,7 +8,7 @@ test.describe('POST comments tests', async () => {
   const commentBody: string = 'What a wonderful article!';
   const commentDate: string = '2024-06-30T15:44:31Z';
   const article_id: number = 1;
-  let setHeaders: any;
+  let setHeaders: { [key: string]: string };
 
   test.beforeAll(async () => {
     setHeaders = await createHeaders();
@@ -32,7 +32,7 @@ test.describe('POST comments tests', async () => {
     expect(responseBody.article_id).toBe(article_id);
     expect(responseBody.body).toBe(commentBody);
     expect(responseBody.date).toBe(commentDate);
-    expect(responseBody.id).not.toBeNull;
+    expect(responseBody.id).toBeTruthy();
   });
 
   test('Returns 400 - Bad request after sending comment with malformed JSON', async ({
@@ -54,7 +54,7 @@ test.describe('POST comments tests', async () => {
     expect(response.status()).toBe(HttpStatusCode.BadRequest);
   });
 
-  test('Returns 422- Invalid comment supplied after sending comment without body ', async ({
+  test('Returns 422- Invalid comment supplied after sending comment without body', async ({
     request,
   }) => {
     //When

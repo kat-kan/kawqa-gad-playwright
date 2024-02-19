@@ -28,9 +28,8 @@ export async function createToken(userType: string): Promise<string> {
 
 export async function createHeaders(userType: string = 'regular') {
   let requestHeaders: { [key: string]: string };
-  let setTokenInHeaders: string;
 
-  setTokenInHeaders = await createToken(userType);
+  const setTokenInHeaders = await createToken(userType);
 
   (requestHeaders = {
     'Content-Type': 'application/json',
