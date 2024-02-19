@@ -19,7 +19,7 @@ test.describe('POST comments tests', async () => {
     const response: APIResponse = await request.post(comments, {
       headers: setHeaders,
       data: {
-        user_id: testUsers.regularUser.id,
+        user_id: Number(testUsers.regularUser.id),
         article_id: article_id,
         body: commentBody,
         date: commentDate,

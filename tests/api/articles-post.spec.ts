@@ -25,7 +25,7 @@ test.describe('POST articles tests', async () => {
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
-        user_id: testUsers.regularUser.id,
+        user_id: Number(testUsers.regularUser.id),
         title: articleTitle,
         body: articleBody,
         date: articleDate,
