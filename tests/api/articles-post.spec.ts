@@ -1,25 +1,26 @@
-import { testUsers } from "@_src_fixtures_api/auth";
-import { createHeaders } from "@_src_helpers_api/create-token.helper";
-import { test, APIResponse, expect } from "@playwright/test";
+import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { testUsers } from '@_src_fixtures_api/auth';
+import { createHeaders } from '@_src_helpers_api/create-token.helper';
+import { test, APIResponse, expect } from '@playwright/test';
 
-test.describe("POST articles tests", async () => {
+test.describe('POST articles tests', async () => {
   const articles: string = `/api/articles`;
   const articleTitle: string =
-    "Quick Error Handling Guide: What to Do When Coffee Leaks on Your Keyboard";
+    'Quick Error Handling Guide: What to Do When Coffee Leaks on Your Keyboard';
   const articleBody: string =
-    "Ah, the joys of being a programmer - navigating through the intricate world of code with the constant companionship of our trusted caffeinated beverages. But what happens when that comforting cup of coffee turns against us, staging a daring escape onto our precious keyboards? Fear not, for we present to you the Quick Error Handling Guide for such a perilous situation.";
-  const articleDate: string = "2024-06-30T15:44:31Z";
+    'Ah, the joys of being a programmer - navigating through the intricate world of code with the constant companionship of our trusted caffeinated beverages. But what happens when that comforting cup of coffee turns against us, staging a daring escape onto our precious keyboards? Fear not, for we present to you the Quick Error Handling Guide for such a perilous situation.';
+  const articleDate: string = '2024-06-30T15:44:31Z';
   const articleImage: string =
-    "src\\test-data\\images\\Roasted_coffee_beans.jpg";
-  let setHeaders: any;
+    'src\\test-data\\images\\Roasted_coffee_beans.jpg';
+  let setHeaders: { [key: string]: string };
   let expectedStatusCode: number;
 
   test.beforeAll(async () => {
     setHeaders = await createHeaders();
   });
 
-  test.fixme("Returns 201 Created after creating article", async ({ request }) => {
-    expectedStatusCode = 201;
+  test('Returns 201 Created after creating article', async ({ request }) => {
+    expectedStatusCode = HttpStatusCode.Created;
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
@@ -30,7 +31,7 @@ test.describe("POST articles tests", async () => {
         image: articleImage,
       },
     });
-    const responseBody: any = await response.json();
+    const responseBody: { [key: string]: Object } = await response.json();
 
     expect.soft(response.status()).toBe(expectedStatusCode);
     expect.soft(responseBody.user_id).toBe(testUsers.regularUser.id);
@@ -41,10 +42,10 @@ test.describe("POST articles tests", async () => {
     expect.soft(responseBody.id).not.toBeNull;
   });
 
-  test("Returns 400 Bad Request after sending malformed JSON", async ({
+  test('Returns 400 Bad Request after sending malformed JSON', async ({
     request,
   }) => {
-    expectedStatusCode = 400;
+    expectedStatusCode = HttpStatusCode.BadRequest;
     const malformedJson: string = `{
         "user_id": "${testUsers.regularUser.id}",
         "title: ${articleTitle},  // error: missing closing quotation mark
@@ -60,10 +61,10 @@ test.describe("POST articles tests", async () => {
     expect(response.status()).toBe(expectedStatusCode);
   });
 
-  test("Returns 422 Unprocessable content after sending article with missing required information", async ({
+  test('Returns 422 Unprocessable content after sending article with missing required information', async ({
     request,
   }) => {
-    expectedStatusCode = 422;
+    expectedStatusCode = HttpStatusCode.UnprocessableEntity;
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
@@ -77,11 +78,11 @@ test.describe("POST articles tests", async () => {
     expect(response.status()).toBe(expectedStatusCode);
   });
 
-  test.fixme("Returns 422 Unprocessable content after sending article JSON with too long value", async ({
+  test('Returns 422 Unprocessable content after sending article JSON with too long value', async ({
     request,
   }) => {
-    expectedStatusCode = 422;
-    const exceedingLengthTitle: string = "a".repeat(10001);
+    expectedStatusCode = HttpStatusCode.UnprocessableEntity;
+    const exceedingLengthTitle: string = 'a'.repeat(10001);
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
@@ -96,10 +97,10 @@ test.describe("POST articles tests", async () => {
     expect(response.status()).toBe(expectedStatusCode);
   });
 
-  test.fixme("Returns 401 Unauthorized after sending article JSON with missing userId", async ({
+  test('Returns 422 Unprocessable content after sending article JSON with missing userId', async ({
     request,
   }) => {
-    expectedStatusCode = 401;
+    expectedStatusCode = HttpStatusCode.UnprocessableEntity;
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
