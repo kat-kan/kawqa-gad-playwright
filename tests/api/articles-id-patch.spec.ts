@@ -1,13 +1,16 @@
 import { test, APIResponse, expect } from '@playwright/test';
-import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { testUsers } from '@_src_fixtures_api/auth';
+import { createHeaders } from '@_src_helpers_api/create-token.helper';
+import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 
 test.describe('PATCH articles/{id} endpoint tests', async () => {
-  let setHeaders;
-  const articles = `/api/articles`;
-  const newTitle = 'How to start writing effective test cases in Gherkin';
-  const newContent =
+  const articles: string = `/api/articles`;
+  const newTitle: string =
+    'How to start writing effective test cases in Gherkin';
+  const newContent: string =
     'Start with a Feature Description:\nBegin each Gherkin feature file with a high-level description\n of the feature you are testing. This provides context for the scenarios that follow\n Example: \nFeature: User Authentication \nAs a user,\nI want to be able to log in to my account,\nSo that I can access my personalized content.';
+  let setHeaders: { [key: string]: string };
+  let expectedStatusCode: number;
 
   test.beforeAll(async () => {
     setHeaders = await createHeaders();
@@ -17,27 +20,26 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     request,
   }) => {
     // Given
-    const expectedResponseCode = 200;
+    expectedStatusCode = HttpStatusCode.Ok;
 
     // When
-    const response: APIResponse = await request.patch(
-      `${articles}/1`,
-      {
-        headers: setHeaders,
-        data: {
-          user_id: testUsers.regularUser.id,
-          title: newTitle,
-          body: newContent,
-        },
+    const response: APIResponse = await request.patch(`${articles}/1`, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: newTitle,
+        body: newContent,
       },
-    );
+    });
 
     // Then
-    const code = response.status();
-    expect(code).toBe(expectedResponseCode);
+    const code = response.status(expectedStatusCode);
+    expect(code).toBe();
 
+    // When
     const body = await response.json();
-    console.log(body);
+
+    // Then
     expect(body.title).toBe(newTitle);
     expect(body.body).toBe(newContent);
   });
@@ -46,23 +48,20 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     request,
   }) => {
     // Given
-    const expectedResponseCode = 404;
+    expectedStatusCode = HttpStatusCode.NotFound;
 
     // When
-    const response: APIResponse = await request.patch(
-      `${articles}/0`,
-      {
-        headers: setHeaders,
-        data: {
-          user_id: testUsers.regularUser.id,
-          title: newTitle,
-          body: newContent,
-        },
+    const response: APIResponse = await request.patch(`${articles}/0`, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: newTitle,
+        body: newContent,
       },
-    );
+    });
 
     // Then
     const code = response.status();
-    expect(code).toBe(expectedResponseCode);
+    expect(code).toBe(expectedStatusCode);
   });
 });
