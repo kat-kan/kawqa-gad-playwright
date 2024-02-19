@@ -19,7 +19,7 @@ test.describe('POST comments tests', async () => {
     const response: APIResponse = await request.post(comments, {
       headers: setHeaders,
       data: {
-        user_id: Number(testUsers.regularUser.id),
+        user_id: testUsers.regularUser.id,
         article_id: article_id,
         body: commentBody,
         date: commentDate,
@@ -28,7 +28,7 @@ test.describe('POST comments tests', async () => {
     const responseBody = JSON.parse(await response.text());
     //Then
     expect(response.status()).toBe(HttpStatusCode.Created);
-    expect(responseBody.user_id).toEqual(testUsers.regularUser.id);
+    expect(Number(responseBody.user_id)).toEqual(testUsers.regularUser.id);
     expect(responseBody.article_id).toBe(article_id);
     expect(responseBody.body).toBe(commentBody);
     expect(responseBody.date).toBe(commentDate);

@@ -25,14 +25,14 @@ test.describe('POST articles tests', async () => {
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
-        user_id: Number(testUsers.regularUser.id),
+        user_id: testUsers.regularUser.id,
         title: articleTitle,
         body: articleBody,
         date: articleDate,
         image: articleImage,
       },
     });
-    const responseBody: { [key: string]: String } = await response.json();
+    const responseBody = JSON.parse(await response.text());
 
     // Then
     expect.soft(response.status()).toBe(expectedStatusCode);
