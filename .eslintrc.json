@@ -5,6 +5,7 @@
   },
   "extends": [
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:playwright/playwright-test",
     "prettier"
   ],
@@ -13,8 +14,9 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["prettier", "eslint-plugin-playwright", "eslint-plugin-prettier"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
+    "@typescript-eslint/explicit-function-return-type": "error",
     "no-console": "error",
     "prettier/prettier": "warn"
   }
