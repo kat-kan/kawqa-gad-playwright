@@ -1,6 +1,6 @@
-import { request } from '@playwright/test';
-import { testUsers } from '@_src_fixtures_api/auth';
 import { logConsole } from '@_src_api/utils/log-levels';
+import { testUsers } from '@_src_fixtures_api/auth';
+import { request } from '@playwright/test';
 
 export async function createToken(userType: string): Promise<string> {
   let setEmail, setPassword;
