@@ -3,7 +3,7 @@ import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { test, APIResponse, expect } from '@playwright/test';
 
-test.describe('POST articles tests', async () => {
+test.describe('POST articles endpoint tests', async () => {
   const articles: string = `/api/articles`;
   const articleTitle: string =
     'Quick Error Handling Guide: What to Do When Coffee Leaks on Your Keyboard';
