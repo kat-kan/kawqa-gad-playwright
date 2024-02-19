@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
 
