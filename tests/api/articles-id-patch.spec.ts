@@ -2,7 +2,6 @@ import { test, APIResponse, expect } from '@playwright/test';
 import { createHeaders, createInvalidHeaders } from '@_src_helpers_api/create-token.helper';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
-import { Http } from 'winston/lib/winston/transports';
 
 test.describe('PATCH articles/{id} endpoint tests', async () => {
   const articles: string = `/api/articles`;

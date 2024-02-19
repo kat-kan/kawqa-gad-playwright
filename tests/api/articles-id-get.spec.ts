@@ -1,9 +1,9 @@
 import { test, expect, APIResponse } from "@playwright/test";
 
-test.describe("GET/articles/{id} Get by ID", () => {
+test.describe("GET articles/{id} endpoint tests", () => {
   const articles: string = `/api/articles`;
 
-  test.fixme("returns OK status code and correct article data", async ({ request }) => {
+  test("Returns OK status code and correct article data", async ({ request }) => {
     const statusCode = 200;
     const articleID = 3;
     const articleUserID = 3;
@@ -31,7 +31,7 @@ test.describe("GET/articles/{id} Get by ID", () => {
     expect(responseBody).toEqual(expectedData);
   });
 
-  test("returns Not Found 404 status code with specific response body", async ({ request }) => {
+  test("Returns Not Found 404 status code when article ID does not exist", async ({ request }) => {
     const statusCode = 404;
 
     const response: APIResponse = await request.get(`${articles}/-1`);
