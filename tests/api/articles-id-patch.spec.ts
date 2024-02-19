@@ -1,6 +1,8 @@
 import { test, APIResponse, expect } from '@playwright/test';
 import { createHeaders, createInvalidHeaders } from '@_src_helpers_api/create-token.helper';
 import { testUsers } from '@_src_fixtures_api/auth';
+import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { Http } from 'winston/lib/winston/transports';
 
 test.describe('PATCH articles/{id} endpoint tests', async () => {
   const articles: string = `/api/articles`;
@@ -20,7 +22,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
   The request ALWAYS returns 200 OK only with admin credentials */
   test("Returns 200 OK status code when updating article", async ({ request }) => {
     // Given
-    const expectedResponseCode = 200;
+    const expectedResponseCode = HttpStatusCode.Ok;
     // you have to uncomment the below line:
     // await request.get(`/api/restoreDB`);
 
@@ -50,7 +52,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     request,
   }) => {
     // Given
-    const expectedResponseCode = 404;
+    const expectedResponseCode = HttpStatusCode.NotFound;
 
     // When
     const response: APIResponse = await request.patch(
@@ -72,7 +74,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
 
   test("Returns 401 Unauthorized status code when trying to update existing article with random text as token", async ({ request }) => {
     // Given
-    const expectedResponseCode = 401;
+    const expectedResponseCode = HttpStatusCode.Unauthorized;
     const expectedErrorMessage = 'Access token not provided!';
 
     // When
@@ -95,7 +97,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
 
   test("Returns 401 Unauthorized status code when trying to update article added by different user", async ({ request }) => {
     // Given
-    const expectedResponseCode = 401;
+    const expectedResponseCode = HttpStatusCode.Unauthorized;
     const expectedErrorMessage = 'Access token for given user is invalid!';
     // When
     const response: APIResponse = await request.patch(`/api/articles/2`, {
@@ -122,7 +124,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
         "title: ${newTitle},
         "body": "${newContent}" 
       }`;
-    const expectedResponseCode = 400;
+    const expectedResponseCode = HttpStatusCode.BadRequest;
 
     // When
     const response: APIResponse = await request.patch(`/api/articles/1`, {
@@ -140,7 +142,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
   */
   test("Returns 422 Unprocessable Entity status code when trying to update existing article with title that exceeds length limit", async ({ request }) => {
     // Given
-    const expectedResponseCode = 422;
+    const expectedResponseCode = HttpStatusCode.UnprocessableEntity;
     const expectedErrorMessage = 'One of field is invalid (empty, invalid or too long) or there are some additional fields: Field validation: \"title\" longer than \"10000\"';
     // you have to uncomment the below line:
     // await request.get(`/api/restoreDB`);
@@ -167,7 +169,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
  */
   test("Returns 200 OK status code when updating as admin existing article with title that normally exceeds length limit", async ({ request }) => {
     // Given
-    const expectedResponseCode = 200;
+    const expectedResponseCode = HttpStatusCode.Ok;
     // you have to uncomment the below line:
     // await request.get(`/api/restoreDB`);
 
