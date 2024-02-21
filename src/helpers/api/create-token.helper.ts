@@ -1,6 +1,6 @@
-import { request } from '@playwright/test';
-import { testUsers } from '@_src_fixtures_api/auth';
 import { logConsole } from '@_src_api/utils/log-levels';
+import { testUsers } from '@_src_fixtures_api/auth';
+import { request } from '@playwright/test';
 
 export async function createToken(userType: string): Promise<string> {
   let setEmail, setPassword;
@@ -26,27 +26,27 @@ export async function createToken(userType: string): Promise<string> {
   return accessToken;
 }
 
-export async function createHeaders(userType: string = 'regular') {
-  let requestHeaders: { [key: string]: string; };
-  let setTokenInHeaders: string;
-
-  setTokenInHeaders = await createToken(userType);
-
-  requestHeaders = {
+export async function createHeaders(
+  userType: string = 'regular',
+): Promise<{ [key: string]: string }> {
+  const setTokenInHeaders = await createToken(userType);
+  const requestHeaders = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${setTokenInHeaders}`,
-  },
-    logConsole(
-      `Request Headers for ${userType} user are the following: \n ${JSON.stringify(
-        requestHeaders,
-        null,
-        2,
-      )} \n ----`,
-    );
+  };
+  logConsole(
+    `Request Headers for ${userType} user are the following: \n ${JSON.stringify(
+      requestHeaders,
+      null,
+      2,
+    )} \n ----`,
+  );
   return requestHeaders;
 }
 
-export async function createInvalidHeaders() {
+export async function createInvalidHeaders(): Promise<{
+  [key: string]: string;
+}> {
   const requestHeaders = {
     Authorization: `Bearer 'withInvalidAccessToken'`,
   };

@@ -16,6 +16,7 @@
   },
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
+    "@typescript-eslint/explicit-function-return-type": "error",
     "no-console": "error",
     "prettier/prettier": "warn"
   }

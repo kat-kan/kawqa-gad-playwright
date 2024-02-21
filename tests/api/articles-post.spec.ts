@@ -1,7 +1,7 @@
-import { test, APIResponse, expect } from '@playwright/test';
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
+import { APIResponse, expect, test } from '@playwright/test';
 
 test.describe('POST articles tests', async () => {
   const articles: string = `/api/articles`;
@@ -32,16 +32,16 @@ test.describe('POST articles tests', async () => {
         image: articleImage,
       },
     });
-    const responseBody: { [key: string]: Object } = await response.json();
+    const responseBody = JSON.parse(await response.text());
 
     // Then
     expect.soft(response.status()).toBe(expectedStatusCode);
-    expect.soft(responseBody.user_id).toBe(testUsers.regularUser.id);
+    expect.soft(responseBody.user_id.toString()).toEqual((testUsers.regularUser.id).toString());
     expect.soft(responseBody.title).toBe(articleTitle);
     expect.soft(responseBody.body).toBe(articleBody);
     expect.soft(responseBody.date).toBe(articleDate);
     expect.soft(responseBody.image).toBe(articleImage);
-    expect.soft(responseBody.id).not.toBeNull();
+    expect.soft(responseBody.id).toBeTruthy();
   });
 
   test('Returns 400 Bad Request after sending malformed JSON', async ({

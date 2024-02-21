@@ -1,4 +1,4 @@
-import { test, APIResponse, expect } from '@playwright/test';
+import { APIResponse, expect, test } from '@playwright/test';
 
 test.describe('GET/articles endpoint tests', async () => {
   const baseUrl: string = process.env.BASE_URL;

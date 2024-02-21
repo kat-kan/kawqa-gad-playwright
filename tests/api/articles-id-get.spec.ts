@@ -1,5 +1,5 @@
-import { test, expect, APIResponse } from '@playwright/test';
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { APIResponse, expect, test } from '@playwright/test';
 
 test.describe('GET/articles/{id} Get by ID', () => {
   const articles: string = `/api/articles`;
