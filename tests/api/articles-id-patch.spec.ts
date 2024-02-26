@@ -16,14 +16,9 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     setInvalidHeaders = await createInvalidHeaders();
   });
 
-  /* Importante! 
-  Request to /api/restoreDB has to be sent to restore DB to the default one
-  The request ALWAYS returns 200 OK only with admin credentials */
   test("Returns 200 OK status code when updating article", async ({ request }) => {
     // Given
     const expectedResponseCode = HttpStatusCode.Ok;
-    // you have to uncomment the below line:
-    // await request.get(`/api/restoreDB`);
 
     // When
     const response: APIResponse = await request.patch(
@@ -136,15 +131,10 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     expect(code).toBe(expectedResponseCode);
   });
 
-  /* Importante! 
-  Request to /api/restoreDB has to be sent to restore DB to the default one
-  */
   test("Returns 422 Unprocessable Entity status code when trying to update existing article with title that exceeds length limit", async ({ request }) => {
     // Given
     const expectedResponseCode = HttpStatusCode.UnprocessableEntity;
     const expectedErrorMessage = 'One of field is invalid (empty, invalid or too long) or there are some additional fields: Field validation: \"title\" longer than \"10000\"';
-    // you have to uncomment the below line:
-    // await request.get(`/api/restoreDB`);
 
     // When 
     const response: APIResponse = await request.patch(`/api/articles/1`, {
@@ -163,14 +153,9 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
-  /* Importante! 
-  Request to /api/restoreDB has to be sent to restore DB to the default one
- */
   test("Returns 200 OK status code when updating as admin existing article with title that normally exceeds length limit", async ({ request }) => {
     // Given
     const expectedResponseCode = HttpStatusCode.Ok;
-    // you have to uncomment the below line:
-    // await request.get(`/api/restoreDB`);
 
     // When 
     const response: APIResponse = await request.patch(`/api/articles/1`, {
