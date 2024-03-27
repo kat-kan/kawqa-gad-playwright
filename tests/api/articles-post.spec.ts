@@ -124,6 +124,30 @@ test.describe('POST articles tests', async () => {
     });
 
     // Then
-    expect(response.status()).toBe(expectedStatusCode);
+    expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
+  });
+
+  test('Returns 422 Unprocessable content after sending article JSON with date from the future', async ({
+    request,
+  }) => {
+    //Given
+    const date: Date = new Date();
+    date.setFullYear(date.getFullYear() + 1);
+    const futureDateFormatted: string = date.toISOString();
+
+    // When
+    const response: APIResponse = await request.post(articles, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: articleTitle,
+        body: articleBody,
+        date: futureDateFormatted,
+        image: articleImage,
+      },
+    });
+
+    // Then
+    expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
 });
