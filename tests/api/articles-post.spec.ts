@@ -13,7 +13,6 @@ test.describe('POST articles tests', async () => {
   const articleImage: string =
     'src\\test-data\\images\\Roasted_coffee_beans.jpg';
   let setHeaders: { [key: string]: string };
-  let expectedStatusCode: number;
 
   test.beforeAll(async () => {
     setHeaders = await createHeaders();
@@ -21,7 +20,6 @@ test.describe('POST articles tests', async () => {
 
   test('Returns 201 Created after creating article', async ({ request }) => {
     // When
-    expectedStatusCode = HttpStatusCode.Created;
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
@@ -35,7 +33,7 @@ test.describe('POST articles tests', async () => {
     const responseBody = JSON.parse(await response.text());
 
     // Then
-    expect.soft(response.status()).toBe(expectedStatusCode);
+    expect.soft(response.status()).toBe(HttpStatusCode.Created);
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
@@ -50,7 +48,6 @@ test.describe('POST articles tests', async () => {
     request,
   }) => {
     // Given
-    expectedStatusCode = HttpStatusCode.BadRequest;
     const malformedJson: string = `{
         "user_id": "${testUsers.regularUser.id}",
         "title: ${articleTitle},  // error: missing closing quotation mark
@@ -65,14 +62,13 @@ test.describe('POST articles tests', async () => {
       data: malformedJson,
     });
     // Then
-    expect(response.status()).toBe(expectedStatusCode);
+    expect(response.status()).toBe(HttpStatusCode.BadRequest);
   });
 
   test('Returns 422 Unprocessable content after sending article with missing required information', async ({
     request,
   }) => {
     // When
-    expectedStatusCode = HttpStatusCode.UnprocessableEntity;
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
@@ -84,14 +80,13 @@ test.describe('POST articles tests', async () => {
     });
 
     // Then
-    expect(response.status()).toBe(expectedStatusCode);
+    expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
 
   test('Returns 422 Unprocessable content after sending article JSON with too long value', async ({
     request,
   }) => {
     // Given
-    expectedStatusCode = HttpStatusCode.UnprocessableEntity;
     const exceedingLengthTitle: string = 'a'.repeat(10001);
 
     // When
@@ -107,14 +102,13 @@ test.describe('POST articles tests', async () => {
     });
 
     // Then
-    expect(response.status()).toBe(expectedStatusCode);
+    expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
 
   test('Returns 422 Unprocessable content after sending article JSON with missing userId', async ({
     request,
   }) => {
     // When
-    expectedStatusCode = HttpStatusCode.UnprocessableEntity;
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
