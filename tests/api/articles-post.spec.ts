@@ -9,7 +9,7 @@ test.describe('POST articles tests', async () => {
     'Quick Error Handling Guide: What to Do When Coffee Leaks on Your Keyboard';
   const articleBody: string =
     'Ah, the joys of being a programmer - navigating through the intricate world of code with the constant companionship of our trusted caffeinated beverages. But what happens when that comforting cup of coffee turns against us, staging a daring escape onto our precious keyboards? Fear not, for we present to you the Quick Error Handling Guide for such a perilous situation.';
-  const articleDate: string = '2024-06-30T15:44:31Z';
+  const articleDate: string = '2024-03-26T15:44:31Z';
   const articleImage: string =
     'src\\test-data\\images\\Roasted_coffee_beans.jpg';
   let setHeaders: { [key: string]: string };
@@ -36,7 +36,9 @@ test.describe('POST articles tests', async () => {
 
     // Then
     expect.soft(response.status()).toBe(expectedStatusCode);
-    expect.soft(responseBody.user_id.toString()).toEqual((testUsers.regularUser.id).toString());
+    expect
+      .soft(responseBody.user_id.toString())
+      .toEqual(testUsers.regularUser.id.toString());
     expect.soft(responseBody.title).toBe(articleTitle);
     expect.soft(responseBody.body).toBe(articleBody);
     expect.soft(responseBody.date).toBe(articleDate);
