@@ -29,6 +29,8 @@ All the information can be found in GAD's [README](https://github.com/jaktestowa
 4. if you use localhost version of the GAD application, `BASE_URL` variable in `.env` file should stay intact, otherwise it should be changed to a proper one
 5. add user email and user password to the `.env` file
 
+Notes: Option `--with-deps chromium` allows to install Playwright for use with Chromium-based browser only. We've decided to narrow the pool of browsers to Chromium in the initial period of working on the code.
+
 ### Pull Request rules
 
 1. All contributions are welcome, but please: a. Join the group first b. DO NOT create Pull Requests without an issue
