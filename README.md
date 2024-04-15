@@ -9,9 +9,9 @@
   </br>→ [Playwright Test for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
   </br>→ [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for uniform formatting of the code
   </br>→ [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
-  </br>→ [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons) - repository of all icons used in Visual Studio Code (for VS Code customization)
   </br>→ [GitLens - Git supercharged](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) adding set of useful features supporting code versioning
   </br>→ [Thunder Client](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client) for making quick API requests within VS Code
+    </br>→ [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons) - repository of all icons used in Visual Studio Code (for VS Code customization)
 - GIT for your OS installed → https://git-scm.com/downloads
 - Node.js installed → https://nodejs.org/en/download
 - GAD application is running locally → follow README instructions
