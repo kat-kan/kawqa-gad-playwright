@@ -27,7 +27,11 @@ All the information can be found in GAD's [README](https://github.com/jaktestowa
    `npx playwright install --with-deps chromium`
 3. copy `.env-template` file and change its name to `.env`
 4. if you use localhost version of the GAD application, `BASE_URL` variable in `.env` file should stay intact, otherwise it should be changed to a proper one
-5. add user email and user password to the `.env` file
+5. add user email and user password to the `.env` file; to obtain the email and password:  
+    1. Go to the GAD installation folder
+    2. Open folder `db`
+    3. Open file `db.json`
+    4. Use the data of user with `id` = 1
 
 Notes: Option `--with-deps chromium` allows to install Playwright for use with Chromium-based browser only. We've decided to narrow the pool of browsers to Chromium in the initial period of working on the code.
 
