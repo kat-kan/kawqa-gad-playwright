@@ -28,7 +28,9 @@ test.describe('POST comments tests', async () => {
     const responseBody = JSON.parse(await response.text());
     //Then
     expect(response.status()).toBe(HttpStatusCode.Created);
-    expect(responseBody.user_id.toString()).toBe(testUsers.regularUser.id.toString());
+    expect(responseBody.user_id.toString()).toBe(
+      testUsers.regularUser.id.toString(),
+    );
     expect(responseBody.article_id).toEqual(article_id);
     expect(responseBody.body).toBe(commentBody);
     expect(responseBody.date).toBe(commentDate);
