@@ -8,10 +8,10 @@ import { APIResponse, expect, request, test } from '@playwright/test';
 
 test.describe('PATCH comments/{id} endpoint tests', async () => {
   const comments: string = `/api/comments`;
-  let setHeadersForRegularUser;
-  let setInvalidHeaders;
-  let setNewCommentId;
-  const newComment = 'I changed my mind';
+  let setHeadersForRegularUser: { [key: string]: string };
+  let setInvalidHeaders: { [key: string]: string };
+  let setNewCommentId: number;
+  const newComment: string = 'I changed my mind';
 
   test.beforeAll(async () => {
     setHeadersForRegularUser = await createHeaders('regular');
