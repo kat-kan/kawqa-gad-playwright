@@ -10,12 +10,12 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
   const comments: string = `/api/comments`;
   let setHeadersForRegularUser: { [key: string]: string };
   let setInvalidHeaders: { [key: string]: string };
-  let setNewCommentId: number;
+  let newCommentId: number;
   const newComment: string = 'I changed my mind';
 
   test.beforeAll(async () => {
-    setHeadersForRegularUser = await createHeaders('regular');
-    setNewCommentId = await createNewComment(setHeadersForRegularUser, 1);
+    setHeadersForRegularUser = await createHeaders();
+    newCommentId = await createNewComment(setHeadersForRegularUser, 1);
     setInvalidHeaders = await createInvalidHeaders();
   });
 
@@ -24,7 +24,7 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
   }) => {
     // When
     const response: APIResponse = await request.patch(
-      `${comments}/${setNewCommentId}`,
+      `${comments}/${newCommentId}`,
       {
         headers: setHeadersForRegularUser,
         data: {
@@ -34,13 +34,13 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
         },
       },
     );
+    const body = await response.json();
     // Then
     expect(response.status()).toBe(HttpStatusCode.Ok);
-    const body = await response.json();
     expect(body.body).toBe(newComment);
   });
 
-  test('Returns 404 NotFound status code when trying to update a non-existing comment', async ({
+  test('Returns 404 Not Found status code when trying to update a non-existing comment', async ({
     request,
   }) => {
     // When
@@ -63,9 +63,9 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
     const expectedErrorMessage = 'Access token not provided!';
     // When
     const response: APIResponse = await request.patch(
-      `${comments}/${setNewCommentId}`,
+      `${comments}/${newCommentId}`,
       {
-        headers: createInvalidHeaders,
+        headers: setInvalidHeaders,
         data: {
           article_id: 1,
           user_id: testUsers.regularUser.id,
@@ -73,9 +73,9 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
         },
       },
     );
+    const body = await response.json();
     // Then
     expect(response.status()).toBe(HttpStatusCode.Unauthorized);
-    const body = await response.json();
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
@@ -93,9 +93,9 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
         body: newComment,
       },
     });
+    const body = await response.json();
     // Then
     expect(response.status()).toBe(HttpStatusCode.Unauthorized);
-    const body = await response.json();
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
@@ -104,13 +104,13 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
   }) => {
     // Given
     const malformedJson: string = `{
-      "article_id": 1,
+        "article_id": 1,
         "user_id": "a",
         "body": ${newComment} 
       }`;
     // When
     const response: APIResponse = await request.patch(
-      `${comments}/${setNewCommentId}`,
+      `${comments}/${newCommentId}`,
       {
         headers: setHeadersForRegularUser,
         data: malformedJson,
@@ -125,23 +125,23 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
   }) => {
     // Given
     const expectedErrorMessage =
-      'One of field is invalid (empty, invalid or too long) or there are some additional fields: Field validation: \"date\" has invalid format!';
+      'One of field is invalid (empty, invalid or too long) or there are some additional fields: Field validation: "date" has invalid format!';
     // When
     const response: APIResponse = await request.patch(
-      `${comments}/${setNewCommentId}`,
+      `${comments}/${newCommentId}`,
       {
         headers: setHeadersForRegularUser,
         data: {
           article_id: 1,
           user_id: testUsers.regularUser.id,
-          body: `${newComment}`,
+          body: newComment,
           date: '20424-04-20T11:24:52.370Z',
         },
       },
     );
+    const body = await response.json();
     // Then
     expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
-    const body = await response.json();
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 });
