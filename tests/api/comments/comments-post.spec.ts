@@ -2,11 +2,12 @@ import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, test } from '@playwright/test';
+import { customDate } from 'test-data/dates.data';
 
 test.describe('POST comments tests', async () => {
   const comments: string = `/api/comments`;
   const commentBody: string = 'What a wonderful article!';
-  const commentDate: string = '2024-06-30T15:44:31Z';
+  const commentDate: string = customDate.pastDate;
   const article_id: number = 1;
   let setHeaders: { [key: string]: string };
 
