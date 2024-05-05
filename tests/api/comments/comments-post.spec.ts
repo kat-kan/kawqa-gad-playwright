@@ -72,4 +72,25 @@ test.describe('POST comments tests', async () => {
     //Then
     expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
+
+  test('Returns 422 - Date field is invalid! after posting a comment with future date', async ({
+    request,
+  }) => {
+    //When
+    const response: APIResponse = await request.post(comments, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        article_id: article_id,
+        body: commentBody,
+        date: customDate.futureDate,
+      },
+    });
+    const responseBody = JSON.parse(await response.text());
+    //Then
+    expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
+    expect(responseBody.error.message.toString()).toContain(
+      'Date field is invalid',
+    );
+  });
 });
