@@ -2,6 +2,7 @@ import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, request, test } from '@playwright/test';
+import { customDate } from 'test-data/dates.data';
 
 test.describe('PATCH comments/{id} endpoint tests', async () => {
   const comments: string = `/api/comments`;
@@ -40,6 +41,7 @@ async function createNewComment(
   setHeadersForRegularUser,
   article_id,
 ): Promise<number> {
+  const commentDate: string = customDate.pastDate;
   const newCommentRequest = await request.newContext();
   const response: APIResponse = await newCommentRequest.post('/api/comments', {
     headers: setHeadersForRegularUser,
@@ -47,7 +49,7 @@ async function createNewComment(
       user_id: testUsers.regularUser.id,
       article_id: article_id,
       body: 'test',
-      date: '2024-06-30T15:44:31Z',
+      date: commentDate,
     },
   });
   const responseBody = JSON.parse(await response.text());
