@@ -32,7 +32,7 @@ test.describe('GET article labels tests', async () => {
 
     // Then
     expect.soft(response.status()).toBe(HttpStatusCode.Ok);
-    expect.soft(body.id).toBeTruthy();
+    expect.soft(typeof body.id === 'number').toBe(true);
     expect.soft(body.label_ids).toContain(1);
     expect.soft(body.article_id).toBe(existingArticleId);
   });

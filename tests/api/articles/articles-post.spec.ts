@@ -41,7 +41,7 @@ test.describe('POST articles tests', async () => {
     expect.soft(responseBody.body).toBe(articleBody);
     expect.soft(responseBody.date).toBe(articleDate);
     expect.soft(responseBody.image).toBe(articleImage);
-    expect.soft(responseBody.id).toBeTruthy();
+    expect.soft(typeof responseBody.id === 'number').toBe(true);
   });
 
   test('Returns 400 Bad Request after sending malformed JSON', async ({
