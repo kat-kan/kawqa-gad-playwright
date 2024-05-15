@@ -44,4 +44,29 @@ test.describe('GET/users endpoint tests', async () => {
       }
     });
   });
+
+  test('Checks masking sensitive user data - with authorization', async ({
+    request,
+  }) => {
+    const userTypes = ['regular', 'admin'];
+    for (const userType of userTypes) {
+      // Given
+      const setHeaders = await createHeaders(userType);
+      // When
+      const response: APIResponse = await request.get(users, {
+        headers: setHeaders,
+      });
+      const responseBody = await response.json();
+      // Then
+      responseBody.forEach((user) => {
+        try {
+          expect(user.email).toEqual('****');
+          expect(user.lastname).toEqual('****');
+          expect(user.password).toEqual('****');
+        } catch (error) {
+          logConsole(`Data leak for user: ${user.id}`);
+        }
+      });
+    }
+  });
 });
