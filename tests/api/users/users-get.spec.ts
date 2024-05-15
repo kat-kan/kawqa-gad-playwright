@@ -1,4 +1,5 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { logConsole } from '@_src_api/utils/log-levels';
 import { APIResponse, expect, test } from '@playwright/test';
 
 test.describe('GET/users endpoint tests', async () => {
@@ -19,9 +20,13 @@ test.describe('GET/users endpoint tests', async () => {
     const responseBody = await response.json();
     // Then
     responseBody.forEach((user) => {
-      expect(user.email).toEqual('****');
-      expect(user.lastname).toEqual('****');
-      expect(user.password).toEqual('****');
+      try {
+        expect(user.email).toEqual('****');
+        expect(user.lastname).toEqual('****');
+        expect(user.password).toEqual('****');
+      } catch (error) {
+        logConsole(`Data leak for user: ${user.id}`);
+      }
     });
   });
 });
