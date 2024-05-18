@@ -34,7 +34,7 @@ test.describe('POST comments tests', async () => {
     expect(responseBody.article_id).toEqual(article_id);
     expect(responseBody.body).toBe(commentBody);
     expect(responseBody.date).toBe(commentDate);
-    expect(responseBody.id).toBeTruthy();
+    expect(typeof responseBody.id === 'number').toBe(true);
   });
 
   test('Returns 400 - Bad request after sending comment with malformed JSON', async ({
