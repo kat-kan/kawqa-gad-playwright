@@ -6,6 +6,7 @@ import { APIResponse, expect, test } from '@playwright/test';
 test.describe('GET/users endpoint tests', async () => {
   const users: string = '/api/users';
   const maskedData: string = '****';
+  const userTypes = ['regular', 'admin'];
 
   test('Returns 200 OK - without authorization', async ({ request }) => {
     // When
@@ -31,8 +32,6 @@ test.describe('GET/users endpoint tests', async () => {
       }
     });
   });
-
-  const userTypes = ['regular', 'admin'];
 
   for (const userType of userTypes) {
     test(`Returns 200 OK - with ${userType} user authorization`, async ({
