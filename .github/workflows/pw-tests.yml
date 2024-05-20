@@ -29,6 +29,7 @@ jobs:
           BASE_URL: ${{ secrets.BASE_URL }}
           USER_EMAIL: ${{ secrets.USER_EMAIL }}
           USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+          USER_ID: ${{ secrets.USER_ID }}
       - name: Archive tests results
         if: success() || failure()
         uses: actions/upload-artifact@v3
