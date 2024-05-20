@@ -20,9 +20,6 @@ jobs:
         run: npm ci
       - name: Install Playwright Chromium Browser
         run: npx playwright install --with-deps chromium
-      - name: Create .env file
-        run: |
-          echo "USER_ID=1" >> .env
       - name: Run API checks
         run: npx playwright test
         env:
@@ -38,6 +35,3 @@ jobs:
           path: |
             ./playwright-report/**/*.*
             ./test-results/**/*.*
-      - name: Delete .env
-        run: |
-          rm -f .env
