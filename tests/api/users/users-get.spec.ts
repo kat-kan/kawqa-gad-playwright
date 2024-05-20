@@ -4,9 +4,9 @@ import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, test } from '@playwright/test';
 
 test.describe('GET/users endpoint tests', async () => {
-  const users: string = '/api/users';
   const maskedData: string = '****';
-  const userTypes = ['regular', 'admin'];
+  const users: string = '/api/users';
+  const userTypes: string[] = ['regular', 'admin'];
 
   test('Returns 200 OK - without authorization', async ({ request }) => {
     // When
