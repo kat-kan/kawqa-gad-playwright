@@ -14,20 +14,6 @@ test.describe('GET/users endpoint tests', async () => {
     expect(response.status()).toBe(HttpStatusCode.Ok);
   });
 
-  test('Returns 200 OK - with authorization', async ({ request }) => {
-    const userTypes = ['regular', 'admin'];
-    for (const userType of userTypes) {
-      // Given
-      const setHeaders = await createHeaders(userType);
-      // When
-      const response: APIResponse = await request.get(users, {
-        headers: setHeaders,
-      });
-      // Then
-      expect(response.status()).toBe(HttpStatusCode.Ok);
-    }
-  });
-
   test('Checks masking sensitive user data - without authorization', async ({
     request,
   }) => {
@@ -46,11 +32,25 @@ test.describe('GET/users endpoint tests', async () => {
     });
   });
 
-  test('Checks masking sensitive user data - with authorization', async ({
-    request,
-  }) => {
-    const userTypes = ['regular', 'admin'];
-    for (const userType of userTypes) {
+  const userTypes = ['regular', 'admin'];
+
+  for (const userType of userTypes) {
+    test(`Returns 200 OK - with ${userType} user authorization`, async ({
+      request,
+    }) => {
+      // Given
+      const setHeaders = await createHeaders(userType);
+      // When
+      const response: APIResponse = await request.get(users, {
+        headers: setHeaders,
+      });
+      // Then
+      expect(response.status()).toBe(HttpStatusCode.Ok);
+    });
+
+    test(`Checks masking sensitive user data - with ${userType} user authorization`, async ({
+      request,
+    }) => {
       // Given
       const setHeaders = await createHeaders(userType);
       // When
@@ -68,6 +68,6 @@ test.describe('GET/users endpoint tests', async () => {
           logConsole(`Data leak for user: ${user.id}`);
         }
       });
-    }
-  });
+    });
+  }
 });
