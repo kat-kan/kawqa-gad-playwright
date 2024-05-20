@@ -2,7 +2,7 @@ import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, request, test } from '@playwright/test';
-import { customDate } from 'test-data/dates.data';
+import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('PATCH comments/{id} endpoint tests', async () => {
   const comments: string = `/api/comments`;
