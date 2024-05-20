@@ -5,6 +5,7 @@ import { APIResponse, expect, test } from '@playwright/test';
 
 test.describe('GET/users endpoint tests', async () => {
   const users: string = '/api/users';
+  const maskedData: string = '****';
 
   test('Returns 200 OK - without authorization', async ({ request }) => {
     // When
@@ -36,9 +37,9 @@ test.describe('GET/users endpoint tests', async () => {
     // Then
     responseBody.forEach((user) => {
       try {
-        expect(user.email).toEqual('****');
-        expect(user.lastname).toEqual('****');
-        expect(user.password).toEqual('****');
+        expect(user.email).toEqual(maskedData);
+        expect(user.lastname).toEqual(maskedData);
+        expect(user.password).toEqual(maskedData);
       } catch (error) {
         logConsole(`Data leak for user: ${user.id}`);
       }
@@ -60,9 +61,9 @@ test.describe('GET/users endpoint tests', async () => {
       // Then
       responseBody.forEach((user) => {
         try {
-          expect(user.email).toEqual('****');
-          expect(user.lastname).toEqual('****');
-          expect(user.password).toEqual('****');
+          expect(user.email).toEqual(maskedData);
+          expect(user.lastname).toEqual(maskedData);
+          expect(user.password).toEqual(maskedData);
         } catch (error) {
           logConsole(`Data leak for user: ${user.id}`);
         }
