@@ -15,7 +15,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
   const newTitle = 'How to start writing effective test cases in Gherkin';
   const newContent =
     'Start with a Feature Description:\nBegin each Gherkin feature file with a high-level description\n of the feature you are testing. This provides context for the scenarios that follow\n Example: \nFeature: User Authentication \nAs a user,\nI want to be able to log in to my account,\nSo that I can access my personalized content.';
-  let newTitleExceedingLengthLimit = 'test'.repeat(10001);
+  const newTitleExceedingLengthLimit = 'test'.repeat(10001);
 
   test.beforeAll(async () => {
     setHeaders = await createHeaders();
