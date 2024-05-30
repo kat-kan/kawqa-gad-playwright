@@ -1,4 +1,5 @@
 import * as winston from 'winston';
+
 const { format, createLogger, transports, addColors } = winston;
 const { printf, combine, colorize, timestamp, label, errors } = format;
 
@@ -6,7 +7,7 @@ const logFormat = printf(({ level, label, message, timestamp }) => {
   return `${timestamp} ${label} ${level}: ${message}`;
 });
 
-let loggerFormat = combine(
+const loggerFormat = combine(
   colorize({ all: true }),
   timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
   label({ label: '[LOGGER]' }),
@@ -22,11 +23,11 @@ addColors({
 });
 
 const logger = createLogger({
-  level: "info",
+  level: 'info',
   transports: [
     new transports.Console({
-      format: combine(colorize(), loggerFormat)
-    })
+      format: combine(colorize(), loggerFormat),
+    }),
   ],
 });
 

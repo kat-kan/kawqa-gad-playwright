@@ -1,3 +1,5 @@
+import baseURL from '../playwright.config';
+import { logConsole } from '@_src_api/utils/log-levels';
 import * as dotenv from 'dotenv';
 
 async function globalSetup(): Promise<void> {

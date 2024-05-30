@@ -1,0 +1,37 @@
+name: Playwright API Auto-Checks
+on:
+  push:
+    branches: ['main', 'tests/ISSUE*']
+  pull_request:
+    branches: ['main', 'tests/ISSUE*']
+jobs:
+  playwright-api-auto-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Run GAD in Docker Image
+        run: docker run -p 3000:3000 -d jaktestowac/gad
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Chromium Browser
+        run: npx playwright install --with-deps chromium
+      - name: Run API checks
+        run: npx playwright test
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          USER_EMAIL: ${{ secrets.USER_EMAIL }}
+          USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+          USER_ID: ${{ secrets.USER_ID }}
+      - name: Archive tests results
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: |
+            ./playwright-report/**/*.*
+            ./test-results/**/*.*
