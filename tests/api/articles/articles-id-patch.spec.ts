@@ -30,15 +30,15 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     // When
     const response: APIResponse = await request.patch(`${articles}/1`, {
       headers: setHeaders,
-        data: {
-          "user_id": testUsers.regularUser.id,
-          "title": newTitle,
-          "body": newContent
-        },
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: newTitle,
+        body: newContent,
+      },
     });
     const code = response.status();
     const body = await response.json();
-    
+
     // Then
     expect(code).toBe(HttpStatusCode.Ok);
     expect(body.title).toBe(newTitle);
@@ -52,9 +52,9 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     const response: APIResponse = await request.patch(`${articles}/0`, {
       headers: setHeaders,
       data: {
-        "user_id": testUsers.regularUser.id,
-        "title": newTitle,
-        "body": newContent
+        user_id: testUsers.regularUser.id,
+        title: newTitle,
+        body: newContent,
       },
     });
     const code = response.status();
@@ -62,7 +62,6 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     // Then
     expect(code).toBe(HttpStatusCode.NotFound);
   });
-});
 
   test('Returns 401 Unauthorized status code when trying to update existing article with random text as token', async ({
     request,
@@ -98,10 +97,10 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     const response: APIResponse = await request.patch(`/api/articles/2`, {
       headers: setHeadersForRegularUser,
       data: {
-        "user_id": testUsers.regularUser.id,
-        "title": newTitle,
-        "body": newContent
-      }
+        user_id: testUsers.regularUser.id,
+        title: newTitle,
+        body: newContent,
+      },
     });
 
     // Then
@@ -146,9 +145,9 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     const response: APIResponse = await request.patch(`/api/articles/1`, {
       headers: setHeadersForRegularUser,
       data: {
-        "user_id": testUsers.regularUser.id,
-        "title": `${newTitleExceedingLengthLimit}`
-      }
+        user_id: testUsers.regularUser.id,
+        title: `${newTitleExceedingLengthLimit}`,
+      },
     });
 
     // Then
@@ -169,8 +168,8 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     const response: APIResponse = await request.patch(`/api/articles/1`, {
       headers: setHeadersForAdmin,
       data: {
-        "title": `${newTitleExceedingLengthLimit}`
-      }
+        title: `${newTitleExceedingLengthLimit}`,
+      },
     });
 
     // Then
