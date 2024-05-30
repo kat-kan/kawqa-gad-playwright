@@ -13,7 +13,7 @@ test.describe('POST articles endpoint tests', async () => {
   const articleImage: string =
     'src\\test-data\\images\\Roasted_coffee_beans.jpg';
   let setHeaders: { [key: string]: string };
-
+  
   test.beforeAll(async () => {
     setHeaders = await createHeaders();
   });

@@ -27,7 +27,6 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
   test('Returns 200 OK status code when updating article', async ({
     request,
   }) => {
-
     // When
     const response: APIResponse = await request.patch(`${articles}/1`, {
       headers: setHeaders,
@@ -37,8 +36,6 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
           "body": newContent
         },
     });
-
-    // When
     const code = response.status();
     const body = await response.json();
     
@@ -60,9 +57,9 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
         "body": newContent
       },
     });
+    const code = response.status();
 
     // Then
-    const code = response.status();
     expect(code).toBe(HttpStatusCode.NotFound);
   });
 });
@@ -83,12 +80,11 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
         body: newContent,
       },
     });
+    const code = response.status();
+    const body = await response.json();
 
     // Then
-    const code = response.status();
     expect(code).toBe(expectedResponseCode);
-
-    const body = await response.json();
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
@@ -102,10 +98,10 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     const response: APIResponse = await request.patch(`/api/articles/2`, {
       headers: setHeadersForRegularUser,
       data: {
-        user_id: testUsers.regularUser.id,
-        title: newTitle,
-        body: newContent,
-      },
+        "user_id": testUsers.regularUser.id,
+        "title": newTitle,
+        "body": newContent
+      }
     });
 
     // Then
@@ -150,9 +146,9 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     const response: APIResponse = await request.patch(`/api/articles/1`, {
       headers: setHeadersForRegularUser,
       data: {
-        user_id: testUsers.regularUser.id,
-        title: `${newTitleExceedingLengthLimit}`,
-      },
+        "user_id": testUsers.regularUser.id,
+        "title": `${newTitleExceedingLengthLimit}`
+      }
     });
 
     // Then
@@ -173,8 +169,8 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     const response: APIResponse = await request.patch(`/api/articles/1`, {
       headers: setHeadersForAdmin,
       data: {
-        title: `${newTitleExceedingLengthLimit}`,
-      },
+        "title": `${newTitleExceedingLengthLimit}`
+      }
     });
 
     // Then
