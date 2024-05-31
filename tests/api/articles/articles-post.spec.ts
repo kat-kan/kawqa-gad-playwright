@@ -2,6 +2,7 @@ import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, test } from '@playwright/test';
+import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('POST articles tests', async () => {
   const articles: string = `/api/articles`;
@@ -9,7 +10,7 @@ test.describe('POST articles tests', async () => {
     'Quick Error Handling Guide: What to Do When Coffee Leaks on Your Keyboard';
   const articleBody: string =
     'Ah, the joys of being a programmer - navigating through the intricate world of code with the constant companionship of our trusted caffeinated beverages. But what happens when that comforting cup of coffee turns against us, staging a daring escape onto our precious keyboards? Fear not, for we present to you the Quick Error Handling Guide for such a perilous situation.';
-  const articleDate: string = '2024-03-26T15:44:31Z';
+  const articleDate: string = customDate.pastDate;
   const articleImage: string =
     'src\\test-data\\images\\Roasted_coffee_beans.jpg';
   let setHeaders: { [key: string]: string };
@@ -125,9 +126,7 @@ test.describe('POST articles tests', async () => {
     request,
   }) => {
     //Given
-    const date: Date = new Date();
-    date.setFullYear(date.getFullYear() + 1);
-    const futureDateFormatted: string = date.toISOString();
+    const futureDateFormatted: string = customDate.futureDate;
 
     // When
     const response: APIResponse = await request.post(articles, {
