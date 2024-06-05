@@ -1,5 +1,6 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { testUsers } from '@_src_fixtures_api/auth';
+<<<<<<< tests/ISSUE-89_add_more_tests_for_patch_comments_endpoint
 import {
   createHeaders,
   createInvalidHeaders,
@@ -17,6 +18,21 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
     setHeadersForRegularUser = await createHeaders();
     newCommentId = await createNewComment(setHeadersForRegularUser, 1);
     setInvalidHeaders = await createInvalidHeaders();
+=======
+import { createHeaders } from '@_src_helpers_api/create-token.helper';
+import { APIResponse, expect, request, test } from '@playwright/test';
+import { customDate } from 'test-data/shared/date.generator';
+
+test.describe('PATCH comments/{id} endpoint tests', async () => {
+  const comments: string = `/api/comments`;
+  let setHeadersForRegularUser;
+  let setNewCommentId;
+  const newComment = 'I changed my mind';
+
+  test.beforeAll(async () => {
+    setHeadersForRegularUser = await createHeaders('regular');
+    setNewCommentId = await createNewComment(setHeadersForRegularUser, 1);
+>>>>>>> main
   });
 
   test('Returns 200 OK status code when updating comment', async ({
@@ -24,7 +40,11 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
   }) => {
     // When
     const response: APIResponse = await request.patch(
+<<<<<<< tests/ISSUE-89_add_more_tests_for_patch_comments_endpoint
       `${comments}/${newCommentId}`,
+=======
+      `${comments}/${setNewCommentId}`,
+>>>>>>> main
       {
         headers: setHeadersForRegularUser,
         data: {
@@ -34,6 +54,7 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
         },
       },
     );
+<<<<<<< tests/ISSUE-89_add_more_tests_for_patch_comments_endpoint
     const body = await response.json();
     // Then
     expect(response.status()).toBe(HttpStatusCode.Ok);
@@ -143,6 +164,12 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
     // Then
     expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
     expect(body.error.message).toBe(expectedErrorMessage);
+=======
+    // Then
+    expect(response.status()).toBe(HttpStatusCode.Ok);
+    const body = await response.json();
+    expect(body.body).toBe(newComment);
+>>>>>>> main
   });
 });
 
@@ -150,6 +177,10 @@ async function createNewComment(
   setHeadersForRegularUser,
   article_id,
 ): Promise<number> {
+<<<<<<< tests/ISSUE-89_add_more_tests_for_patch_comments_endpoint
+=======
+  const commentDate: string = customDate.pastDate;
+>>>>>>> main
   const newCommentRequest = await request.newContext();
   const response: APIResponse = await newCommentRequest.post('/api/comments', {
     headers: setHeadersForRegularUser,
@@ -157,7 +188,11 @@ async function createNewComment(
       user_id: testUsers.regularUser.id,
       article_id: article_id,
       body: 'test',
+<<<<<<< tests/ISSUE-89_add_more_tests_for_patch_comments_endpoint
       date: '2024-06-30T15:44:31Z',
+=======
+      date: commentDate,
+>>>>>>> main
     },
   });
   const responseBody = JSON.parse(await response.text());
