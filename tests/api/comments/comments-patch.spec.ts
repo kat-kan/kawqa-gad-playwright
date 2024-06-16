@@ -10,15 +10,13 @@ import { customDate } from 'test-data/shared/date.generator';
 test.describe('PATCH comments/{id} endpoint tests', async () => {
   const comments: string = `/api/comments`;
   let setHeadersForRegularUser: { [key: string]: string };
-  let setInvalidHeaders: { [key: string]: string };
   let setNewCommentId: number;
   const newComment: string = 'I changed my mind';
 
   test.beforeAll(async () => {
     setHeadersForRegularUser = await createHeaders('regular');
     setNewCommentId = await createNewComment(setHeadersForRegularUser, 1);
-    setInvalidHeaders = await createInvalidHeaders();
-  });
+   });
 
   test('Returns 200 OK status code when updating comment', async ({
     request,
@@ -62,6 +60,7 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
   }) => {
     // Given
     const expectedErrorMessage = 'Access token not provided!';
+    const setInvalidHeaders = await createInvalidHeaders();
     // When
     const response: APIResponse = await request.patch(
       `${comments}/${setNewCommentId}`,
