@@ -1,7 +1,7 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { APIResponse, expect, test } from '@playwright/test';
 
-test.describe('GET/articles/{id} Get by ID', () => {
+test.describe('GET articles/{id} endpoint tests', () => {
   const articles: string = `/api/articles`;
 
   test('Returns OK status code and correct article data', async ({

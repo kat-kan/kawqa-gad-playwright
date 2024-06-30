@@ -3,7 +3,7 @@ import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, test } from '@playwright/test';
 
-test.describe('POST articles tests', async () => {
+test.describe('POST articles endpoint tests', async () => {
   const articles: string = `/api/articles`;
   const articleTitle: string =
     'Quick Error Handling Guide: What to Do When Coffee Leaks on Your Keyboard';
@@ -13,7 +13,7 @@ test.describe('POST articles tests', async () => {
   const articleImage: string =
     'src\\test-data\\images\\Roasted_coffee_beans.jpg';
   let setHeaders: { [key: string]: string };
-
+  
   test.beforeAll(async () => {
     setHeaders = await createHeaders();
   });
