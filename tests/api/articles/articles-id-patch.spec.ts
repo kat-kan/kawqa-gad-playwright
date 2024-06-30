@@ -35,11 +35,10 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
         body: newContent,
       },
     });
-    const code = response.status();
     const body = await response.json();
 
     // Then
-    expect(code).toBe(HttpStatusCode.Ok);
+    expect(response.status()).toBe(HttpStatusCode.Ok);
     expect(body.title).toBe(newTitle);
     expect(body.body).toBe(newContent);
   });
@@ -56,10 +55,9 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
         body: newContent,
       },
     });
-    const code = response.status();
 
     // Then
-    expect(code).toBe(HttpStatusCode.NotFound);
+    expect(response.status()).toBe(HttpStatusCode.NotFound);
   });
 
   test('Returns 401 Unauthorized status code when trying to update existing article with random text as token', async ({
@@ -68,7 +66,6 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     // Given
     const setInvalidHeaders: { [key: string]: string } =
       await createInvalidHeaders();
-    const expectedResponseCode = HttpStatusCode.Unauthorized;
     const expectedErrorMessage = 'Access token not provided!';
 
     // When
@@ -80,11 +77,10 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
         body: newContent,
       },
     });
-    const code = response.status();
     const body = await response.json();
 
     // Then
-    expect(code).toBe(expectedResponseCode);
+    expect(response.status()).toBe(HttpStatusCode.Unauthorized);
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
@@ -92,7 +88,6 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     request,
   }) => {
     // Given
-    const expectedResponseCode = HttpStatusCode.Unauthorized;
     const expectedErrorMessage = 'Access token for given user is invalid!';
 
     // When
@@ -104,11 +99,10 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
         body: newContent,
       },
     });
-    const code = response.status();
     const body = await response.json();
 
     // Then
-    expect(code).toBe(expectedResponseCode);
+    expect(response.status()).toBe(HttpStatusCode.Unauthorized);
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
@@ -121,24 +115,21 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
         "title: ${newTitle},
         "body": "${newContent}" 
       }`;
-    const expectedResponseCode = HttpStatusCode.BadRequest;
 
     // When
     const response: APIResponse = await request.patch(`/api/articles/1`, {
       headers: setHeadersForRegularUser,
       data: malformedJson,
     });
-    const code = response.status();
 
     // Then
-    expect(code).toBe(expectedResponseCode);
+    expect(response.status()).toBe(HttpStatusCode.BadRequest);
   });
 
   test('Returns 422 Unprocessable Entity status code when trying to update existing article with title that exceeds length limit', async ({
     request,
   }) => {
     // Given
-    const expectedResponseCode = HttpStatusCode.UnprocessableEntity;
     const expectedErrorMessage =
       'One of field is invalid (empty, invalid or too long) or there are some additional fields: Field validation: "title" longer than "10000"';
 
@@ -150,11 +141,10 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
         title: newTitleExceedingLengthLimit,
       },
     });
-    const code = response.status();
     const body = await response.json();
 
     // Then
-    expect(code).toBe(expectedResponseCode);
+    expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
@@ -164,7 +154,6 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     // Given
     const setHeadersForAdmin: { [key: string]: string } =
       await createHeaders('admin');
-    const expectedResponseCode = HttpStatusCode.Ok;
 
     // When
     const response: APIResponse = await request.patch(`/api/articles/2`, {
@@ -173,11 +162,10 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
         title: newTitleExceedingLengthLimit,
       },
     });
-    const code = response.status();
     const body = await response.json();
 
     // Then
-    expect(code).toBe(expectedResponseCode);
+    expect(response.status()).toBe(HttpStatusCode.Ok);
     expect(body.title).toBe(newTitleExceedingLengthLimit);
   });
 });
