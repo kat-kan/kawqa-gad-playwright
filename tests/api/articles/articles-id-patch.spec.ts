@@ -1,4 +1,5 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { logConsole } from '@_src_api/utils/log-levels';
 import { testUsers } from '@_src_fixtures_api/auth';
 import {
   createHeaders,
@@ -163,6 +164,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
       },
     });
     const body = await response.json();
+    logConsole(body);
 
     // Then
     expect(response.status()).toBe(HttpStatusCode.Ok);
