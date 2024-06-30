@@ -9,19 +9,18 @@ import { APIResponse, expect, test } from '@playwright/test';
 test.describe('PATCH articles/{id} endpoint tests', async () => {
   const articles: string = `/api/articles`;
   let setHeadersForRegularUser: { [key: string]: string };
-  let setHeadersForAdmin: { [key: string]: string };
-  let setInvalidHeaders: { [key: string]: string };
   let setHeaders: { [key: string]: string };
-  const newTitle = 'How to start writing effective test cases in Gherkin';
+  let randomNumber: string;
+  let newTitle: string;
   const newContent =
     'Start with a Feature Description:\nBegin each Gherkin feature file with a high-level description\n of the feature you are testing. This provides context for the scenarios that follow\n Example: \nFeature: User Authentication \nAs a user,\nI want to be able to log in to my account,\nSo that I can access my personalized content.';
   const newTitleExceedingLengthLimit = 'test'.repeat(10001);
 
   test.beforeAll(async () => {
+    randomNumber = Math.random().toString();
+    newTitle = `How to start writing effective test cases in Gherkin ${randomNumber}`;
     setHeaders = await createHeaders();
     setHeadersForRegularUser = await createHeaders('regular');
-    setHeadersForAdmin = await createHeaders('admin');
-    setInvalidHeaders = await createInvalidHeaders();
   });
 
   test('Returns 200 OK status code when updating article', async ({
@@ -67,6 +66,8 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     request,
   }) => {
     // Given
+    const setInvalidHeaders: { [key: string]: string } =
+      await createInvalidHeaders();
     const expectedResponseCode = HttpStatusCode.Unauthorized;
     const expectedErrorMessage = 'Access token not provided!';
 
@@ -93,6 +94,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     // Given
     const expectedResponseCode = HttpStatusCode.Unauthorized;
     const expectedErrorMessage = 'Access token for given user is invalid!';
+
     // When
     const response: APIResponse = await request.patch(`/api/articles/2`, {
       headers: setHeadersForRegularUser,
@@ -102,12 +104,11 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
         body: newContent,
       },
     });
+    const code = response.status();
+    const body = await response.json();
 
     // Then
-    const code = response.status();
     expect(code).toBe(expectedResponseCode);
-
-    const body = await response.json();
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
@@ -127,9 +128,9 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
       headers: setHeadersForRegularUser,
       data: malformedJson,
     });
+    const code = response.status();
 
     // Then
-    const code = response.status();
     expect(code).toBe(expectedResponseCode);
   });
 
@@ -146,15 +147,14 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
       headers: setHeadersForRegularUser,
       data: {
         user_id: testUsers.regularUser.id,
-        title: `${newTitleExceedingLengthLimit}`,
+        title: newTitleExceedingLengthLimit,
       },
     });
+    const code = response.status();
+    const body = await response.json();
 
     // Then
-    const code = response.status();
     expect(code).toBe(expectedResponseCode);
-
-    const body = await response.json();
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
@@ -162,21 +162,22 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     request,
   }) => {
     // Given
+    const setHeadersForAdmin: { [key: string]: string } =
+      await createHeaders('admin');
     const expectedResponseCode = HttpStatusCode.Ok;
 
     // When
     const response: APIResponse = await request.patch(`/api/articles/1`, {
       headers: setHeadersForAdmin,
       data: {
-        title: `${newTitleExceedingLengthLimit}`,
+        title: newTitleExceedingLengthLimit,
       },
     });
+    const code = response.status();
+    const body = await response.json();
 
     // Then
-    const code = response.status();
     expect(code).toBe(expectedResponseCode);
-
-    const body = await response.json();
     expect(body.title).toBe(newTitleExceedingLengthLimit);
   });
 });
