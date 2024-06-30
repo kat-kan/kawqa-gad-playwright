@@ -164,7 +164,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
       },
     });
     const body = await response.json();
-    logConsole(body);
+    logConsole('Body after Admin patches article: ', body);
 
     // Then
     expect(response.status()).toBe(HttpStatusCode.Ok);
