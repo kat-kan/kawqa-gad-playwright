@@ -167,7 +167,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     const expectedResponseCode = HttpStatusCode.Ok;
 
     // When
-    const response: APIResponse = await request.patch(`/api/articles/1`, {
+    const response: APIResponse = await request.patch(`/api/articles/2`, {
       headers: setHeadersForAdmin,
       data: {
         title: newTitleExceedingLengthLimit,
