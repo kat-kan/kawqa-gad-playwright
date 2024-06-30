@@ -8,10 +8,10 @@ import { APIResponse, expect, test } from '@playwright/test';
 
 test.describe('PATCH articles/{id} endpoint tests', async () => {
   const articles: string = `/api/articles`;
-  let setHeadersForRegularUser;
-  let setHeadersForAdmin;
-  let setInvalidHeaders;
-  let setHeaders;
+  let setHeadersForRegularUser: { [key: string]: string };
+  let setHeadersForAdmin: { [key: string]: string };
+  let setInvalidHeaders: { [key: string]: string };
+  let setHeaders: { [key: string]: string };
   const newTitle = 'How to start writing effective test cases in Gherkin';
   const newContent =
     'Start with a Feature Description:\nBegin each Gherkin feature file with a high-level description\n of the feature you are testing. This provides context for the scenarios that follow\n Example: \nFeature: User Authentication \nAs a user,\nI want to be able to log in to my account,\nSo that I can access my personalized content.';
@@ -45,7 +45,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     expect(body.body).toBe(newContent);
   });
 
-  test('Returns 404 NotFound status code when trying to update non-existing article', async ({
+  test('Returns 404 Not Found status code when trying to update non-existing article', async ({
     request,
   }) => {
     // When
