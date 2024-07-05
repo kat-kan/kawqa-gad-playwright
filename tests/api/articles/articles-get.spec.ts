@@ -1,15 +1,13 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
-import { test, APIResponse, expect } from '@playwright/test';
+import { APIResponse, expect, test } from '@playwright/test';
 
 test.describe('GET/articles endpoint tests', async () => {
-  const articles: string = `/api/articles`;
+  const articles: string = '/api/articles';
 
   test('Returns 200 OK for all articles', async ({ request }) => {
-    // Given
-    const expectedStatusCode = HttpStatusCode.Ok;
     // When
     const response: APIResponse = await request.get(articles);
     // Then
-    expect(response.status()).toBe(expectedStatusCode);
+    expect(response.status()).toBe(HttpStatusCode.Ok);
   });
 });

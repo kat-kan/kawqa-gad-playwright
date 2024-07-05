@@ -8,12 +8,12 @@
 
 - VS Code IDE installed → https://code.visualstudio.com/
 - (optional) VS Code recommended plugins installed:
-  </br>→ [Playwright Test for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
-  </br>→ [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-  </br>→ [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
-  </br>→ [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
-  </br>→ [GitLens - Git supercharged](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
-  </br>→ [Thunder Client](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client) for making quick API requests within VS Code
+  - [Playwright Test for VSCode](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
+  - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for uniform formatting of the code
+  - [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+  - [GitLens - Git supercharged](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) adding set of useful features supporting code versioning
+  - [Thunder Client](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client) for making quick API requests within VS Code
+  - [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons) - repository of all icons used in Visual Studio Code (for VS Code customization)
 - GIT for your OS installed → https://git-scm.com/downloads
 - Node.js installed → https://nodejs.org/en/download
 - GAD application is running locally → follow README instructions
