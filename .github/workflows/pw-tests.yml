@@ -1,4 +1,4 @@
-name: Playwright API auto-checks
+name: Playwright API Auto-Checks
 on:
   push:
     branches: ['main']
@@ -22,13 +22,13 @@ jobs:
         run: npm ci
       - name: Install Playwright Chromium Browser
         run: npx playwright install --with-deps chromium
-      - name: Create .env file
-        run: |
-          echo "BASE_URL='http://localhost:3000'" > .env
-          echo "USER_EMAIL='Moses.Armstrong@Feest.ca'" >> .env
-          echo "USER_PASSWORD='test1'" >> .env
       - name: Run API checks
         run: npx playwright test
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          USER_EMAIL: ${{ secrets.USER_EMAIL }}
+          USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+          USER_ID: ${{ secrets.USER_ID }}
       - name: Archive tests results
         if: success() || failure()
         uses: actions/upload-artifact@v3
@@ -37,6 +37,3 @@ jobs:
           path: |
             ./playwright-report/**/*.*
             ./test-results/**/*.*
-      - name: Delete .env
-        run: |
-          rm -f .env
