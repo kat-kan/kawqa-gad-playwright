@@ -27,6 +27,8 @@ jobs:
           USER_EMAIL: ${{ secrets.USER_EMAIL }}
           USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
           USER_ID: ${{ secrets.USER_ID }}
+          ADMIN_EMAIL: ${{secrets.ADMIN_EMAIL}}
+          ADMIN_PASSWORD: ${{secrets.ADMIN_PASSWORD}}
       - name: Archive tests results
         if: success() || failure()
         uses: actions/upload-artifact@v3
