@@ -137,9 +137,6 @@ test.describe('POST articles tests', async () => {
     test(`Returns 422 Unprocessable content after sending article JSON with date from the future ${invalidDate}`, async ({
       request,
     }) => {
-      //Given
-      const futureDateFormatted: string = invalidDate;
-
       // When
       const response: APIResponse = await request.post(articles, {
         headers: setHeaders,
@@ -147,7 +144,7 @@ test.describe('POST articles tests', async () => {
           user_id: testUsers.regularUser.id,
           title: articleTitle,
           body: articleBody,
-          date: futureDateFormatted,
+          date: invalidDate,
           image: articleImage,
         },
       });
