@@ -1,0 +1,48 @@
+name: Check Releases and Create Issue
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every 24hrs at 12am
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  check_and_create:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Releases and Create Issue
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{secrets.TOKEN}}
+          script: |
+            const sourceOwner = 'jaktestowac';
+            const sourceRepo = 'gad-gui-api-demo';
+            
+            // Get the latest release from the source repository
+            const { data: latestRelease } = await github.rest.repos.getLatestRelease({
+              owner: sourceOwner,
+              repo: sourceRepo
+            });
+            
+            // Check if we've already created an issue for this release
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              labels: 'new-release'
+            });
+            
+            const existingIssue = issues.find(issue => issue.title.includes(latestRelease.tag_name));
+            
+            if (!existingIssue) {
+              // Create a new issue
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `Analyze new release of GAD: ${latestRelease.tag_name}`,
+                body: `A new release ${latestRelease.tag_name} has been created in the ${sourceOwner}/${sourceRepo} repository.\n\nRelease notes: ${latestRelease.html_url} \n\nPlease analyze the impact on tests project, describe it and report issues if needed.`,
+                labels: ['new-release', 'help wanted']
+              });
+              console.log(`Created new issue for release ${latestRelease.tag_name}`);
+            } else {
+              console.log(`Issue already exists for release ${latestRelease.tag_name}`);
+            }
