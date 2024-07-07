@@ -4,12 +4,7 @@ import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, test } from '@playwright/test';
 import { customDate } from 'test-data/shared/date.generator';
 
-const futureDates: string[] = [];
-const pastDates: string[] = [];
-pastDates.push(customDate.pastDate);
-pastDates.push(customDate.pastDateISOFormat);
-futureDates.push(customDate.futureDate);
-futureDates.push(customDate.futureDateISOFormat);
+
 
 test.describe('POST articles tests', async () => {
   const articles: string = `/api/articles`;
@@ -26,7 +21,7 @@ test.describe('POST articles tests', async () => {
     setHeaders = await createHeaders();
   });
 
-  for (const date of pastDates) {
+  for (const date of customDate.pastDates) {
     test(`Returns 201 Created after creating article with date ${date}`, async ({
       request,
     }) => {
@@ -133,7 +128,7 @@ test.describe('POST articles tests', async () => {
     expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
 
-  for (const invalidDate of futureDates) {
+  for (const invalidDate of customDate.futureDates) {
     test(`Returns 422 Unprocessable content after sending article JSON with date from the future ${invalidDate}`, async ({
       request,
     }) => {
