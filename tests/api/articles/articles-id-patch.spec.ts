@@ -70,7 +70,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     const expectedErrorMessage = 'Access token not provided!';
 
     // When
-    const response: APIResponse = await request.patch(`/api/articles/1`, {
+    const response: APIResponse = await request.patch(`${articles}/1`, {
       headers: setInvalidHeaders,
       data: {
         user_id: testUsers.regularUser.id,
@@ -92,7 +92,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     const expectedErrorMessage = 'Access token for given user is invalid!';
 
     // When
-    const response: APIResponse = await request.patch(`/api/articles/2`, {
+    const response: APIResponse = await request.patch(`${articles}/2`, {
       headers: setHeadersForRegularUser,
       data: {
         user_id: testUsers.regularUser.id,
@@ -118,7 +118,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
       }`;
 
     // When
-    const response: APIResponse = await request.patch(`/api/articles/1`, {
+    const response: APIResponse = await request.patch(`${articles}/1`, {
       headers: setHeadersForRegularUser,
       data: malformedJson,
     });
@@ -135,7 +135,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
       'One of field is invalid (empty, invalid or too long) or there are some additional fields: Field validation: "title" longer than "10000"';
 
     // When
-    const response: APIResponse = await request.patch(`/api/articles/1`, {
+    const response: APIResponse = await request.patch(`${articles}/1`, {
       headers: setHeadersForRegularUser,
       data: {
         user_id: testUsers.regularUser.id,
@@ -157,7 +157,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
       await createHeaders('admin');
 
     // When
-    const response: APIResponse = await request.patch(`/api/articles/2`, {
+    const response: APIResponse = await request.patch(`${articles}/2`, {
       headers: setHeadersForAdmin,
       data: {
         title: newTitleExceedingLengthLimit,
