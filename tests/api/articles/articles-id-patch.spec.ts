@@ -24,9 +24,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     setHeadersForRegularUser = await createHeaders('regular');
   });
 
-  test('Returns 200 OK status code when updating article', async ({
-    request,
-  }) => {
+  test('Returns 200 OK when updating article', async ({ request }) => {
     // When
     const response: APIResponse = await request.patch(`${articles}/1`, {
       headers: setHeaders,
@@ -44,7 +42,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     expect(body.body).toBe(newContent);
   });
 
-  test('Returns 404 Not Found status code when trying to update non-existing article', async ({
+  test('Returns 404 Not Found when trying to update non-existing article', async ({
     request,
   }) => {
     // When
@@ -61,7 +59,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     expect(response.status()).toBe(HttpStatusCode.NotFound);
   });
 
-  test('Returns 401 Unauthorized status code when trying to update existing article with random text as token', async ({
+  test('Returns 401 Unauthorized when trying to update existing article with incorrect token', async ({
     request,
   }) => {
     // Given
@@ -85,7 +83,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
-  test('Returns 401 Unauthorized status code when trying to update article added by different user', async ({
+  test('Returns 401 Unauthorized when trying to update article added by different user', async ({
     request,
   }) => {
     // Given
@@ -107,7 +105,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
-  test('Returns 400 Bad Request status code when trying to update existing article with malformed JSON', async ({
+  test('Returns 400 Bad Request when trying to update existing article with malformed JSON', async ({
     request,
   }) => {
     // Given
@@ -127,7 +125,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     expect(response.status()).toBe(HttpStatusCode.BadRequest);
   });
 
-  test('Returns 422 Unprocessable Entity status code when trying to update existing article with title that exceeds length limit', async ({
+  test('Returns 422 Unprocessable Entity when trying to update existing article with title exceeding the length limit', async ({
     request,
   }) => {
     // Given
@@ -149,7 +147,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     expect(body.error.message).toBe(expectedErrorMessage);
   });
 
-  test('Returns 200 OK status code when updating as admin existing article with title that normally exceeds length limit', async ({
+  test('Returns 200 OK when admin updates existing article with title exceeding the length limit set for regular users', async ({
     request,
   }) => {
     // Given
