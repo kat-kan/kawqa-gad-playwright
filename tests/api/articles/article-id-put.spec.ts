@@ -21,7 +21,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     setHeaders = await createHeaders();
   });
 
-  test('Returns 200 OK status code when creating article using PUT', async ({
+  test('Returns 200 OK status code when updating article', async ({
     request,
   }) => {
     const response: APIResponse = await request.put(`${articles}/1`, {
@@ -47,7 +47,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     expect.soft(typeof responseBody.id === 'number').toBe(true);
   });
 
-  test('Returns 201 Created status code when updating article', async ({
+  test('Returns 201 Created status code when creating article using PUT', async ({
     request,
   }) => {
     const response: APIResponse = await request.put(
@@ -140,7 +140,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
 
-  test.describe('PUT articles/{id} endpoint tests with enabled feature', async () => {
+  test.describe('PUT articles/{id} endpoint tests with enabled feature_validate_article_title', async () => {
     test.beforeAll(async ({ request }) => {
       const response: APIResponse = await request.post(features, {
         headers: setHeaders,
@@ -151,7 +151,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       expect(response.status()).toBe(HttpStatusCode.Ok);
     });
 
-    test('Returns 200 OK status code when creating article using PUT - enabled validation on the title', async ({
+    test('Returns 200 OK status code when updating article', async ({
       request,
     }) => {
       const response: APIResponse = await request.put(`${articles}/1`, {
@@ -177,7 +177,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       expect.soft(typeof responseBody.id === 'number').toBe(true);
     });
 
-    test('Returns 201 Created status code when updating article - enabled validation on the title', async ({
+    test('Returns 201 Created status code when creating article using PUT', async ({
       request,
     }) => {
       const response: APIResponse = await request.put(
