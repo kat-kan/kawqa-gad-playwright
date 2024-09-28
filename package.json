@@ -26,5 +26,8 @@
     "style:check": "npx prettier . --check",
     "lint": "npx eslint . --ext .ts --max-warnings=0",
     "lint:fix": "npx eslint -- --fix"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.9.1"
   }
 }
