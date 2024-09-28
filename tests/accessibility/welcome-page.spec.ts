@@ -15,7 +15,7 @@ test('Check the whole site against selected standards', async ({ page }) => {
   await page.goto(`/`);
   await page.locator('#btnGui').waitFor();
   const axeBuilder = await new AxeBuilder({ page })
-    .withTags('wcag21a', 'wcag21aa')
+    .withTags(['wcag21a', 'wcag21aa'])
     .analyze();
   expect(axeBuilder.violations).toEqual([]);
 });

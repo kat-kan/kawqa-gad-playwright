@@ -22,7 +22,7 @@ test.skip('Check the main page', async ({ page }, testInfo) => {
   await page.locator('#btnGui').waitFor();
   await page.locator('#btnGui').click();
   const axeBuilder = await new AxeBuilder({ page }).analyze();
-  await testInfo.attach('accesibility-scan-results', {
+  await testInfo.attach('accessibility-scan-results', {
     body: JSON.stringify(axeBuilder, null, 2),
     contentType: 'application/json',
   });
