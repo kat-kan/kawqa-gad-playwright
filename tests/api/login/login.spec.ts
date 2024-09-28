@@ -12,6 +12,7 @@ test.describe('Login endpoint tests', async () => {
         password: testUsers.regularUser.password,
       },
     });
+
     // Then
     const code = response.status();
     expect(code).toBe(HttpStatusCode.Ok);
@@ -24,8 +25,10 @@ test.describe('Login endpoint tests', async () => {
   test('Returns Unauthorized status code when logging in with incorrect credentials', async ({
     request,
   }) => {
+    // Given
     const incorrectPassword = 'wrongPassword';
     const expectedErrorMessage = 'Incorrect email or password';
+
     // When
     const response = await request.post(login, {
       data: {
