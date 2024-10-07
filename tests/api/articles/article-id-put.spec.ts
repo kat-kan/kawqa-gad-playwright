@@ -10,7 +10,8 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
   const newTitle = 'How to start writing API tests?';
   const newTitle2 = 'How to start writing API tests?' + randomNumber;
   const newTitle3 = 'How to start writing good API tests?' + randomNumber;
-  const oldTilte = 'The difference between Scrum and Kanban';
+  const newTitle4 = 'How to start writing the best API tests?' + randomNumber;
+  const oldTitle = 'The difference between Scrum and Kanban';
   const newContent = 'Join KawQA z automatu';
   const articleDate: string = customDate.pastDate;
   const articleImage: string =
@@ -82,13 +83,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
   test('Returns 400 Bad Request after sending malformed JSON', async ({
     request,
   }) => {
-    const malformedJson: string = `{
-      "user_id": "${testUsers.regularUser.id}",
-      "title: ${newTitle},  // error: missing closing quotation mark
-      "body": "${newContent}",
-      "date": "${articleDate}",
-      "image": "${articleImage}"
-    }`;
+    const malformedJson: string = `{"user_id": "${testUsers.regularUser.id}", "title: "${newTitle4}", "body": "${newContent}", "date": "${articleDate}", "image": "src\\\\test-data\\\\images\\\\Roasted_coffee_beans.jpg"}`;
 
     const response: APIResponse = await request.put(articles, {
       headers: setHeaders,
@@ -143,14 +138,14 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
 
-  test('Returns 200 ok status code when updating article with the same title', async ({
+  test('Returns 200 OK status code when updating the article with the title equal to another article title', async ({
     request,
   }) => {
     const response: APIResponse = await request.put(`${articles}/1`, {
       headers: setHeaders,
       data: {
         user_id: testUsers.regularUser.id,
-        title: oldTilte,
+        title: oldTitle,
         body: newContent,
         date: articleDate,
         image: articleImage,
@@ -162,7 +157,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
-    expect.soft(responseBody.title).toBe(oldTilte);
+    expect.soft(responseBody.title).toBe(oldTitle);
     expect.soft(responseBody.body).toBe(newContent);
     expect.soft(responseBody.date).toBe(articleDate);
     expect.soft(responseBody.image).toBe(articleImage);
@@ -206,14 +201,14 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       expect.soft(typeof responseBody.id === 'number').toBe(true);
     });
 
-    test('Returns 422 status code when updating article with the same title', async ({
+    test('Returns 422 status code when updating the article with the title equal to another article title', async ({
       request,
     }) => {
       const response: APIResponse = await request.put(`${articles}/1`, {
         headers: setHeaders,
         data: {
           user_id: testUsers.regularUser.id,
-          title: oldTilte,
+          title: oldTitle,
           body: newContent,
           date: articleDate,
           image: articleImage,
