@@ -11,6 +11,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
   const newTitle2 = 'How to start writing API tests?' + randomNumber;
   const newTitle3 = 'How to start writing good API tests?' + randomNumber;
   const newTitle4 = 'How to start writing the best API tests?' + randomNumber;
+  const newTitle5 = 'How to start writing the best API tests?' + randomNumber;
   const oldTitle = 'The difference between Scrum and Kanban';
   const newContent = 'Join KawQA z automatu';
   const articleDate: string = customDate.pastDate;
@@ -182,7 +183,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
         headers: setHeaders,
         data: {
           user_id: testUsers.regularUser.id,
-          title: newTitle,
+          title: newTitle5,
           body: newContent,
           date: articleDate,
           image: articleImage,
@@ -194,7 +195,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       expect
         .soft(responseBody.user_id.toString())
         .toEqual(testUsers.regularUser.id.toString());
-      expect.soft(responseBody.title).toBe(newTitle);
+      expect.soft(responseBody.title).toBe(newTitle5);
       expect.soft(responseBody.body).toBe(newContent);
       expect.soft(responseBody.date).toBe(articleDate);
       expect.soft(responseBody.image).toBe(articleImage);
