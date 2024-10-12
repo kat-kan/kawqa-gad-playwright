@@ -55,14 +55,7 @@ test.describe('POST articles endpoint tests', async () => {
     request,
   }) => {
     // Given
-    const malformedJson: string = `{
-        "user_id": "${testUsers.regularUser.id}",
-        "title: ${articleTitle},  // error: missing closing quotation mark
-        "body": "${articleBody}",
-        "date": "${articleDate}",
-        "image": "${articleImage}"
-    }`;
-
+    const malformedJson: string = `{"user_id": "${testUsers.regularUser.id}", "title: "${articleTitle}", "body": "${articleBody}", "date": "${articleDate}"}`;
     // When
     const response: APIResponse = await request.post(articles, {
       headers: setHeaders,
