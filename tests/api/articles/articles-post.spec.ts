@@ -4,8 +4,6 @@ import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, test } from '@playwright/test';
 import { customDate } from 'test-data/shared/date.generator';
 
-
-
 test.describe('POST articles endpoint tests', async () => {
   const articles: string = `/api/articles`;
   const articleTitle: string =
@@ -16,7 +14,7 @@ test.describe('POST articles endpoint tests', async () => {
   const articleImage: string =
     'src\\test-data\\images\\Roasted_coffee_beans.jpg';
   let setHeaders: { [key: string]: string };
-  
+
   test.beforeAll(async () => {
     setHeaders = await createHeaders();
   });
@@ -55,6 +53,7 @@ test.describe('POST articles endpoint tests', async () => {
     request,
   }) => {
     // Given
+    // error: missing closing quotation mark
     const malformedJson: string = `{"user_id": "${testUsers.regularUser.id}", "title: "${articleTitle}", "body": "${articleBody}", "date": "${articleDate}"}`;
     // When
     const response: APIResponse = await request.post(articles, {

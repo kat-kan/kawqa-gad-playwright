@@ -109,6 +109,7 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     request,
   }) => {
     // Given
+    // error: missing closing quotation mark
     const malformedJson: string = `{"user_id": "${testUsers.regularUser.id}", "title: "${newTitle}", "body": "${newContent}"}`;
 
     // When

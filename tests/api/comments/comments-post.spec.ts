@@ -42,6 +42,7 @@ test.describe('POST comments tests', async () => {
     request,
   }) => {
     //Given
+    // error: missing closing quotation mark
     const malformedJson: string = `{"user_id": "${testUsers.regularUser.id}", "article_id: "${article_id}", "body": "${commentBody}", "date": "${commentDate}"}`;
     //When
     const response: APIResponse = await request.post(comments, {
