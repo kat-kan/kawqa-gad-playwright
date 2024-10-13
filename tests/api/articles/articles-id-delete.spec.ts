@@ -49,11 +49,29 @@ test.describe('DELETE articles/{id}', () => {
   test('returns 401 when regular user tries to delete article created by other user', async ({
     request,
   }) => {
-    // Given the article is not created by the current regular user
-    const articleId = 2;
+    // Given the article is created by other user (admin)
+    setHeaders = await createHeaders('admin');
+    const articleTitle: string = 'New Article';
+    const articleBody: string = 'This is the content of the new article.';
+    const articleDate: string = customDate.pastDate;
+    const articleImage: string = 'image.jpg';
 
-    // When
-    const response = await request.delete(`${articles}/${articleId}`, {
+    const createResponse: APIResponse = await request.post(articles, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: articleTitle,
+        body: articleBody,
+        date: articleDate,
+        image: articleImage,
+      },
+    });
+    const createdArticle = await createResponse.json();
+    const createdArticleId = createdArticle.id;
+
+    // When regular user tries to delete the article
+    setHeaders = await createHeaders();
+    const response = await request.delete(`${articles}/${createdArticleId}`, {
       headers: setHeaders,
     });
 
