@@ -1,10 +1,11 @@
+import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, test } from '@playwright/test';
 import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('DELETE articles/{id}', () => {
-  const articles: string = `/api/articles/`;
+  const articles: string = `/api/articles`;
 
   const articleTitle: string = 'New Article';
   const articleBody: string = 'This is the content of the new article.';
@@ -22,7 +23,6 @@ test.describe('DELETE articles/{id}', () => {
     request,
   }) => {
     // Given: An article is created
-    const expectedResponseCode = 200;
     const createResponse: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
@@ -33,17 +33,19 @@ test.describe('DELETE articles/{id}', () => {
         image: articleImage,
       },
     });
-
     const articleData = await createResponse.json();
     const articleID = articleData.id;
 
     // When: The article is deleted
-    const deleteResponse = await request.delete(`${articles + articleID}`, {
-      headers: setHeaders,
-    });
+    const deleteResponse: APIResponse = await request.delete(
+      `${articles}/${articleID}`,
+      {
+        headers: setHeaders,
+      },
+    );
 
     // Then: The response status code should be 200
-    expect(deleteResponse.status()).toBe(expectedResponseCode);
+    expect(deleteResponse.status()).toBe(HttpStatusCode.Ok);
   });
 
   // 401 status received - Use the `test.fail();` instruction to mark as a failed test
