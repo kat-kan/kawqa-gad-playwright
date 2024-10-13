@@ -49,18 +49,18 @@ test.describe('DELETE articles/{id}', () => {
   test('returns 404 status code when delete a non-existent article', async ({
     request,
   }) => {
-    // Given: An article ID that does not exist
+    // Given: an article does not exist
     const nonExistentArticleID = -1;
 
-    // When: Attempting to delete the non-existent article
+    // When: attempting to delete the non-existent article
     const response = await request.delete(
-      `${articles + nonExistentArticleID}`,
+      `${articles}/${nonExistentArticleID}`,
       {
         headers: setHeaders,
       },
     );
 
-    // Then: The response status code should be 404
+    // Then: the response status code should be 404
     expect(response.status()).toBe(HttpStatusCode.NotFound);
   });
 });
