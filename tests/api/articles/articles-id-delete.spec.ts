@@ -12,10 +12,10 @@ test.describe('DELETE articles/{id}', () => {
     setHeaders = await createHeaders();
   });
 
-  test('returns 200 status code when delete an article after create', async ({
+  test('returns 200 status code when delete a newly created article', async ({
     request,
   }) => {
-    // Given: an article is created
+    // Given the new article is created
     const articleTitle: string = 'New Article';
     const articleBody: string = 'This is the content of the new article.';
     const articleDate: string = customDate.pastDate;
@@ -32,35 +32,50 @@ test.describe('DELETE articles/{id}', () => {
       },
     });
     const createdArticle = await createResponse.json();
-    const createdArticleID = createdArticle.id;
+    const createdArticleId = createdArticle.id;
 
-    // When: The article is deleted
+    // When
     const deleteResponse: APIResponse = await request.delete(
-      `${articles}/${createdArticleID}`,
+      `${articles}/${createdArticleId}`,
       {
         headers: setHeaders,
       },
     );
 
-    // Then: The response status code should be 200
+    // Then
     expect(deleteResponse.status()).toBe(HttpStatusCode.Ok);
+  });
+
+  test('returns 401 when regular user tries to delete article created by other user', async ({
+    request,
+  }) => {
+    // Given the article is not created by the current regular user
+    const articleId = 2;
+
+    // When
+    const response = await request.delete(`${articles}/${articleId}`, {
+      headers: setHeaders,
+    });
+
+    // Then
+    expect(response.status()).toBe(HttpStatusCode.Unauthorized);
   });
 
   test('returns 404 status code when delete a non-existent article', async ({
     request,
   }) => {
-    // Given: an article does not exist
-    const nonExistentArticleID = -1;
+    // Given
+    const nonExistentArticleId = -1;
 
-    // When: attempting to delete the non-existent article
+    // When
     const response = await request.delete(
-      `${articles}/${nonExistentArticleID}`,
+      `${articles}/${nonExistentArticleId}`,
       {
         headers: setHeaders,
       },
     );
 
-    // Then: the response status code should be 404
+    // Then
     expect(response.status()).toBe(HttpStatusCode.NotFound);
   });
 });
