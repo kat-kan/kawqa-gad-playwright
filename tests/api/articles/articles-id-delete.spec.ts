@@ -8,14 +8,13 @@ test.describe('DELETE articles/{id}', () => {
   const articles: string = `/api/articles`;
   let setHeaders: { [key: string]: string };
 
-  test.beforeAll(async () => {
-    setHeaders = await createHeaders();
-  });
+  test.beforeAll(async () => {});
 
   test('returns 200 status code when delete a newly created article', async ({
     request,
   }) => {
     // Given the new article is created
+    setHeaders = await createHeaders();
     const articleTitle: string = 'New Article';
     const articleBody: string = 'This is the content of the new article.';
     const articleDate: string = customDate.pastDate;
@@ -45,7 +44,39 @@ test.describe('DELETE articles/{id}', () => {
     // Then
     expect(deleteResponse.status()).toBe(HttpStatusCode.Ok);
   });
+  test('returns 200 when admin user tries to delete article created by other user', async ({
+    request,
+  }) => {
+    // Given the article is created by other (regular) user
+    setHeaders = await createHeaders();
+    const articleTitle: string = 'New Article';
+    const articleBody: string = 'This is the content of the new article.';
+    const articleDate: string = customDate.pastDate;
+    const articleImage: string = 'image.jpg';
 
+    const createResponse: APIResponse = await request.post(articles, {
+      headers: setHeaders,
+      data: {
+        user_id: testUsers.regularUser.id,
+        title: articleTitle,
+        body: articleBody,
+        date: articleDate,
+        image: articleImage,
+      },
+    });
+    const createdArticle = await createResponse.json();
+    const createdArticleId = createdArticle.id;
+
+    // When admin user tries to delete the article
+    setHeaders = await createHeaders('admin');
+    const response = await request.delete(`${articles}/${createdArticleId}`, {
+      headers: setHeaders,
+    });
+    console.log(response);
+    // TU lecą 500 czasami - puszczać kilka testów raz za razem - 
+    // Then
+    expect(response.status()).toBe(HttpStatusCode.Ok);
+  });
   test('returns 401 when regular user tries to delete article created by other user', async ({
     request,
   }) => {
