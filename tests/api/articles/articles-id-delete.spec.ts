@@ -72,7 +72,7 @@ test.describe('DELETE articles/{id}', () => {
     const response = await request.delete(`${articles}/${createdArticleId}`, {
       headers: setHeaders,
     });
-    console.log(response);
+    console.log('Response: ', response);
     // TU lecą 500 czasami - puszczać kilka testów raz za razem - 
     // Then
     expect(response.status()).toBe(HttpStatusCode.Ok);
