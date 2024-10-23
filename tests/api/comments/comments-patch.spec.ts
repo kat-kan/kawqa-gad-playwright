@@ -16,7 +16,7 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
   test.beforeAll(async () => {
     setHeadersForRegularUser = await createHeaders('regular');
     setNewCommentId = await createNewComment(setHeadersForRegularUser, 1);
-   });
+  });
 
   test('Returns 200 OK status code when updating comment', async ({
     request,
@@ -103,11 +103,8 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
     request,
   }) => {
     // Given
-    const malformedJson: string = `{
-        "article_id": 1,
-        "user_id": "a",
-        "body": ${newComment} 
-      }`;
+    // error: missing closing quotation mark
+    const malformedJson: string = `{"article_id": 1, "user_id: "${testUsers.regularUser.id}", "body": "${newComment}"}`;
     // When
     const response: APIResponse = await request.patch(
       `${comments}/${setNewCommentId}`,

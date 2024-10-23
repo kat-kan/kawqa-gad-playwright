@@ -83,6 +83,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
   test('Returns 400 Bad Request after sending malformed JSON', async ({
     request,
   }) => {
+    // error: missing closing quotation mark
     const malformedJson: string = `{"user_id": "${testUsers.regularUser.id}", "title: "${newTitle4}", "body": "${newContent}", "date": "${articleDate}", "image": "src\\\\test-data\\\\images\\\\Roasted_coffee_beans.jpg"}`;
 
     const response: APIResponse = await request.put(articles, {

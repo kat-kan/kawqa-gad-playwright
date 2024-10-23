@@ -109,11 +109,8 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
     request,
   }) => {
     // Given
-    const malformedJson: string = `{
-        "user_id": "${testUsers.regularUser.id}",
-        "title: ${newTitle},
-        "body": "${newContent}" 
-      }`;
+    // error: missing closing quotation mark
+    const malformedJson: string = `{"user_id": "${testUsers.regularUser.id}", "title: "${newTitle}", "body": "${newContent}"}`;
 
     // When
     const response: APIResponse = await request.patch(`${articles}/1`, {
