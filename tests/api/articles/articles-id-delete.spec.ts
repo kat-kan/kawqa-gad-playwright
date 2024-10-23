@@ -19,7 +19,6 @@ test.describe('DELETE articles/{id}', () => {
     const articleBody: string = 'This is the content of the new article.';
     const articleDate: string = customDate.pastDate;
     const articleImage: string = 'image.jpg';
-
     const createResponse: APIResponse = await request.post(articles, {
       headers: setHeaders,
       data: {
@@ -32,6 +31,7 @@ test.describe('DELETE articles/{id}', () => {
     });
     const createdArticle = await createResponse.json();
     const createdArticleId = createdArticle.id;
+    await new Promise((f) => setTimeout(f, 500));
 
     // When
     const deleteResponse: APIResponse = await request.delete(
@@ -66,14 +66,14 @@ test.describe('DELETE articles/{id}', () => {
     });
     const createdArticle = await createResponse.json();
     const createdArticleId = createdArticle.id;
+    await new Promise((f) => setTimeout(f, 500));
 
     // When admin user tries to delete the article
     setHeaders = await createHeaders('admin');
     const response = await request.delete(`${articles}/${createdArticleId}`, {
       headers: setHeaders,
     });
-    console.log('Response: ', response);
-    // TU lecą 500 czasami - puszczać kilka testów raz za razem - 
+
     // Then
     expect(response.status()).toBe(HttpStatusCode.Ok);
   });
@@ -99,6 +99,7 @@ test.describe('DELETE articles/{id}', () => {
     });
     const createdArticle = await createResponse.json();
     const createdArticleId = createdArticle.id;
+    await new Promise((f) => setTimeout(f, 500));
 
     // When regular user tries to delete the article
     setHeaders = await createHeaders();
