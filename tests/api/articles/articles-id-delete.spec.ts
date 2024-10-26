@@ -31,7 +31,23 @@ test.describe('DELETE articles/{id}', () => {
     });
     const createdArticle = await createResponse.json();
     const createdArticleId = createdArticle.id;
-    await new Promise((f) => setTimeout(f, 500));
+
+    // Acc. to the GAD authors, there is a delay between POST request and actual creating the asset
+    // To avoid flaky tests (when sometimes the delay is bigger) I used the polling technique
+    await expect
+      .poll(
+        async () => {
+          const getResponse: APIResponse = await request.get(
+            `${articles}/${createdArticleId}`,
+          );
+          return getResponse.status();
+        },
+        {
+          intervals: [100],
+          timeout: 30_000,
+        },
+      )
+      .toBe(HttpStatusCode.Ok);
 
     // When
     const deleteResponse: APIResponse = await request.delete(
@@ -66,7 +82,21 @@ test.describe('DELETE articles/{id}', () => {
     });
     const createdArticle = await createResponse.json();
     const createdArticleId = createdArticle.id;
-    await new Promise((f) => setTimeout(f, 500));
+
+    await expect
+      .poll(
+        async () => {
+          const getResponse: APIResponse = await request.get(
+            `${articles}/${createdArticleId}`,
+          );
+          return getResponse.status();
+        },
+        {
+          intervals: [100],
+          timeout: 30_000,
+        },
+      )
+      .toBe(HttpStatusCode.Ok);
 
     // When admin user tries to delete the article
     setHeaders = await createHeaders('admin');
@@ -99,7 +129,21 @@ test.describe('DELETE articles/{id}', () => {
     });
     const createdArticle = await createResponse.json();
     const createdArticleId = createdArticle.id;
-    await new Promise((f) => setTimeout(f, 500));
+
+    await expect
+      .poll(
+        async () => {
+          const getResponse: APIResponse = await request.get(
+            `${articles}/${createdArticleId}`,
+          );
+          return getResponse.status();
+        },
+        {
+          intervals: [100],
+          timeout: 30_000,
+        },
+      )
+      .toBe(HttpStatusCode.Ok);
 
     // When regular user tries to delete the article
     setHeaders = await createHeaders();
