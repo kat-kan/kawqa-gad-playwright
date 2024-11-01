@@ -3,6 +3,10 @@ import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
+import {
+  generateUniqueArticleTitle,
+  getExistingArticleTitle,
+} from 'test-data/article.generator';
 import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('POST articles endpoint tests', async () => {
@@ -152,14 +156,27 @@ test.describe('POST articles endpoint tests', async () => {
       await enableFeatureFlag(request, 'feature_validate_article_title', true);
     });
 
-    test('Returns 422 Unprocessable content on creating article with non-unique title', async ({
+    test('Returns 201 on creating article with unique title', async ({
       request,
     }) => {
       // Given
-      const getResponse: APIResponse = await request.get(`${articles}/1`);
-      expect(getResponse.status()).toBe(HttpStatusCode.Ok);
-      const firstArticleResponseBody = await getResponse.json();
-      articleData['title'] = firstArticleResponseBody.title;
+      articleData['title'] = await generateUniqueArticleTitle(request);
+
+      // When
+      const response: APIResponse = await request.post(articles, {
+        headers: setHeaders,
+        data: articleData,
+      });
+
+      // Then
+      expect(response.status()).toBe(HttpStatusCode.Created);
+    });
+
+    test('Returns 422 on creating article with non-unique title', async ({
+      request,
+    }) => {
+      // Given
+      articleData['title'] = await getExistingArticleTitle(request);
 
       // When
       const response: APIResponse = await request.post(articles, {
