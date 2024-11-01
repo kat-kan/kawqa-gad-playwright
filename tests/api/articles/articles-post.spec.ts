@@ -1,6 +1,7 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
+import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
 import { customDate } from 'test-data/shared/date.generator';
 
@@ -140,4 +141,38 @@ test.describe('POST articles endpoint tests', async () => {
       expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
     });
   }
+  test.describe('Tests with enabled feature-flag for article title uniqueness validation', async () => {
+    const articleData: JSON = {} as JSON;
+    articleData['user_id'] = testUsers.regularUser.id;
+    articleData['body'] = articleBody;
+    articleData['date'] = articleDate;
+    articleData['image'] = articleImage;
+
+    test.beforeAll(async ({ request }) => {
+      await enableFeatureFlag(request, 'feature_validate_article_title', true);
+    });
+
+    test('Returns 422 Unprocessable content on creating article with non-unique title', async ({
+      request,
+    }) => {
+      // Given
+      const getResponse: APIResponse = await request.get(`${articles}/1`);
+      expect(getResponse.status()).toBe(HttpStatusCode.Ok);
+      const firstArticleResponseBody = await getResponse.json();
+      articleData['title'] = firstArticleResponseBody.title;
+
+      // When
+      const response: APIResponse = await request.post(articles, {
+        headers: setHeaders,
+        data: articleData,
+      });
+
+      // Then
+      expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
+    });
+
+    test.afterAll(async ({ request }) => {
+      await enableFeatureFlag(request, 'feature_validate_article_title', false);
+    });
+  });
 });
