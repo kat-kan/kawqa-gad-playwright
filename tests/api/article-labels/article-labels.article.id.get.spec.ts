@@ -1,5 +1,5 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
-import { enableFeatureFlag } from '@_src_helpers_api/flags.helper';
+import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
 
 test.describe('GET article labels tests', async () => {
