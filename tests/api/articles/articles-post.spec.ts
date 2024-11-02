@@ -146,11 +146,12 @@ test.describe('POST articles endpoint tests', async () => {
     });
   }
   test.describe('Tests with enabled feature-flag for article title uniqueness validation', async () => {
-    const articleData: JSON = {} as JSON;
-    articleData['user_id'] = testUsers.regularUser.id;
-    articleData['body'] = articleBody;
-    articleData['date'] = articleDate;
-    articleData['image'] = articleImage;
+    const articleData = {
+      user_id: testUsers.regularUser.id,
+      body: articleBody,
+      date: articleDate,
+      image: articleImage,
+    };
 
     test.beforeAll(async ({ request }) => {
       await enableFeatureFlag(request, 'feature_validate_article_title', true);
