@@ -6,7 +6,7 @@ import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('PUT articles/{id} endpoint tests', async () => {
   const articles = `/api/articles`;
-  const randomNumber = Math.floor(Math.random() * (1000 - 100 + 1)) + 100;
+  const randomNumber = Math.floor(Math.random() * (2000 - 1001 + 1)) + 1001;
   const newTitle = 'How to start writing API tests?';
   const newTitle2 = 'How to start writing API tests?' + randomNumber;
   const newTitle3 = 'How to start writing good API tests?' + randomNumber;
