@@ -95,6 +95,7 @@ test.describe('DELETE articles/{id}', () => {
     // Then
     expect(response.status()).toBe(HttpStatusCode.Ok);
   });
+
   test('returns 401 when regular user tries to delete article created by other user', async ({
     request,
   }) => {
