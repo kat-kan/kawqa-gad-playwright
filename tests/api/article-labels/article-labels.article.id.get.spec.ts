@@ -2,6 +2,7 @@ import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
 
+test.describe.configure({ mode: 'serial' });
 test.describe('GET article labels tests', async () => {
   const articleLabels: string = `/api/article-labels/articles`;
 
