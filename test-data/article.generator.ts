@@ -16,7 +16,7 @@ export async function generateUniqueArticleTitle(
 
   let uniqueArticleTitle: string;
   while (isUnique == false) {
-    uniqueArticleTitle = faker.book.title();
+    uniqueArticleTitle = faker.lorem.sentence();
     // eslint-disable-next-line playwright/no-conditional-in-test
     if (!articleTitleList.includes(uniqueArticleTitle)) {
       isUnique = true;
