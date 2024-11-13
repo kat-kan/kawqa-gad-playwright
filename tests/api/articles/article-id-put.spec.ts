@@ -18,9 +18,6 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
   const articleDate: string = customDate.pastDate;
   const articleImage: string =
     'src\\test-data\\images\\Roasted_coffee_beans.jpg';
-  const features: string = `/api/config/features`;
-  const articleId: number = randomNumber;
-  const articleId2: number = randomNumber + 1;
   let setHeaders: { [key: string]: string };
 
   test.beforeAll(async () => {
