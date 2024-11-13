@@ -6,20 +6,20 @@ export async function generateUniqueArticleId(
   minRange: number = 1001,
   maxRange: number = 2000,
 ): Promise<number> {
- // get list of all article IDs
+  // get list of all article IDs
   const articlesJSON = await generateArticlesJSON(request);
   const articleIdList: number[] = articlesJSON.map(
     (article: { id: number }) => article.id,
   );
 
-// generate unique ID
+  // generate unique ID
   let isUnique: boolean = false;
   let uniqueArticleId: number;
 
   while (!isUnique) {
     uniqueArticleId =
       Math.floor(Math.random() * (maxRange - minRange + 1)) + minRange;
-// id uniqueness check
+    // id uniqueness check
     if (!articleIdList.includes(uniqueArticleId)) {
       isUnique = true;
     }
