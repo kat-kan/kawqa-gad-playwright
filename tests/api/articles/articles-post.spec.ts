@@ -6,7 +6,7 @@ import { APIResponse, expect, test } from '@playwright/test';
 import {
   generateUniqueArticleTitle,
   getExistingArticleTitle,
-} from 'test-data/article.generator';
+} from 'test-data/shared/article.generator';
 import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('POST articles endpoint tests', async () => {
