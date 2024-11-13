@@ -1,22 +1,13 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
-import { createHeaders } from '@_src_helpers_api/create-token.helper';
+import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
 
+test.describe.configure({ mode: 'serial' });
 test.describe('GET article labels tests', async () => {
   const articleLabels: string = `/api/article-labels/articles`;
-  const features: string = `/api/config/features`;
-  let setHeaders: { [key: string]: string };
 
   test.beforeAll(async ({ request }) => {
-    setHeaders = await createHeaders();
-    //enable feature: labels
-    const response: APIResponse = await request.post(features, {
-      headers: setHeaders,
-      data: {
-        feature_labels: true,
-      },
-    });
-    expect(response.status()).toBe(HttpStatusCode.Ok);
+    await enableFeatureFlag(request, 'feature_labels', true);
   });
 
   test('Returns 200 OK after getting labels for existing article', async ({
@@ -52,13 +43,6 @@ test.describe('GET article labels tests', async () => {
   });
 
   test.afterAll(async ({ request }) => {
-    //disable feature: labels
-    const response: APIResponse = await request.post(features, {
-      headers: setHeaders,
-      data: {
-        feature_labels: false,
-      },
-    });
-    expect(response.status()).toBe(HttpStatusCode.Ok);
+    await enableFeatureFlag(request, 'feature_labels', false);
   });
 });
