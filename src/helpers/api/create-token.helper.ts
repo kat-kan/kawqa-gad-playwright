@@ -19,6 +19,9 @@ export async function createToken(userType: string): Promise<string> {
     const userData: UserData = await createUser(tokenContextRequest);
     setEmail = userData.email;
     setPassword = userData.password;
+    logConsole(
+      `Logging in as ${userType} user ${userData.firstname} ${userData.lastname} (email: ${setEmail})\n`,
+    );
   }
 
   const response = await tokenContextRequest.post(`/api/login`, {
