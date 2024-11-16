@@ -1,10 +1,13 @@
+import { createUser } from './create-user.helper';
 import { UserType } from '@_src_api/enums/user-types.enum';
 import { logConsole } from '@_src_api/utils/log-levels';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { request } from '@playwright/test';
+import { UserData } from 'test-data/models/user.model';
 
 export async function createToken(userType: string): Promise<string> {
   let setEmail: string, setPassword: string;
+  const tokenContextRequest = await request.newContext();
 
   if (userType === UserType.regular) {
     setEmail = testUsers.regularUser.email;
@@ -12,9 +15,12 @@ export async function createToken(userType: string): Promise<string> {
   } else if (userType === UserType.admin) {
     setEmail = testUsers.admin.email;
     setPassword = testUsers.admin.password;
+  } else if (userType === UserType.custom) {
+    const userData: UserData = await createUser(tokenContextRequest);
+    setEmail = userData.email;
+    setPassword = userData.password;
   }
 
-  const tokenContextRequest = await request.newContext();
   const response = await tokenContextRequest.post(`/api/login`, {
     data: {
       email: setEmail,
