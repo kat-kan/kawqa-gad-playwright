@@ -1,14 +1,15 @@
+import { UserType } from '@_src_api/enums/user-types.enum';
 import { logConsole } from '@_src_api/utils/log-levels';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { request } from '@playwright/test';
 
 export async function createToken(userType: string): Promise<string> {
-  let setEmail, setPassword;
+  let setEmail: string, setPassword: string;
 
-  if (userType === 'regular') {
+  if (userType === UserType.regular) {
     setEmail = testUsers.regularUser.email;
     setPassword = testUsers.regularUser.password;
-  } else if (userType === 'admin') {
+  } else if (userType === UserType.admin) {
     setEmail = testUsers.admin.email;
     setPassword = testUsers.admin.password;
   }
@@ -27,7 +28,7 @@ export async function createToken(userType: string): Promise<string> {
 }
 
 export async function createHeaders(
-  userType: string = 'regular',
+  userType: string = UserType.regular,
 ): Promise<{ [key: string]: string }> {
   const setTokenInHeaders = await createToken(userType);
   const requestHeaders = {
