@@ -11,6 +11,6 @@ jobs:
       uses: madrapps/add-reviewers@v1
       with:
         token: ${{ secrets.TOKEN }}
-        reviewers: kat-kan
+        reviewers: bugITwhisperer
         re-request-when-approved: true
         re-request-when-changes-requested: true
