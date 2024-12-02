@@ -1,6 +1,8 @@
-import { Locator, Page } from '@playwright/test';
+import { PracticePage } from './practice-page.page';
+import { Page } from '@playwright/test';
+import { Locator } from '@playwright/test';
 
-export class SimpleElementsWithIdsPage {
+export class SimpleElementsWithIdsPage extends PracticePage {
   readonly label: Locator;
   readonly button: Locator;
   readonly checkbox: Locator;
@@ -16,7 +18,8 @@ export class SimpleElementsWithIdsPage {
   readonly colorInput: Locator;
   readonly resultsArea: Locator;
 
-  constructor(private page: Page) {
+  constructor(page: Page) {
+    super(page);
     this.label = this.page.getByTestId('dti-label-element');
     this.button = this.page.getByTestId('dti-button-element');
     this.checkbox = this.page.getByTestId('dti-checkbox');
@@ -31,16 +34,5 @@ export class SimpleElementsWithIdsPage {
     this.dateInput = this.page.getByTestId('dti-date');
     this.colorInput = this.page.getByTestId('dti-color');
     this.resultsArea = this.page.getByTestId('dti-results');
-  }
-  async textAreaStretching(
-    startX: number,
-    startY: number,
-    endX: number,
-    endY: number,
-  ): Promise<void> {
-    await this.page.mouse.move(startX, startY);
-    await this.page.mouse.down();
-    await this.page.mouse.move(endX, endY, { steps: 10 });
-    await this.page.mouse.up();
   }
 }
