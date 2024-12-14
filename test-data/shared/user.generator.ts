@@ -6,7 +6,11 @@ export async function generateFakeUserData(
   request: APIRequestContext,
 ): Promise<UserData> {
   const userFirstName = faker.person.firstName().replace(/[^A-Za-z]/g, '');
-  const userLastName = faker.person.lastName().replace(/[^A-Za-z]/g, '');
+  let userLastName = faker.person.lastName().replace(/[^A-Za-z]/g, '');
+  // randomly generate names with a hyphen
+  if (Math.random() < 0.5) {
+    userLastName += '-' + faker.person.lastName().replace(/[^A-Za-z]/g, '');
+  }
   const userEmail = faker.internet.email({
     firstName: userFirstName,
     lastName: userLastName,
