@@ -2,8 +2,12 @@ name: Playwright API Auto-Checks
 on:
   push:
     branches: ['main', 'tests/ISSUE*']
+    paths-ignore:
+      - '**/*.md'
   pull_request:
     branches: ['main', 'tests/ISSUE*']
+    paths-ignore:
+      - '**/*.md'
 jobs:
   playwright-api-auto-checks:
     runs-on: ubuntu-latest
