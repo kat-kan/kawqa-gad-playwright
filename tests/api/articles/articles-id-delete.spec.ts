@@ -1,4 +1,5 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { UserType } from '@_src_api/enums/user-types.enum';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, test } from '@playwright/test';
@@ -87,7 +88,7 @@ test.describe('DELETE articles/{id}', () => {
       .toBe(HttpStatusCode.Ok);
 
     // When admin user tries to delete the article
-    setHeaders = await createHeaders('admin');
+    setHeaders = await createHeaders(UserType.admin);
     const response = await request.delete(`${articles}/${createdArticleId}`, {
       headers: setHeaders,
     });
@@ -100,7 +101,7 @@ test.describe('DELETE articles/{id}', () => {
     request,
   }) => {
     // Given the article is created by other user (admin)
-    setHeaders = await createHeaders('admin');
+    setHeaders = await createHeaders(UserType.admin);
 
     const createResponse: APIResponse = await request.post(articles, {
       headers: setHeaders,
