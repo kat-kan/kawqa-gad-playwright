@@ -1,8 +1,13 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { ArticleResponseBody } from '@_src_api/interfaces/article-response-body.interface';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
+import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
-import { generateUniqueArticleId } from 'test-data/shared/article.generator';
+import {
+  generateUniqueArticleId,
+  takeMaxArticleId,
+} from 'test-data/shared/article.generator';
 import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('PUT articles/{id} endpoint tests', async () => {
@@ -17,7 +22,6 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
   const articleDate: string = customDate.pastDate;
   const articleImage: string =
     'src\\test-data\\images\\Roasted_coffee_beans.jpg';
-  const features: string = `/api/config/features`;
   let setHeaders: { [key: string]: string };
 
   test.beforeAll(async () => {
@@ -40,7 +44,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     });
     const responseBody = JSON.parse(await response.text());
     //Then
-    expect.soft(response.status()).toBe(HttpStatusCode.Ok);
+    expect(response.status()).toBe(HttpStatusCode.Ok);
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
@@ -72,7 +76,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     );
     const responseBody = JSON.parse(await response.text());
     //Then
-    expect.soft(response.status()).toBe(HttpStatusCode.Created);
+    expect(response.status()).toBe(HttpStatusCode.Created);
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
@@ -81,6 +85,69 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     expect.soft(responseBody.date).toBe(articleDate);
     expect.soft(responseBody.image).toBe(articleImage);
     expect.soft(typeof responseBody.id === 'number').toBe(true);
+  });
+
+  test.describe.configure({ mode: 'serial' });
+  test.describe('Creating two articles with the same non-existent ID', async () => {
+    let response: APIResponse;
+    const articleData = {
+      user_id: testUsers.regularUser.id,
+      title: newTitle3,
+      body: newContent,
+      date: articleDate,
+      image: articleImage,
+    };
+
+    test('Returns two 201 status codes when ID is large enough', async ({
+      request,
+    }) => {
+      // Given
+      const uniqueArticleId = await generateUniqueArticleId(request);
+      const maxArticleId = await takeMaxArticleId(request);
+
+      for (let index = 1; index <= 2; index++) {
+        // When
+        response = await request.put(`${articles}/${uniqueArticleId}`, {
+          headers: setHeaders,
+          data: articleData,
+        });
+
+        // Then the new article is created
+        const responseBody = JSON.parse(await response.text());
+        expect.soft(response.status()).toBe(HttpStatusCode.Created);
+        expect.soft(responseBody.id).toEqual(maxArticleId + index);
+      }
+    });
+
+    test('Returns 201 and 200 status codes when ID = max(ID) + 1', async ({
+      request,
+    }) => {
+      // Given
+      const uniqueArticleId = (await takeMaxArticleId(request)) + 1;
+
+      // When
+      response = await request.put(`${articles}/${uniqueArticleId}`, {
+        headers: setHeaders,
+        data: articleData,
+      });
+      let responseBody: ArticleResponseBody;
+      responseBody = JSON.parse(await response.text());
+
+      // Then new article is created
+      expect.soft(response.status()).toBe(HttpStatusCode.Created);
+      expect.soft(responseBody.id).toEqual(uniqueArticleId);
+
+      // When
+      response = await request.put(`${articles}/${uniqueArticleId}`, {
+        headers: setHeaders,
+        data: articleData,
+      });
+      responseBody = JSON.parse(await response.text());
+
+      // Then the newly created article is updated
+      expect.soft(response.status()).toBe(HttpStatusCode.Ok);
+      expect.soft(responseBody.id).toEqual(uniqueArticleId);
+    });
   });
 
   test('Returns 400 Bad Request after sending malformed JSON', async ({
@@ -113,7 +180,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       },
     });
     //Then
-    expect.soft(response.status()).toBe(HttpStatusCode.Unauthorized);
+    expect(response.status()).toBe(HttpStatusCode.Unauthorized);
   });
 
   test('Returns 422 Unprocessable Entity after updating article with wrong date format', async ({
@@ -162,7 +229,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     });
     const responseBody = JSON.parse(await response.text());
     //Then
-    expect.soft(response.status()).toBe(HttpStatusCode.Ok);
+    expect(response.status()).toBe(HttpStatusCode.Ok);
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
@@ -175,15 +242,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
 
   test.describe('PUT articles/{id} endpoint tests with enabled feature_validate_article_title', async () => {
     test.beforeAll(async ({ request }) => {
-      //When
-      const response: APIResponse = await request.post(features, {
-        headers: setHeaders,
-        data: {
-          feature_validate_article_title: true,
-        },
-      });
-      //Then
-      expect(response.status()).toBe(HttpStatusCode.Ok);
+      await enableFeatureFlag(request, 'feature_validate_article_title', true);
     });
 
     test('Returns 200 OK status code when updating article', async ({
@@ -202,7 +261,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       });
       const responseBody = JSON.parse(await response.text());
       //Then
-      expect.soft(response.status()).toBe(HttpStatusCode.Ok);
+      expect(response.status()).toBe(HttpStatusCode.Ok);
       expect
         .soft(responseBody.user_id.toString())
         .toEqual(testUsers.regularUser.id.toString());
@@ -230,10 +289,8 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       //Then
       const responseBody = JSON.parse(await response.text());
 
-      expect.soft(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
-      expect
-        .soft(responseBody.error.message)
-        .toBe('Field "title" is not unique!');
+      expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
+      expect(responseBody.error.message).toBe('Field "title" is not unique!');
     });
 
     test('Returns 201 Created status code when creating article using PUT', async ({
@@ -257,7 +314,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       );
       const responseBody = JSON.parse(await response.text());
       //Then
-      expect.soft(response.status()).toBe(HttpStatusCode.Created);
+      expect(response.status()).toBe(HttpStatusCode.Created);
       expect
         .soft(responseBody.user_id.toString())
         .toEqual(testUsers.regularUser.id.toString());
@@ -269,13 +326,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     });
 
     test.afterAll(async ({ request }) => {
-      const response: APIResponse = await request.post(features, {
-        headers: setHeaders,
-        data: {
-          feature_validate_article_title: false,
-        },
-      });
-      expect(response.status()).toBe(HttpStatusCode.Ok);
+      await enableFeatureFlag(request, 'feature_validate_article_title', false);
     });
   });
 });
