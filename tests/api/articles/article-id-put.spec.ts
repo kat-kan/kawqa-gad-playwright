@@ -1,4 +1,5 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { ArticleResponseBody } from '@_src_api/interfaces/article-response-body.interface';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
@@ -129,7 +130,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
         headers: setHeaders,
         data: articleData,
       });
-      let responseBody;
+      let responseBody: ArticleResponseBody;
       responseBody = JSON.parse(await response.text());
 
       // Then new article is created
