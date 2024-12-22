@@ -3,7 +3,10 @@ import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
-import { generateUniqueArticleId } from 'test-data/shared/article.generator';
+import {
+  generateUniqueArticleId,
+  takeMaxArticleId,
+} from 'test-data/shared/article.generator';
 import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('PUT articles/{id} endpoint tests', async () => {
@@ -81,6 +84,73 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     expect.soft(responseBody.date).toBe(articleDate);
     expect.soft(responseBody.image).toBe(articleImage);
     expect.soft(typeof responseBody.id === 'number').toBe(true);
+  });
+
+  test.describe.configure({ mode: 'serial' });
+  test.describe('Creating two articles with the same non-existent ID', async () => {
+    const articleData = {
+      user_id: testUsers.regularUser.id,
+      title: newTitle3,
+      body: newContent,
+      date: articleDate,
+      image: articleImage,
+    };
+
+    test('Returns two 201 status codes when ID is large enough', async ({
+      request,
+    }) => {
+      // Given
+      let response: APIResponse;
+      const uniqueArticleId = await generateUniqueArticleId(request);
+      const maxArticleId = await takeMaxArticleId(request);
+
+      for (let index = 1; index <= 2; index++) {
+        // When
+        response = await request.put(`${articles}/${uniqueArticleId}`, {
+          headers: setHeaders,
+          data: articleData,
+        });
+
+        // Then the new article is created
+        const responseBody = JSON.parse(await response.text());
+        expect.soft(response.status()).toBe(HttpStatusCode.Created);
+        // console.log(responseBody.id, uniqueArticleId, maxArticleId + index);
+        expect.soft(responseBody.id).toEqual(maxArticleId + index);
+      }
+    });
+
+    test('Returns 201 and 200 status codes when ID = max(ID) + 1', async ({
+      request,
+    }) => {
+      let response: APIResponse;
+      // Given
+      const uniqueArticleId = (await takeMaxArticleId(request)) + 1;
+
+      // When
+      response = await request.put(`${articles}/${uniqueArticleId}`, {
+        headers: setHeaders,
+        data: articleData,
+      });
+      let responseBody;
+      //   console.log(uniqueArticleId);
+      responseBody = JSON.parse(await response.text());
+      //   console.log(responseBody);
+      // Then new article is created
+      expect.soft(response.status()).toBe(HttpStatusCode.Created);
+      expect.soft(responseBody.id).toEqual(uniqueArticleId);
+
+      // When
+      response = await request.put(`${articles}/${uniqueArticleId}`, {
+        headers: setHeaders,
+        data: articleData,
+      });
+      //   console.log(uniqueArticleId);
+      responseBody = JSON.parse(await response.text());
+      //   console.log(responseBody);
+      // Then the newly created article is updated
+      expect.soft(response.status()).toBe(HttpStatusCode.Ok);
+      expect.soft(responseBody.id).toEqual(uniqueArticleId);
+    });
   });
 
   test('Returns 400 Bad Request after sending malformed JSON', async ({
