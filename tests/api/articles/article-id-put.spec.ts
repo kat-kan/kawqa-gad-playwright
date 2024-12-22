@@ -43,7 +43,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     });
     const responseBody = JSON.parse(await response.text());
     //Then
-    expect.soft(response.status()).toBe(HttpStatusCode.Ok);
+    expect(response.status()).toBe(HttpStatusCode.Ok);
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
@@ -75,7 +75,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     );
     const responseBody = JSON.parse(await response.text());
     //Then
-    expect.soft(response.status()).toBe(HttpStatusCode.Created);
+    expect(response.status()).toBe(HttpStatusCode.Created);
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
@@ -183,7 +183,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       },
     });
     //Then
-    expect.soft(response.status()).toBe(HttpStatusCode.Unauthorized);
+    expect(response.status()).toBe(HttpStatusCode.Unauthorized);
   });
 
   test('Returns 422 Unprocessable Entity after updating article with wrong date format', async ({
@@ -232,7 +232,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     });
     const responseBody = JSON.parse(await response.text());
     //Then
-    expect.soft(response.status()).toBe(HttpStatusCode.Ok);
+    expect(response.status()).toBe(HttpStatusCode.Ok);
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
@@ -264,7 +264,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       });
       const responseBody = JSON.parse(await response.text());
       //Then
-      expect.soft(response.status()).toBe(HttpStatusCode.Ok);
+      expect(response.status()).toBe(HttpStatusCode.Ok);
       expect
         .soft(responseBody.user_id.toString())
         .toEqual(testUsers.regularUser.id.toString());
@@ -292,10 +292,8 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       //Then
       const responseBody = JSON.parse(await response.text());
 
-      expect.soft(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
-      expect
-        .soft(responseBody.error.message)
-        .toBe('Field "title" is not unique!');
+      expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
+      expect(responseBody.error.message).toBe('Field "title" is not unique!');
     });
 
     test('Returns 201 Created status code when creating article using PUT', async ({
@@ -319,7 +317,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       );
       const responseBody = JSON.parse(await response.text());
       //Then
-      expect.soft(response.status()).toBe(HttpStatusCode.Created);
+      expect(response.status()).toBe(HttpStatusCode.Created);
       expect
         .soft(responseBody.user_id.toString())
         .toEqual(testUsers.regularUser.id.toString());
