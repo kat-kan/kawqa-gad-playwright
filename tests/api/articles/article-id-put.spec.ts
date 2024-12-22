@@ -88,6 +88,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
 
   test.describe.configure({ mode: 'serial' });
   test.describe('Creating two articles with the same non-existent ID', async () => {
+    let response: APIResponse;
     const articleData = {
       user_id: testUsers.regularUser.id,
       title: newTitle3,
@@ -100,7 +101,6 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       request,
     }) => {
       // Given
-      let response: APIResponse;
       const uniqueArticleId = await generateUniqueArticleId(request);
       const maxArticleId = await takeMaxArticleId(request);
 
@@ -114,7 +114,6 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
         // Then the new article is created
         const responseBody = JSON.parse(await response.text());
         expect.soft(response.status()).toBe(HttpStatusCode.Created);
-        // console.log(responseBody.id, uniqueArticleId, maxArticleId + index);
         expect.soft(responseBody.id).toEqual(maxArticleId + index);
       }
     });
@@ -122,7 +121,6 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     test('Returns 201 and 200 status codes when ID = max(ID) + 1', async ({
       request,
     }) => {
-      let response: APIResponse;
       // Given
       const uniqueArticleId = (await takeMaxArticleId(request)) + 1;
 
@@ -132,9 +130,8 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
         data: articleData,
       });
       let responseBody;
-      //   console.log(uniqueArticleId);
       responseBody = JSON.parse(await response.text());
-      //   console.log(responseBody);
+
       // Then new article is created
       expect.soft(response.status()).toBe(HttpStatusCode.Created);
       expect.soft(responseBody.id).toEqual(uniqueArticleId);
@@ -144,9 +141,8 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
         headers: setHeaders,
         data: articleData,
       });
-      //   console.log(uniqueArticleId);
       responseBody = JSON.parse(await response.text());
-      //   console.log(responseBody);
+
       // Then the newly created article is updated
       expect.soft(response.status()).toBe(HttpStatusCode.Ok);
       expect.soft(responseBody.id).toEqual(uniqueArticleId);
