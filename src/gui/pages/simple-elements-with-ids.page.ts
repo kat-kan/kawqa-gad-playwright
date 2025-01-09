@@ -1,6 +1,5 @@
 import { PracticePage } from './practice-page.page';
-import { Page } from '@playwright/test';
-import { Locator } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 
 export class SimpleElementsWithIdsPage extends PracticePage {
   readonly label: Locator;
