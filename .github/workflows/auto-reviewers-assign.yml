@@ -1,0 +1,19 @@
+name: Add Reviewers
+
+on:
+  workflow_dispatch:  
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Add Reviewers
+      uses: madrapps/add-reviewers@v1
+      with:
+        token: ${{ secrets.TOKEN }}
+        reviewers: kat-kan, Justyna-KO, Slawomir-DKl
+        re-request-when-approved: true
+        re-request-when-changes-requested: true
