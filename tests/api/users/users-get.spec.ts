@@ -1,4 +1,5 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { UserType } from '@_src_api/enums/user-types.enum';
 import { logConsole } from '@_src_api/utils/log-levels';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, test } from '@playwright/test';
@@ -6,7 +7,7 @@ import { APIResponse, expect, test } from '@playwright/test';
 test.describe('GET/users endpoint tests', async () => {
   const maskedData: string = '****';
   const users: string = '/api/users';
-  const userTypes: string[] = ['regular', 'admin'];
+  const userTypes: string[] = [UserType.regular, UserType.admin];
 
   test('Returns 200 OK - without authorization', async ({ request }) => {
     // When

@@ -1,19 +1,29 @@
+import { createUser } from './create-user.helper';
+import { UserType } from '@_src_api/enums/user-types.enum';
 import { logConsole } from '@_src_api/utils/log-levels';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { request } from '@playwright/test';
+import { UserData } from 'test-data/models/user.model';
 
 export async function createToken(userType: string): Promise<string> {
-  let setEmail, setPassword;
+  let setEmail: string, setPassword: string;
+  const tokenContextRequest = await request.newContext();
 
-  if (userType === 'regular') {
+  if (userType === UserType.regular) {
     setEmail = testUsers.regularUser.email;
     setPassword = testUsers.regularUser.password;
-  } else if (userType === 'admin') {
+  } else if (userType === UserType.admin) {
     setEmail = testUsers.admin.email;
     setPassword = testUsers.admin.password;
+  } else if (userType === UserType.custom) {
+    const userData: UserData = await createUser(tokenContextRequest);
+    setEmail = userData.email;
+    setPassword = userData.password;
+    logConsole(
+      `Logging in as ${userType} user ${userData.firstname} ${userData.lastname} (email: ${setEmail})\n`,
+    );
   }
 
-  const tokenContextRequest = await request.newContext();
   const response = await tokenContextRequest.post(`/api/login`, {
     data: {
       email: setEmail,
@@ -27,7 +37,7 @@ export async function createToken(userType: string): Promise<string> {
 }
 
 export async function createHeaders(
-  userType: string = 'regular',
+  userType: string = UserType.regular,
 ): Promise<{ [key: string]: string }> {
   const setTokenInHeaders = await createToken(userType);
   const requestHeaders = {
