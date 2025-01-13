@@ -2,7 +2,7 @@ name: Playwright API Auto-Checks
 on:
   push:
     branches:   
-    - '**' #all branches
+      - '**' #all branches
     paths-ignore:
       - '**/*.md'
   pull_request:
