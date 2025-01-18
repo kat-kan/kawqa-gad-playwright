@@ -9,13 +9,9 @@ export class DragAndDropPage extends PracticePage {
 
   constructor(page: Page) {
     super(page);
-    this.browseButton = this.page.getByText('browse');
+    this.browseButton = this.page.locator('#browsebutton');
     this.uploadButton = this.page.getByTestId('uploadBtn');
     this.resultsArea = this.page.locator('#results-container');
-    this.fileInput = this.page.locator('input[type="file"]');
-  }
-
-  async uploadFile(filePath: string): Promise<void> {
-    await this.fileInput.setInputFiles(filePath);
+    this.fileInput = this.page.locator('#dragdropfile');
   }
 }
