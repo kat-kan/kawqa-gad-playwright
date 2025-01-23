@@ -1,8 +1,12 @@
-import { HomePage } from '../../UI/pages/home.page';
-import { LoginPage } from '../../UI/pages/login.page';
-import { UserPage } from '../../UI/pages/user.page';
-import { loginData1 } from '../../test-data/UI/login.data';
-import { invalidEmails, invalidPasswords } from '../../test-data/UI/test.data';
+import { HomePage } from '../../../../src/e2e/pages/home.page';
+import { LoginPage } from '../../../../src/e2e/pages/login.page';
+import { UserPage } from '../../../../src/e2e/pages/user.page';
+import { loginData1 } from '../../../../test-data/e2e/UI/login.data';
+import {
+  invalidEmails,
+  invalidPasswords,
+} from '../../../../test-data/e2e/UI/test.data';
+import { generateRandomValidUser } from '../../data-generators/testDataHelpers';
 import { faker } from '@faker-js/faker';
 import { expect, test } from '@playwright/test';
 
@@ -16,7 +20,7 @@ test.describe('User Authentication Tests. User Registration, Login and Deletion 
     loginPage = new LoginPage(page);
     homePage = new HomePage(page);
 
-    await page.goto('http://localhost:3000/register.html');
+    await page.goto('/register.html');
   });
   // 1
   // Retrieves user data declared in the login.data.ts file for better data control.
@@ -26,12 +30,13 @@ test.describe('User Authentication Tests. User Registration, Login and Deletion 
     async ({ page }) => {
       // Arrange
       const { firstName, lastName, email, password } = loginData1;
+      const userCreated = 'User created';
 
       // Act - Register
       await userPage.createUser(firstName, lastName, email, password);
 
-      // Assert - Registration
-      await expect(page.getByTestId('alert-popup')).toHaveText('User created');
+      // Assert - Registration - added locator (PR)
+      await expect(loginPage.alertPopUp).toHaveText(`${userCreated}`);
 
       // Act - Login
       await loginPage.login(email, password);
@@ -116,7 +121,7 @@ test.describe('User Authentication Tests. User Registration, Login and Deletion 
     },
   );
 
-  // 3
+  // 3 replaces test group no. 3
 
   invalidEmails.forEach((incorrectEmail) => {
     test(
@@ -150,39 +155,46 @@ test.describe('User Authentication Tests. User Registration, Login and Deletion 
     { tag: ['@e2e', '@registration', '@login'] },
     async ({ page }) => {
       // Arrange
-      const email = faker.internet.email();
-      const password = faker.internet.password();
-      const firstName = faker.person.firstName();
-      const lastName = faker.person.lastName();
+      const userData = generateRandomValidUser();
       const password2 = '456$456';
+      const userCreated = 'User created';
+      const userNotCreated = 'User not created! Email not unique';
 
       // Act - Register
-      await userPage.createUser(firstName, lastName, email, password);
+      await userPage.createUser(
+        userData.firstName,
+        userData.lastName,
+        userData.email,
+        userData.password,
+      );
 
-      // Assert - Registration
-      await expect(page.getByTestId('alert-popup')).toHaveText('User created');
+      // Assert - Registration - added locator (PR)
+      await expect(loginPage.alertPopUp).toHaveText(`${userCreated}`);
 
       // Act - Login
-      await loginPage.login(email, password);
+      await loginPage.login(userData.email, userData.password);
 
       // Assert - Login
-      await expect(loginPage.userName).toHaveText(`Hi ${email}!`);
+      await expect(loginPage.userName).toHaveText(`Hi ${userData.email}!`);
 
       // Act - Logout
       await homePage.logout();
 
       // Act - Register at the same email
-      await page.goto('http://localhost:3000/register.html');
-      await userPage.createUser(firstName, lastName, email, password2);
-
-      // Assert - Registration
-      await expect(page.getByTestId('alert-popup')).toHaveText(
-        'User not created! Email not unique',
+      await page.goto('/register.html');
+      await userPage.createUser(
+        userData.firstName,
+        userData.lastName,
+        userData.email,
+        password2,
       );
+
+      // Assert - Registration - added locator (PR)
+      await expect(loginPage.alertPopUp).toHaveText(`${userNotCreated}`);
     },
   );
 
-  // 5
+  // 5 replaces test group no. 5
   // Currently, there is no password validation - accounts can be created with single-character passwords.
   // These tests may fail once password validation is implemented.
 
@@ -195,14 +207,13 @@ test.describe('User Authentication Tests. User Registration, Login and Deletion 
         const email = faker.internet.email();
         const firstName = faker.person.firstName();
         const lastName = faker.person.lastName();
+        const userCreated = 'User created';
 
         // Act - Register
         await userPage.createUser(firstName, lastName, email, password);
 
-        // Assert - Registration
-        await expect(page.getByTestId('alert-popup')).toHaveText(
-          'User created',
-        );
+        // Assert - Registration - added locator (PR)
+        await expect(loginPage.alertPopUp).toHaveText(`${userCreated}`);
 
         // Act - Login
         await loginPage.login(email, password);
@@ -219,30 +230,33 @@ test.describe('User Authentication Tests. User Registration, Login and Deletion 
     { tag: ['@e2e', '@registration', '@login', '@deletion'] },
     async ({ page }) => {
       // Arrange
-      const email = faker.internet.email();
-      const password = faker.internet.password();
-      const firstName = faker.person.firstName();
-      const lastName = faker.person.lastName();
+      const userData = generateRandomValidUser();
+      const userCreated = 'User created';
 
       // Act - Register
-      await userPage.createUser(firstName, lastName, email, password);
+      await userPage.createUser(
+        userData.firstName,
+        userData.lastName,
+        userData.email,
+        userData.password,
+      );
 
-      // Assert - Registration
-      await expect(page.getByTestId('alert-popup')).toHaveText('User created');
+      // Assert - Registration - added locator (PR)
+      await expect(loginPage.alertPopUp).toHaveText(`${userCreated}`);
 
       // Act - Login
-      await loginPage.login(email, password);
+      await loginPage.login(userData.email, userData.password);
 
       // Assert - Login
-      await expect(loginPage.userName).toHaveText(`Hi ${email}!`);
+      await expect(loginPage.userName).toHaveText(`Hi ${userData.email}!`);
 
       // Act & Assert - Deletion
       await homePage.deleteUser();
 
       // Act - Re-Login
       await page.waitForTimeout(2000); // 2 second delay to re-login
-      await page.goto('http://localhost:3000/login/');
-      await loginPage.login(email, password);
+      await page.goto('/login/');
+      await loginPage.login(userData.email, userData.password);
 
       // Assert - Login
       await expect(page.getByTestId('login-error')).toHaveText(
@@ -257,20 +271,23 @@ test.describe('User Authentication Tests. User Registration, Login and Deletion 
     { tag: ['@e2e', '@registration', '@login'] },
     async ({ page }) => {
       // Arrange
-      const email = faker.internet.email();
-      const password = faker.internet.password();
-      const firstName = faker.person.firstName();
-      const lastName = faker.person.lastName();
+      const userData = generateRandomValidUser();
       const emailInvalid = 'a@h.com';
+      const userCreated = 'User created';
 
       // Act - Register
-      await userPage.createUser(firstName, lastName, email, password);
+      await userPage.createUser(
+        userData.firstName,
+        userData.lastName,
+        userData.email,
+        userData.password,
+      );
 
-      // Assert - Registration
-      await expect(page.getByTestId('alert-popup')).toHaveText('User created');
+      // Assert - Registration - added locator (PR)
+      await expect(loginPage.alertPopUp).toHaveText(`${userCreated}`);
 
       // Act - Invalid Login
-      await loginPage.login(emailInvalid, password);
+      await loginPage.login(emailInvalid, userData.password);
 
       // Assert - Login
       await expect(page.getByTestId('login-error')).toHaveText(
@@ -285,20 +302,23 @@ test.describe('User Authentication Tests. User Registration, Login and Deletion 
     { tag: ['@e2e', '@registration', '@login'] },
     async ({ page }) => {
       // Arrange
-      const email = faker.internet.email();
-      const password = faker.internet.password();
-      const firstName = faker.person.firstName();
-      const lastName = faker.person.lastName();
+      const userData = generateRandomValidUser();
       const passwordInvalid = '45!5';
+      const userCreated = 'User created';
 
       // Act - Register
-      await userPage.createUser(firstName, lastName, email, password);
+      await userPage.createUser(
+        userData.firstName,
+        userData.lastName,
+        userData.email,
+        userData.password,
+      );
 
-      // Assert - Registration
-      await expect(page.getByTestId('alert-popup')).toHaveText('User created');
+      // Assert - Registration - added locator (PR)
+      await expect(loginPage.alertPopUp).toHaveText(`${userCreated}`);
 
       // Act - Invalid password
-      await loginPage.login(email, passwordInvalid);
+      await loginPage.login(userData.email, passwordInvalid);
 
       // Assert - Login
       await expect(page.getByTestId('login-error')).toHaveText(
@@ -313,20 +333,22 @@ test.describe('User Authentication Tests. User Registration, Login and Deletion 
     { tag: ['@e2e', '@registration', '@login'] },
     async ({ page }) => {
       // Arrange
-      const email = faker.internet.email();
-      const password = faker.internet.password();
-      const firstName = faker.person.firstName();
-      const lastName = faker.person.lastName();
+      const userData = generateRandomValidUser();
       const emailInvalid = '';
+      const userCreated = 'User created';
 
       // Act - Register
-      await userPage.createUser(firstName, lastName, email, password);
-
-      // Assert - Registration
-      await expect(page.getByTestId('alert-popup')).toHaveText('User created');
+      await userPage.createUser(
+        userData.firstName,
+        userData.lastName,
+        userData.email,
+        userData.password,
+      );
+      // Assert - Registration - added locator (PR)
+      await expect(loginPage.alertPopUp).toHaveText(`${userCreated}`);
 
       // Act - Invalid Login
-      await loginPage.login(emailInvalid, password);
+      await loginPage.login(emailInvalid, userData.password);
 
       // Assert - Login
       await expect(page.getByTestId('login-error')).toHaveText(
@@ -341,20 +363,23 @@ test.describe('User Authentication Tests. User Registration, Login and Deletion 
     { tag: ['@e2e', '@registration', '@login'] },
     async ({ page }) => {
       // Arrange
-      const email = faker.internet.email();
-      const password = faker.internet.password();
-      const firstName = faker.person.firstName();
-      const lastName = faker.person.lastName();
+      const userData = generateRandomValidUser();
       const passwordInvalid = '';
+      const userCreated = 'User created';
 
       // Act - Register
-      await userPage.createUser(firstName, lastName, email, password);
+      await userPage.createUser(
+        userData.firstName,
+        userData.lastName,
+        userData.email,
+        userData.password,
+      );
 
-      // Assert - Registration
-      await expect(page.getByTestId('alert-popup')).toHaveText('User created');
+      // Assert - Registration - added locator (PR)
+      await expect(loginPage.alertPopUp).toHaveText(`${userCreated}`);
 
       // Act - Invalid Login
-      await loginPage.login(email, passwordInvalid);
+      await loginPage.login(userData.email, passwordInvalid);
 
       // Assert - Login
       await expect(page.getByTestId('login-error')).toHaveText(
@@ -371,31 +396,34 @@ test.describe('User Authentication Tests. User Registration, Login and Deletion 
     },
     async ({ page }) => {
       // Arrange
-      const email = faker.internet.email();
-      const password = faker.internet.password();
-      const firstName = faker.person.firstName();
-      const lastName = faker.person.lastName();
+      const userData = generateRandomValidUser();
+      const userCreated = 'User created';
 
       // Act - Register
-      await userPage.createUser(firstName, lastName, email, password);
+      await userPage.createUser(
+        userData.firstName,
+        userData.lastName,
+        userData.email,
+        userData.password,
+      );
 
-      // Assert - Registration
-      await expect(page.getByTestId('alert-popup')).toHaveText('User created');
+      // Assert - Registration - added locator (PR)
+      await expect(loginPage.alertPopUp).toHaveText(`${userCreated}`);
 
       // Act - Login
-      await loginPage.login(email, password);
+      await loginPage.login(userData.email, userData.password);
 
       // Assert - Login
-      await expect(loginPage.userName).toHaveText(`Hi ${email}!`);
+      await expect(loginPage.userName).toHaveText(`Hi ${userData.email}!`);
 
       // Act - Logout
       await homePage.logout();
 
       // Act - Login
-      await loginPage.login(email, password);
+      await loginPage.login(userData.email, userData.password);
 
       // Assert - Login
-      await expect(loginPage.userName).toHaveText(`Hi ${email}!`);
+      await expect(loginPage.userName).toHaveText(`Hi ${userData.email}!`);
     },
   );
 });
