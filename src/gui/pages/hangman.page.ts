@@ -1,5 +1,5 @@
 import { BasePage } from './base.page';
-import { APIRequestContext, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
 
 export class HangmanPage extends BasePage {
   url = '/games/hangman.html';
@@ -10,11 +10,5 @@ export class HangmanPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-  }
-
-  async checkGameSolution(request: APIRequestContext): Promise<string> {
-    const response = await request.get('/api/hangman/random');
-    const jsonReworked = JSON.parse(JSON.stringify(await response.json()));
-    return jsonReworked.word;
   }
 }
