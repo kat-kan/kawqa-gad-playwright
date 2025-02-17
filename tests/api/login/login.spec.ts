@@ -1,6 +1,6 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
-import { testUsers } from '@_src_fixtures_api/auth';
 import { expect, test } from '@playwright/test';
+import { testUsers } from 'src/shared/fixtures/auth';
 
 test.describe('Login endpoint tests', async () => {
   const login = `/api/login`;

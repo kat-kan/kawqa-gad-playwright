@@ -1,6 +1,9 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
 import { defineConfig, devices } from '@playwright/test';
-import * as dotenv from 'dotenv';
+// import * as dotenv from 'dotenv';
+import * as path from 'path';
+
+export const STORAGE_STATE = path.join(__dirname, 'tmp/session.json');
 
 export default defineConfig({
   testDir: './tests',
@@ -18,7 +21,21 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
+      grepInvert: /@logged/,
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'setup',
+      testMatch: '*.setup.ts',
+    },
+    {
+      name: 'chromium-logged-gui',
+      grep: /@logged/,
+      dependencies: ['setup'],
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: STORAGE_STATE,
+      },
     },
   ],
 });
