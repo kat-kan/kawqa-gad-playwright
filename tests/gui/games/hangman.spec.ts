@@ -31,9 +31,31 @@ test('Starting the game @logged', async ({ page }) => {
   // Then
   await expect
     .soft(hangmanPage.hangmanPicture)
-    .toHaveText('_________\n|\n|\n|\n|\n|\n_|_');
+    .toHaveText(hangmanPage.hangmanSequence[0]);
   expect.soft(mySolution).not.toMatch(/[A-Z]/);
   expect.soft(mySolution).toContain('_ ');
   expect.soft(mySolution).toHaveLength(gameSolution.length * 2 - 1);
   await expect.soft(hangmanPage.letterRow).toBeVisible();
+});
+
+// eslint-disable-next-line playwright/expect-expect
+test('Failed game has proper sequence of hangman pictures @logged', async ({
+  page,
+}) => {
+  // Given
+  const hangmanPage = new HangmanPage(page);
+  await page.goto(hangmanPage.url);
+  const gameSolution = await hangmanPage.clickStartButtonWithGameSolution(
+    '/api/hangman/random',
+  );
+
+  let letterNumber = 0;
+  for (let index = 0; index < hangmanPage.hangmanSequence.length; index++) {
+    if (hangmanPage.letters[letterNumber] in gameSolution) {
+
+    }
+    const element = hangmanPage.hangmanSequence[index];
+  }
+
+  // hangmanPage.hangmanSequence
 });

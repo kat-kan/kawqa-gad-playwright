@@ -7,6 +7,44 @@ export class HangmanPage extends BasePage {
   mySolutionWord = this.page.locator('#word');
   startButton = this.page.getByTestId('startButton');
   letterRow = this.page.locator('#letters');
+  hangmanSequence = [
+    '_________ | | | | | _|_',
+    '_________ | | | O | | _|_',
+    '_________ | | | O | | | _|_',
+    '_________ | | | O | /| | _|_',
+    '_________ | | | O | /|\\ | _|_',
+    '_________ | | | O | /|\\ | / _|_',
+    '_________ | | | O | /|\\ | / \\ _|_',
+  ];
+  letters = [
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z',
+    'SPACE',
+  ];
 
   constructor(page: Page) {
     super(page);
@@ -21,5 +59,9 @@ export class HangmanPage extends BasePage {
     const responseJson = await response.json();
     const finalWord = responseJson.word;
     return finalWord;
+  }
+
+  async clickLetter(letter: string): Promise<void> {
+    this.page.locator(`#btn-${letter}`).click();
   }
 }
