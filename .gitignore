@@ -4,3 +4,4 @@ playwright-report/
 playwright/.cache/
 .env
 playwright-report.json
+CONTRIBUTING_MINE.md
