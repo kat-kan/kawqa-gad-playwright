@@ -15,7 +15,6 @@ export class SimpleElementsWithIdsPage extends PracticePage {
   readonly tooltip: Locator;
   readonly dateInput: Locator;
   readonly colorInput: Locator;
-  readonly resultsArea: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -32,6 +31,5 @@ export class SimpleElementsWithIdsPage extends PracticePage {
     this.tooltip = this.page.getByTestId('dti-tooltip-element');
     this.dateInput = this.page.getByTestId('dti-date');
     this.colorInput = this.page.getByTestId('dti-color');
-    this.resultsArea = this.page.getByTestId('dti-results');
   }
 }

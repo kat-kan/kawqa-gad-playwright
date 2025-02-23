@@ -20,32 +20,35 @@ test.describe('GUI tests for multiple elements', () => {
       const checkedText = `Checkbox is checked! (Opt ${i + 1}!)`;
       const uncheckedText = `Checkbox is unchecked! (Opt ${i + 1}!)`;
 
-      // When
-      await simpleElementsMultipleElements.checkCheckbox(i);
-      expectedHistory.unshift(checkedText);
+      await test.step(`Checking the checkbox Opt ${i + 1}`, async () => {
+        // When
+        await simpleElementsMultipleElements.checkCheckbox(i);
+        expectedHistory.unshift(checkedText);
 
-      // Then
-      await expect(
-        await simpleElementsMultipleElements.getResultsText(),
-      ).toContain(checkedText);
+        // Then
+        expect(await simpleElementsMultipleElements.getResultsText()).toContain(
+          checkedText,
+        );
 
-      const historyText = await simpleElementsMultipleElements.getHistoryText();
-      await expect(historyText).toContain(expectedHistory.join('\n'));
+        const historyText =
+          await simpleElementsMultipleElements.getHistoryText();
+        expect(historyText).toContain(expectedHistory.join('\n'));
+      });
 
-      // When
-      await simpleElementsMultipleElements.uncheckCheckbox(i);
-      expectedHistory.unshift(uncheckedText);
+      await test.step(`Unchecking the checkbox Opt ${i + 1}`, async () => {
+        // When
+        await simpleElementsMultipleElements.uncheckCheckbox(i);
+        expectedHistory.unshift(uncheckedText);
 
-      // Then
-      await expect(
-        await simpleElementsMultipleElements.getResultsText(),
-      ).toContain(uncheckedText);
+        // Then
+        expect(await simpleElementsMultipleElements.getResultsText()).toContain(
+          uncheckedText,
+        );
 
-      const historyTextAfterUncheck =
-        await simpleElementsMultipleElements.getHistoryText();
-      await expect(historyTextAfterUncheck).toContain(
-        expectedHistory.join('\n'),
-      );
+        const historyTextAfterUncheck =
+          await simpleElementsMultipleElements.getHistoryText();
+        expect(historyTextAfterUncheck).toContain(expectedHistory.join('\n'));
+      });
     }
   });
 });

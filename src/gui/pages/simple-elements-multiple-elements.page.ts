@@ -3,14 +3,12 @@ import { Locator, Page } from '@playwright/test';
 
 export class SimpleElementsMultipleElements extends PracticePage {
   readonly checkboxes: Locator;
-  readonly resultsContainer: Locator;
   readonly resultsHistoryContainer: Locator;
 
   constructor(page: Page) {
     super(page);
 
     this.checkboxes = this.page.getByRole('checkbox');
-    this.resultsContainer = this.page.locator('#results');
     this.resultsHistoryContainer = this.page.locator(
       '#results-history-container',
     );
@@ -26,11 +24,11 @@ export class SimpleElementsMultipleElements extends PracticePage {
     await checkbox.uncheck();
   }
 
-  async getHistoryText(): Promise<string> {
-    return await this.resultsHistoryContainer.inputValue();
+  async getResultsText(): Promise<string> {
+    return await this.resultsArea.textContent();
   }
 
-  async getResultsText(): Promise<string> {
-    return await this.resultsContainer.textContent();
+  async getHistoryText(): Promise<string> {
+    return await this.resultsHistoryContainer.inputValue();
   }
 }
