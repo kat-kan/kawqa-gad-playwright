@@ -2,7 +2,8 @@ name: Add Reviewers
 
 on:
   pull_request:
-    types: [opened, ready_for_review, reopened]
+    branches:
+      - '*'
 
 jobs:
   add-reviewers:
