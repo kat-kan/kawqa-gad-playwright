@@ -28,6 +28,19 @@ export async function generateUniqueArticleId(
   return uniqueArticleId;
 }
 
+export async function takeMaxArticleId(
+  request: APIRequestContext,
+): Promise<number> {
+  // get list of all article IDs
+  const articlesJSON = await generateArticlesJSON(request);
+  const articleIdList: number[] = articlesJSON.map(
+    (article: { id: number }) => article.id,
+  );
+
+  // return maximum ID
+  return Math.max(...articleIdList);
+}
+
 export async function generateUniqueArticleTitle(
   request: APIRequestContext,
 ): Promise<string> {
