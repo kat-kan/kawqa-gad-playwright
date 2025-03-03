@@ -20,7 +20,18 @@ export class PracticePage {
     await this.page.mouse.move(endX, endY, { steps: 10 });
     await this.page.mouse.up();
   }
+
   async uploadFile(fileInput: Locator, filePath: string): Promise<void> {
     await fileInput.setInputFiles(filePath);
+  }
+
+  async handleAlert(): Promise<string> {
+    return new Promise((resolve) => {
+      this.page.once('dialog', async (dialog) => {
+        const alertMessage = dialog.message();
+        await dialog.dismiss();
+        resolve(alertMessage);
+      });
+    });
   }
 }
