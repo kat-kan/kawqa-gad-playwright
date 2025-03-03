@@ -1,7 +1,12 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
+import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
+import {
+  generateUniqueArticleTitle,
+  getExistingArticleTitle,
+} from 'test-data/shared/article.generator';
 import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('POST articles endpoint tests', async () => {
@@ -140,4 +145,52 @@ test.describe('POST articles endpoint tests', async () => {
       expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
     });
   }
+  test.describe('Tests with enabled feature-flag for article title uniqueness validation', async () => {
+    const articleData = {
+      user_id: testUsers.regularUser.id,
+      body: articleBody,
+      date: articleDate,
+      image: articleImage,
+    };
+
+    test.beforeAll(async ({ request }) => {
+      await enableFeatureFlag(request, 'feature_validate_article_title', true);
+    });
+
+    test('Returns 201 on creating article with unique title', async ({
+      request,
+    }) => {
+      // Given
+      articleData['title'] = await generateUniqueArticleTitle(request);
+
+      // When
+      const response: APIResponse = await request.post(articles, {
+        headers: setHeaders,
+        data: articleData,
+      });
+
+      // Then
+      expect(response.status()).toBe(HttpStatusCode.Created);
+    });
+
+    test('Returns 422 on creating article with non-unique title', async ({
+      request,
+    }) => {
+      // Given
+      articleData['title'] = await getExistingArticleTitle(request);
+
+      // When
+      const response: APIResponse = await request.post(articles, {
+        headers: setHeaders,
+        data: articleData,
+      });
+
+      // Then
+      expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
+    });
+
+    test.afterAll(async ({ request }) => {
+      await enableFeatureFlag(request, 'feature_validate_article_title', false);
+    });
+  });
 });
