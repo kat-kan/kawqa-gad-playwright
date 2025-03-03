@@ -1,0 +1,29 @@
+name: Add Reviewers
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  add-reviewers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.REVIEWER_TOKEN }}
+          script: |
+            const reviewers = ['kat-kan', 'Justyna-KO', 'Slawomir-DKl'];
+            for (const reviewer of reviewers) {
+              try {
+                await github.rest.pulls.requestReviewers({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: context.issue.number,
+                  reviewers: [reviewer]
+                });
+                console.log(`Successfully added reviewer: ${reviewer}`);
+              } catch (error) {
+                console.error(`Failed to add reviewer ${reviewer}: ${error.message}`);
+              }
+            }

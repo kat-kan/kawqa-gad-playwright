@@ -1,9 +1,15 @@
 name: Playwright API Auto-Checks
 on:
   push:
-    branches: ['main', 'tests/ISSUE*']
+    branches:
+      - '**' #all branches
+    paths-ignore:
+      - '**/*.md'
   pull_request:
     branches: ['main', 'tests/ISSUE*']
+    paths-ignore:
+      - '**/*.md'
+  workflow_dispatch:  
 jobs:
   playwright-api-auto-checks:
     runs-on: ubuntu-latest
@@ -31,7 +37,7 @@ jobs:
           ADMIN_PASSWORD: ${{secrets.ADMIN_PASSWORD}}
       - name: Archive tests results
         if: success() || failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-report
           path: |
