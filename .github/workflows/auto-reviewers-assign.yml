@@ -1,12 +1,8 @@
 name: Add Reviewers
 
 on:
-  workflow_dispatch: 
   pull_request:
     types: [opened, ready_for_review, reopened]
-
-permissions:
-  pull-requests: write
 
 jobs:
   add-reviewers:
@@ -16,9 +12,17 @@ jobs:
         with:
           github-token: ${{ secrets.REVIEWER_TOKEN }}
           script: |
-            await github.rest.pulls.requestReviewers({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-              reviewers: ['kat-kan', 'Justyna-KO', 'Slawomir-DKl']
-            });
+            const reviewers = ['kat-kan', 'Justyna-KO', 'Slawomir-DKl'];
+            for (const reviewer of reviewers) {
+              try {
+                await github.rest.pulls.requestReviewers({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: context.issue.number,
+                  reviewers: [reviewer]
+                });
+                console.log(`Successfully added reviewer: ${reviewer}`);
+              } catch (error) {
+                console.error(`Failed to add reviewer ${reviewer}: ${error.message}`);
+              }
+            }
