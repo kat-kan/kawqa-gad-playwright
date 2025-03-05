@@ -1,8 +1,8 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
-import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
+import { testUsers } from 'src/shared/fixtures/auth';
 import { generateUniqueArticleId } from 'test-data/shared/article.generator';
 import { customDate } from 'test-data/shared/date.generator';
 

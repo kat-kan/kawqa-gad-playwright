@@ -1,8 +1,8 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { UserType } from '@_src_api/enums/user-types.enum';
-import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, test } from '@playwright/test';
+import { testUsers } from 'src/shared/fixtures/auth';
 import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('DELETE articles/{id}', () => {
