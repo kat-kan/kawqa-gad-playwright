@@ -3,10 +3,8 @@ import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
-import {
-  generateUniqueArticleTitle,
-  getExistingArticleTitle,
-} from 'test-data/shared/article.generator';
+import { getExistingArticleTitle } from 'test-data/shared/article.fetcher';
+import { generateUniqueArticleTitle } from 'test-data/shared/article.generator';
 import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('POST articles endpoint tests', async () => {

@@ -4,10 +4,8 @@ import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
-import {
-  generateUniqueArticleId,
-  takeMaxArticleId,
-} from 'test-data/shared/article.generator';
+import { getMaxArticleId } from 'test-data/shared/article.fetcher';
+import { generateUniqueArticleId } from 'test-data/shared/article.generator';
 import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('PUT articles/{id} endpoint tests', async () => {
@@ -103,7 +101,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     }) => {
       // Given
       const uniqueArticleId = await generateUniqueArticleId(request);
-      const maxArticleId = await takeMaxArticleId(request);
+      const maxArticleId = await getMaxArticleId(request);
 
       for (let index = 1; index <= 2; index++) {
         // When
@@ -123,7 +121,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       request,
     }) => {
       // Given
-      const uniqueArticleId = (await takeMaxArticleId(request)) + 1;
+      const uniqueArticleId = (await getMaxArticleId(request)) + 1;
 
       // When
       response = await request.put(`${articles}/${uniqueArticleId}`, {
