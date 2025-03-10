@@ -46,21 +46,16 @@ export async function generateUniqueArticleTitle(
 ): Promise<string> {
   // get list of all article titles
   const articlesJSON = await generateArticlesJSON(request);
-  const articleTitleList: string[] = articlesJSON.map(
-    (article: { title: string }) => article.title,
+  const articleTitleList = new Set(
+    articlesJSON.map((article: { title: string }) => article.title),
   );
 
   // ensure that the title generated using faker is not equal to any existing article title
-  let isUnique: boolean = false;
-
   let uniqueArticleTitle: string;
-  while (!isUnique) {
+  do {
     uniqueArticleTitle = faker.lorem.sentence();
-    // eslint-disable-next-line playwright/no-conditional-in-test
-    if (!articleTitleList.includes(uniqueArticleTitle)) {
-      isUnique = true;
-    }
-  }
+  } while (articleTitleList.has(uniqueArticleTitle));
+
   return uniqueArticleTitle;
 }
 
