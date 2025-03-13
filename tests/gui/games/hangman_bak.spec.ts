@@ -4,26 +4,7 @@ import { expect, test } from '@playwright/test';
 test.describe('Testing Hangman game', () => {
   //   test('The game cannot be open without authorization', async ({ page }) => {
   // });
-  test('Opening the game with authorization @logged', async ({ page }) => {
-    page.goto('http://localhost:3000/games/games.html');
-    await expect(page.locator('.skip-button')).toHaveText('Skip');
-    await page.locator('.skip-button').click();
-    await page.getByRole('link', { name: ' Hangman Guess the word' }).click();
-    await expect(page.locator('#hangman')).toBeVisible();
-    //prepare login
-    // await page.goto(
-    //   'http://localhost:3000/login/?redirectURL=/games/hangman.html',
-    // );
-    // await page.getByText('Skip').click();
-    // await page.getByRole('link', { name: ' Hangman Guess the word' }).click();
-    // When you click the Hangman button
-    // Then Hangman page will open and Hangman will be drawn in full
-  });
-  test('Starting the game', async ({}) => {
-    // Given you are on Hangman page
-    // When you press Start button
-    // Then empty hangman graph, empty word and full list of letters will appear
-  });
+ 
   test.describe('Smoke tests for individual features', () => {
     test('Selection of correct character', async ({}) => {
       await test.step('Letter appears in the word after selection', async () => {

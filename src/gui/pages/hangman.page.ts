@@ -61,7 +61,32 @@ export class HangmanPage extends BasePage {
     return finalWord;
   }
 
+  async getSolutionLetters(): Promise<string[]> {
+    const gameSolution = await this.clickStartButtonWithGameSolution(
+      '/api/hangman/random',
+    );
+    const solutionLetters = [];
+    for (let i = 0; i < gameSolution.length; i++) {
+      solutionLetters.push(gameSolution.charAt(i));
+    }
+    return solutionLetters;
+  }
+
   async clickLetter(letter: string): Promise<void> {
-    this.page.locator(`#btn-${letter}`).click();
+    await this.page.locator(`#btn-${letter}`).click();
+  }
+
+  async clickLetterNotInSolution(solutionLetters: string[]): Promise<void> {
+    let letterNumber = -1;
+    let currentLetter: string;
+    do {
+      letterNumber += 1;
+      currentLetter = this.letters[letterNumber].toLowerCase();
+      currentLetter = currentLetter == 'SPACE' ? ' ' : currentLetter;
+    } while (solutionLetters.indexOf(currentLetter) > -1);
+    if (letterNumber < this.letters.length) {
+      currentLetter = currentLetter == ' ' ? 'SPACE' : currentLetter;
+      await this.clickLetter(currentLetter);
+    }
   }
 }

@@ -45,17 +45,12 @@ test('Failed game has proper sequence of hangman pictures @logged', async ({
   // Given
   const hangmanPage = new HangmanPage(page);
   await page.goto(hangmanPage.url);
-  const gameSolution = await hangmanPage.clickStartButtonWithGameSolution(
-    '/api/hangman/random',
-  );
 
-  let letterNumber = 0;
-  for (let index = 0; index < hangmanPage.hangmanSequence.length; index++) {
-    if (hangmanPage.letters[letterNumber] in gameSolution) {
+  const solutionLetters = await hangmanPage.getSolutionLetters();
 
-    }
-    const element = hangmanPage.hangmanSequence[index];
+  for (let step = 1; step < hangmanPage.hangmanSequence.length; step++) {
+    await hangmanPage.clickLetterNotInSolution(solutionLetters);
+    const element = hangmanPage.hangmanSequence[step];
+    await expect(hangmanPage.hangmanPicture).toContainText(element);
   }
-
-  // hangmanPage.hangmanSequence
 });
