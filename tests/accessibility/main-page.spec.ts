@@ -6,12 +6,14 @@ import { expect, test } from '@playwright/test';
 
 test('Check Comments button', async ({ page }) => {
   await page.goto(`/`);
-  await page.locator('#btnGui').waitFor();
-  await page.locator('#btnGui').click();
+  //When
+  await page.locator('a[href="./articles.html"]').waitFor();
+  await page.locator('a[href="./articles.html"]').click();
   const axeBuilder = await new AxeBuilder({ page })
     .include('#btnComments')
     .disableRules('color-contrast')
     .analyze();
+  //Then
   expect(axeBuilder.violations).toEqual([]);
 });
 
@@ -19,12 +21,14 @@ test('Check Comments button', async ({ page }) => {
 
 test.skip('Check the main page', async ({ page }, testInfo) => {
   await page.goto(`/`);
-  await page.locator('#btnGui').waitFor();
-  await page.locator('#btnGui').click();
+  //When
+  await page.locator('a[href="./articles.html"]').waitFor();
+  await page.locator('a[href="./articles.html"]').click();
   const axeBuilder = await new AxeBuilder({ page }).analyze();
   await testInfo.attach('accessibility-scan-results', {
     body: JSON.stringify(axeBuilder, null, 2),
     contentType: 'application/json',
   });
+  //Then
   expect(axeBuilder.violations).toEqual([]);
 });
