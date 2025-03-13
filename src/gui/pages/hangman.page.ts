@@ -1,53 +1,38 @@
 import { BasePage } from './base.page';
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 
 export class HangmanPage extends BasePage {
-  url = '/games/hangman.html';
-  hangmanPicture = this.page.locator('#hangman');
-  mySolutionWord = this.page.locator('#word');
-  startButton = this.page.getByTestId('startButton');
-  letterRow = this.page.locator('#letters');
-  hangmanSequence = [
-    '_________ | | | | | _|_',
-    '_________ | | | O | | _|_',
-    '_________ | | | O | | | _|_',
-    '_________ | | | O | /| | _|_',
-    '_________ | | | O | /|\\ | _|_',
-    '_________ | | | O | /|\\ | / _|_',
-    '_________ | | | O | /|\\ | / \\ _|_',
-  ];
-  letters = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z',
-    'SPACE',
-  ];
+  readonly hangmanPicture: Locator;
+  readonly mySolutionWord: Locator;
+  readonly startButton: Locator;
+  readonly letterRow: Locator;
+  readonly infoContainer: Locator;
+
+  readonly url: string;
+  readonly hangmanSequence: string[];
+
+  readonly letters: string[];
 
   constructor(page: Page) {
     super(page);
+    this.hangmanPicture = this.page.locator('#hangman');
+    this.mySolutionWord = this.page.locator('#word');
+    this.startButton = this.page.getByTestId('startButton');
+    this.letterRow = this.page.locator('#letters');
+    this.infoContainer = this.page.locator('#info-container');
+
+    this.url = '/games/hangman.html';
+    this.letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    this.letters.push('SPACE');
+    this.hangmanSequence = [
+      '_________ | | | | | _|_',
+      '_________ | | | O | | _|_',
+      '_________ | | | O | | | _|_',
+      '_________ | | | O | /| | _|_',
+      '_________ | | | O | /|\\ | _|_',
+      '_________ | | | O | /|\\ | / _|_',
+      '_________ | | | O | /|\\ | / \\ _|_',
+    ];
   }
 
   async clickStartButtonWithGameSolution(endpointUrl: string): Promise<string> {
@@ -74,6 +59,11 @@ export class HangmanPage extends BasePage {
 
   async clickLetter(letter: string): Promise<void> {
     await this.page.locator(`#btn-${letter}`).click();
+  }
+
+  async clickLetterInSolution(currentLetter: string): Promise<void> {
+    currentLetter = currentLetter == ' ' ? 'SPACE' : currentLetter;
+    await this.clickLetter(currentLetter);
   }
 
   async clickLetterNotInSolution(solutionLetters: string[]): Promise<void> {

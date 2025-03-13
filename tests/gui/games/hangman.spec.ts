@@ -38,7 +38,30 @@ test('Starting the game @logged', async ({ page }) => {
   await expect.soft(hangmanPage.letterRow).toBeVisible();
 });
 
-// eslint-disable-next-line playwright/expect-expect
+test('Successful game ends with success message @logged', async ({ page }) => {
+  // Given
+  const hangmanPage = new HangmanPage(page);
+  const successMessage = 'Congratulations! Only 0 attempts!';
+  await page.goto(hangmanPage.url);
+
+  const solutionLetters = await hangmanPage.getSolutionLetters();
+  const uniqueSolutionLetters = [...new Set(solutionLetters)];
+
+  for (let index = 0; index < uniqueSolutionLetters.length; index++) {
+    // When
+    const currentLetter = uniqueSolutionLetters[index].toUpperCase();
+    await hangmanPage.clickLetterInSolution(currentLetter);
+
+    //Then
+    await expect(hangmanPage.mySolutionWord).toContainText(currentLetter);
+  }
+
+  await expect.soft(hangmanPage.infoContainer).toContainText(successMessage);
+  await expect
+    .soft(hangmanPage.hangmanPicture)
+    .toContainText(hangmanPage.hangmanSequence[0]);
+});
+
 test('Failed game has proper sequence of hangman pictures @logged', async ({
   page,
 }) => {
@@ -49,8 +72,11 @@ test('Failed game has proper sequence of hangman pictures @logged', async ({
   const solutionLetters = await hangmanPage.getSolutionLetters();
 
   for (let step = 1; step < hangmanPage.hangmanSequence.length; step++) {
+    // When
     await hangmanPage.clickLetterNotInSolution(solutionLetters);
-    const element = hangmanPage.hangmanSequence[step];
-    await expect(hangmanPage.hangmanPicture).toContainText(element);
+    const hangmanState = hangmanPage.hangmanSequence[step];
+
+    // Then
+    await expect(hangmanPage.hangmanPicture).toContainText(hangmanState);
   }
 });
