@@ -1,8 +1,8 @@
 import { createUser } from './create-user.helper';
 import { UserType } from '@_src_api/enums/user-types.enum';
 import { logConsole } from '@_src_api/utils/log-levels';
-import { testUsers } from '@_src_fixtures_api/auth';
 import { request } from '@playwright/test';
+import { testUsers } from 'src/shared/fixtures/auth';
 import { UserData } from 'test-data/models/user.model';
 
 export async function createToken(userType: string): Promise<string> {

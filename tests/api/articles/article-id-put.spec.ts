@@ -1,7 +1,8 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
-import { testUsers } from '@_src_fixtures_api/auth';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
+import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
+import { testUsers } from 'src/shared/fixtures/auth';
 import { generateUniqueArticleId } from 'test-data/shared/article.generator';
 import { customDate } from 'test-data/shared/date.generator';
 
@@ -17,7 +18,6 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
   const articleDate: string = customDate.pastDate;
   const articleImage: string =
     'src\\test-data\\images\\Roasted_coffee_beans.jpg';
-  const features: string = `/api/config/features`;
   let setHeaders: { [key: string]: string };
 
   test.beforeAll(async () => {
@@ -40,7 +40,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     });
     const responseBody = JSON.parse(await response.text());
     //Then
-    expect.soft(response.status()).toBe(HttpStatusCode.Ok);
+    expect(response.status()).toBe(HttpStatusCode.Ok);
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
@@ -72,7 +72,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     );
     const responseBody = JSON.parse(await response.text());
     //Then
-    expect.soft(response.status()).toBe(HttpStatusCode.Created);
+    expect(response.status()).toBe(HttpStatusCode.Created);
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
@@ -113,7 +113,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       },
     });
     //Then
-    expect.soft(response.status()).toBe(HttpStatusCode.Unauthorized);
+    expect(response.status()).toBe(HttpStatusCode.Unauthorized);
   });
 
   test('Returns 422 Unprocessable Entity after updating article with wrong date format', async ({
@@ -162,7 +162,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     });
     const responseBody = JSON.parse(await response.text());
     //Then
-    expect.soft(response.status()).toBe(HttpStatusCode.Ok);
+    expect(response.status()).toBe(HttpStatusCode.Ok);
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
@@ -175,15 +175,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
 
   test.describe('PUT articles/{id} endpoint tests with enabled feature_validate_article_title', async () => {
     test.beforeAll(async ({ request }) => {
-      //When
-      const response: APIResponse = await request.post(features, {
-        headers: setHeaders,
-        data: {
-          feature_validate_article_title: true,
-        },
-      });
-      //Then
-      expect(response.status()).toBe(HttpStatusCode.Ok);
+      await enableFeatureFlag(request, 'feature_validate_article_title', true);
     });
 
     test('Returns 200 OK status code when updating article', async ({
@@ -202,7 +194,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       });
       const responseBody = JSON.parse(await response.text());
       //Then
-      expect.soft(response.status()).toBe(HttpStatusCode.Ok);
+      expect(response.status()).toBe(HttpStatusCode.Ok);
       expect
         .soft(responseBody.user_id.toString())
         .toEqual(testUsers.regularUser.id.toString());
@@ -230,10 +222,8 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       //Then
       const responseBody = JSON.parse(await response.text());
 
-      expect.soft(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
-      expect
-        .soft(responseBody.error.message)
-        .toBe('Field "title" is not unique!');
+      expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
+      expect(responseBody.error.message).toBe('Field "title" is not unique!');
     });
 
     test('Returns 201 Created status code when creating article using PUT', async ({
@@ -257,7 +247,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       );
       const responseBody = JSON.parse(await response.text());
       //Then
-      expect.soft(response.status()).toBe(HttpStatusCode.Created);
+      expect(response.status()).toBe(HttpStatusCode.Created);
       expect
         .soft(responseBody.user_id.toString())
         .toEqual(testUsers.regularUser.id.toString());
@@ -269,13 +259,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     });
 
     test.afterAll(async ({ request }) => {
-      const response: APIResponse = await request.post(features, {
-        headers: setHeaders,
-        data: {
-          feature_validate_article_title: false,
-        },
-      });
-      expect(response.status()).toBe(HttpStatusCode.Ok);
+      await enableFeatureFlag(request, 'feature_validate_article_title', false);
     });
   });
 });

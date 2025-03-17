@@ -2,9 +2,11 @@ import { Locator, Page } from '@playwright/test';
 
 export class PracticePage {
   protected page: Page;
+  readonly resultsArea: Locator;
 
   constructor(page: Page) {
     this.page = page;
+    this.resultsArea = this.page.getByTestId('dti-results');
   }
 
   async textAreaStretching(
