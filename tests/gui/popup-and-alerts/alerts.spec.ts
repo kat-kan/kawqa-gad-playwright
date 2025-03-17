@@ -12,9 +12,9 @@ test.describe('GUI tests for practice page - popup and alerts', () => {
   test('Simple alert box test', async ({}) => {
     // Given
     const expectedMessage = 'Alert box invoked by button click!';
+    const capturedAlertMessage = alertsPage.handleAlert();
 
     // When
-    const capturedAlertMessage = alertsPage.handleAlert();
     await alertsPage.simpleAlertButton.click();
     const alertMessage = await capturedAlertMessage;
 
@@ -27,16 +27,20 @@ test.describe('GUI tests for practice page - popup and alerts', () => {
     const numberOfClicks = 3;
     const expectedMessage = 'Button clicked!';
 
-    // When
     for (let i = 1; i <= numberOfClicks; i++) {
+      // When
       await alertsPage.alertWithFadeOutButton.click();
-      await expect(alertsPage.alertWithFadeOut).toHaveCount(i);
 
       // Then
+      await expect(alertsPage.alertWithFadeOut).toHaveCount(i);
+
       for (let j = 0; j < i; j++) {
+        // When
         await expect(alertsPage.alertWithFadeOut.nth(j)).toHaveText(
           expectedMessage,
         );
+
+        // Then
         await alertsPage.alertWithFadeOut.nth(j).waitFor({ state: 'hidden' });
         await expect(alertsPage.alertWithFadeOut.nth(j)).toBeHidden();
       }
@@ -47,13 +51,13 @@ test.describe('GUI tests for practice page - popup and alerts', () => {
     // Given
     const numberOfClicks = 3;
 
-    // When
     for (let i = 1; i <= numberOfClicks; i++) {
+      // When
       await alertsPage.alertWithCounterButton.click();
       const alert = alertsPage.getAlertWithCounterLocator(i);
+      const expectedMessage = `Button clicked ${i} times`;
 
       // Then
-      const expectedMessage = `Button clicked ${i} times`;
       await expect(alert).toHaveText(expectedMessage);
     }
   });
@@ -62,13 +66,13 @@ test.describe('GUI tests for practice page - popup and alerts', () => {
     // Given
     const numberOfClicks = 3;
 
-    // When
     for (let i = 1; i <= numberOfClicks; i++) {
+      // When
       await alertsPage.alertWithRandomFadeOutButton.click();
       const alert = alertsPage.getAlertWithRandomFadeOutLocator(i);
+      const expectedMessage = `${i} click(s)!`;
 
       // Then
-      const expectedMessage = `${i} click(s)!`;
       await expect(alert).toHaveText(expectedMessage);
       await alert.waitFor({ state: 'hidden' });
       await expect(alert).toBeHidden();
@@ -90,9 +94,10 @@ test.describe('GUI tests for practice page - popup and alerts', () => {
     );
 
     for (let i = 0; i < numberOfClicks; i++) {
+      // When
       await alertsPage.firstAlertWithCustomMessage.click();
     }
-
+    // Then
     await expect(alertsPage.nextAlertWithCustomMessage).toHaveCount(
       numberOfClicks,
     );
@@ -113,9 +118,10 @@ test.describe('GUI tests for practice page - popup and alerts', () => {
     );
 
     for (let i = 0; i < numberOfClicks; i++) {
+      // When
       await alertsPage.firstAlertWithCustomMessage.click();
     }
-
+    // Then
     await expect(alertsPage.nextAlertWithCustomMessage).toHaveCount(
       numberOfClicks,
     );
