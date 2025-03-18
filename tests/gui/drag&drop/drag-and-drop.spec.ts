@@ -13,7 +13,7 @@ test.describe('GUI tests for drag&drop page', () => {
 
   test('File upload test using browse button', async ({}) => {
     //Given
-    const filePath = path.resolve('test-files\\upload.json');
+    const filePath = path.resolve('test-files', 'upload.json');
     // Read the contents of a JSON file
     const jsonFile = await fs.readFile(filePath, 'utf-8');
     const jsonObject = JSON.parse(jsonFile);
