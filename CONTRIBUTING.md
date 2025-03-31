@@ -64,6 +64,14 @@ Examples:
 - `docs(articles): fix 1 unhappy test scenarios`
 - `style(articles): fix formatting`
 
+#### Commits made after code review should have type `fix`
+
+Such commits still can have a scope.
+Examples:
+
+- `fix: remove unnecessary import`
+- `fix(api): move helper to different package`
+
 ### Contact
 
 Most of the discussions takes place on Discord and during our bi-weekly meetings. If you are interested in joining the group, please create an issue for it and assign to @kat-kan.
