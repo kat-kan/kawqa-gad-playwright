@@ -27,11 +27,11 @@ All the information can be found in GAD's [README](https://github.com/jaktestowa
    `npx playwright install --with-deps chromium`
 3. copy `.env-template` file and change its name to `.env`
 4. if you use localhost version of the GAD application, `BASE_URL` variable in `.env` file should stay intact, otherwise it should be changed to a proper one
-5. add user email and user password to the `.env` file; to obtain the email and password:  
-    1. Go to the GAD installation folder
-    2. Open folder `db`
-    3. Open file `db.json`
-    4. Use the data of user with `id` = 1
+5. add user email and user password to the `.env` file; to obtain the email and password:
+   1. Go to the GAD installation folder
+   2. Open folder `db`
+   3. Open file `db.json`
+   4. Use the data of user with `id` = 1
 
 Notes: Option `--with-deps chromium` allows to install Playwright for use with Chromium-based browser only. We've decided to narrow the pool of browsers to Chromium in the initial period of working on the code.
 
@@ -72,6 +72,11 @@ Examples:
 - `fix: remove unnecessary import`
 - `fix(api): move helper to different package`
 
-### Contact
+## Other sources of information in the repository
+
+- [INSTRUCTIONS.md](docs/INSTRUCTIONS.md) contains IFU for selected functionalities to be used in the tests.
+- [DECISION_LOG.md](docs/DECISION_LOG.md) lists the decisions made during development of KawQA project.
+
+## Contact
 
 Most of the discussions takes place on Discord and during our bi-weekly meetings. If you are interested in joining the group, please create an issue for it and assign to @kat-kan.
