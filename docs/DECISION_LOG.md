@@ -13,3 +13,19 @@
 
 ### Description
 The `createHeaders()` function from `src/helpers/api/create-token.helper` file has parameter with default value `regular`. Nevertheless, it would be more comprehensible (especially for new Kaw-QA contributors) to explicitly state the user type in the tests.
+
+## Prefix `fix` for commits after code review <a id="commits-after-code-review"></a>
+
+### Decision: Commits made after code review should have type: `fix` and can have a scope
+
+**ID**: 2025-01-27_1
+**Source**: Kaw-QA meeting
+
+### Description
+The scope is optional. Examples:
+
+- `fix: remove unnecessary import`
+- `fix(api): move helper to different package`
+
+### Notes
+The decision entered to [CONTRIBUTING.md](../CONTRIBUTING.md)
