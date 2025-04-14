@@ -7,8 +7,6 @@
 
 ## GUI tests with authorization <a id="gui-tests-with-authorization"></a>
 
-<!-- OPTIONAL -->
-
 **Source**: [Pull Request #168](https://github.com/kat-kan/kawqa-gad-playwright/pull/168)
 
 ### Description
@@ -32,8 +30,6 @@ To run the test, please ensure you've enabled projects `setup` and `chromium-log
 Test [Opening the Hangman game with authorization](/tests/gui/games/hangman.spec.ts)
 
 ## Using Faker in tests <a id="using-faker-in-tests"></a>
-
-<!-- OPTIONAL -->
 
 **Source**: [Pull Request #128](https://github.com/kat-kan/kawqa-gad-playwright/pull/128)
 
