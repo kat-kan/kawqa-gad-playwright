@@ -11,7 +11,7 @@
 
 ### Description
 
-The test `tests/gui/setup/login.setup.ts` logs the user in. The test is set as a part of `setup` project in `playwright.config.ts`. The `setup` project is placed in the `dependencies` section of the `chromium-logged-gui` project, which means it is run before each test run with `@logged` tag.
+The test [`tests/gui/setup/login.setup.ts`](/tests/gui/setup/login.setup.ts) logs the user in. The test is set as a part of `setup` project in [`playwright.config.ts`](/playwright.config.ts). The `setup` project is placed in the `dependencies` section of the `chromium-logged-gui` project, which means it is run before each test run with `@logged` tag.
 
 **1. Writing tests**
 
@@ -21,7 +21,7 @@ The test `tests/gui/setup/login.setup.ts` logs the user in. The test is set as a
 test('Should open the Hangman game @logged', async ({
 ```
 
-- To write the test without authorization, do not put the tag `@logged` in the test name. Such tests are part of the `chromium` project as defined in `playwright.config.ts`
+- To write the test without authorization, do not put the tag `@logged` in the test name. Such tests are part of the `chromium` project as defined in [`playwright.config.ts`](/playwright.config.ts)
 
 **2. Running tests in VS Code**  
 To run the test, please ensure you've enabled projects `setup` and `chromium-logged-gui`, e.g. in the `Testing` tab in VS Code
