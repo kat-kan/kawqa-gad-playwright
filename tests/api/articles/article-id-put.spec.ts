@@ -266,8 +266,12 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
   });
 
   test.describe.configure({ mode: 'serial' });
-  test.describe('Creating two articles with the same non-existent ID', async () => {
+  test.describe('Creating two articles in a row with the same non-existent ID', async () => {
+    // The PUT method allows to create the article if the article_id doesn't indicate any existing article. The new article is created with ID = max(ID) of the existing articles + 1
+    // Before GAD 2.7.10 two consecutive runs of the same PUT test to the same article endpoint generated different statuses (201 and 422, accordingly)
+    // These tests check if fix introduced in 2.7.10 is still working
     let response: APIResponse;
+    let responseBody: ArticleResponseBody;
     const articleData = {
       user_id: testUsers.regularUser.id,
       title: newTitle3,
@@ -276,7 +280,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       image: articleImage,
     };
 
-    test('Returns two 201 status codes when ID is large enough', async ({
+    test('Returns two 201 status codes - two articles are created when ID is large enough', async ({
       request,
     }) => {
       // Given
@@ -284,38 +288,37 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       const maxArticleId = await getMaxArticleId(request);
 
       for (let index = 1; index <= 2; index++) {
-        // When
+        // When the PUT request is sent with large ID
         response = await request.put(`${articles}/${uniqueArticleId}`, {
           headers: setHeaders,
           data: articleData,
         });
+        responseBody = JSON.parse(await response.text());
 
         // Then the new article is created
-        const responseBody = JSON.parse(await response.text());
         expect.soft(response.status()).toBe(HttpStatusCode.Created);
         expect.soft(responseBody.id).toEqual(maxArticleId + index);
       }
     });
 
-    test('Returns 201 and 200 status codes when ID = max(ID) + 1', async ({
+    test('Returns 201 and 200 status codes - an article is created and then updated when ID = max(ID) + 1', async ({
       request,
     }) => {
       // Given
       const uniqueArticleId = (await getMaxArticleId(request)) + 1;
 
-      // When
+      // When first PUT request is sent with the unique ID = max(ID) + 1
       response = await request.put(`${articles}/${uniqueArticleId}`, {
         headers: setHeaders,
         data: articleData,
       });
-      let responseBody: ArticleResponseBody;
       responseBody = JSON.parse(await response.text());
 
-      // Then new article is created
+      // Then the new article is created
       expect.soft(response.status()).toBe(HttpStatusCode.Created);
       expect.soft(responseBody.id).toEqual(uniqueArticleId);
 
-      // When
+      // When second PUT request is sent with the same unique ID
       response = await request.put(`${articles}/${uniqueArticleId}`, {
         headers: setHeaders,
         data: articleData,
