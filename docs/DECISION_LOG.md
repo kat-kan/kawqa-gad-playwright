@@ -1,6 +1,7 @@
 # Table of Contents
 
-**2024-11-18_1** [Explicitly state regular user type as createHeaders() function parameter](#explicitly-state-regular-user-type)
+**2024-11-18_1** [Explicitly state regular user type as createHeaders() function parameter](#explicitly-state-regular-user-type)  
+**2025-01-27_1** [Prefix fix for commits after code review](#commits-after-code-review)
 
 # Decisions
 
