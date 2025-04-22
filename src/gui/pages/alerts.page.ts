@@ -13,8 +13,11 @@ export class AlertsPage extends PracticePage {
   readonly firstAlertWithCustomMessage: Locator;
   readonly nextAlertWithCustomMessage: Locator;
 
+  readonly url: string;
+
   constructor(page: Page) {
     super(page);
+
     this.simpleAlertButton = this.page.locator('#alert-box-btn');
     this.alertWithFadeOutButton = this.page.locator('#alert-btn');
     this.alertWithFadeOut = this.page.locator(
@@ -33,6 +36,8 @@ export class AlertsPage extends PracticePage {
     this.nextAlertWithCustomMessage = this.page.locator(
       '#simple-alert-with-random-flavour',
     );
+
+    this.url = '/practice/alerts-1.html';
   }
 
   getAlertWithCounterLocator(index: number): Locator {

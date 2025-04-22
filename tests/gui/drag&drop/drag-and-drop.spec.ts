@@ -7,8 +7,8 @@ test.describe('GUI tests for drag&drop page', () => {
   let dragAndDropPage: DragAndDropPage;
 
   test.beforeEach(async ({ page }) => {
-    await page.goto('/practice/drag-and-drop-1.html');
     dragAndDropPage = new DragAndDropPage(page);
+    await page.goto(dragAndDropPage.url);
   });
 
   test('File upload test using browse button', async ({}) => {
