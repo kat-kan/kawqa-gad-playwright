@@ -5,7 +5,7 @@ test.describe('GUI tests for multiple elements', () => {
   let simpleElementsMultipleElements: SimpleElementsMultipleElements;
 
   test.beforeEach(async ({ page }) => {
-    await page.goto('/practice/simple-multiple-elements-no-ids.html');
+    await page.goto(simpleElementsMultipleElements.url);
     simpleElementsMultipleElements = new SimpleElementsMultipleElements(page);
   });
 
