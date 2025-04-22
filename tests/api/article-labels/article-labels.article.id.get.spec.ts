@@ -1,4 +1,5 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { FeatureFlags } from '@_src_api/enums/feature-flags.enum';
 import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
 
@@ -7,7 +8,7 @@ test.describe('GET article labels tests', async () => {
   const articleLabels: string = `/api/article-labels/articles`;
 
   test.beforeAll(async ({ request }) => {
-    await enableFeatureFlag(request, 'feature_labels', true);
+    await enableFeatureFlag(request, FeatureFlags.labels, true);
   });
 
   test('Returns 200 OK after getting labels for existing article', async ({
@@ -43,6 +44,6 @@ test.describe('GET article labels tests', async () => {
   });
 
   test.afterAll(async ({ request }) => {
-    await enableFeatureFlag(request, 'feature_labels', false);
+    await enableFeatureFlag(request, FeatureFlags.labels, false);
   });
 });

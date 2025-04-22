@@ -1,9 +1,10 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { FeatureFlags } from '@_src_api/enums/feature-flags.enum';
 import { APIRequestContext, APIResponse, expect } from '@playwright/test';
 
 export async function enableFeatureFlag(
   request: APIRequestContext,
-  flagName: string,
+  flagName: FeatureFlags,
   isEnabled: boolean,
 ): Promise<void> {
   const featuresEndpoint: string = `/api/config/features`;
