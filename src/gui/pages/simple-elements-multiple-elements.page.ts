@@ -4,6 +4,7 @@ import { Locator, Page } from '@playwright/test';
 export class SimpleElementsMultipleElements extends PracticePage {
   readonly checkboxes: Locator;
   readonly resultsHistoryContainer: Locator;
+
   readonly url: string;
 
   constructor(page: Page) {
@@ -13,6 +14,7 @@ export class SimpleElementsMultipleElements extends PracticePage {
     this.resultsHistoryContainer = this.page.locator(
       '#results-history-container',
     );
+
     this.url = '/practice/simple-multiple-elements-no-ids.html';
   }
 

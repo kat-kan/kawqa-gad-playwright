@@ -5,8 +5,8 @@ test.describe('GUI tests for multiple elements', () => {
   let simpleElementsMultipleElements: SimpleElementsMultipleElements;
 
   test.beforeEach(async ({ page }) => {
-    await page.goto(simpleElementsMultipleElements.url);
     simpleElementsMultipleElements = new SimpleElementsMultipleElements(page);
+    await page.goto(simpleElementsMultipleElements.url);
   });
 
   test('checkboxes - check, uncheck and history', async () => {
