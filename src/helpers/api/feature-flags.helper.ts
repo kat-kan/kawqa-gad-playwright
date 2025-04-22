@@ -4,9 +4,9 @@ import { APIRequestContext, APIResponse, expect } from '@playwright/test';
 
 /**
  * Enables or disables the selected feature flags for API tests
- * @param request Pass `request` fixture to the function
- * @param flagName Name of the flag from `FeatureFlags` enum, e.g. FeatureFlags.labels to select `feature-labels` flag
- * @param isEnabled `True`: enable flag, `False`: disable flag
+ * @param request Request context. Pass `request` fixture
+ * @param flagName Name of the flag from `FeatureFlags` enum, e.g. enter FeatureFlags.labels to select `feature-labels` flag
+ * @param isEnabled Enter `true`: enable flag, `false`: disable flag
  *
  * @example
  * ```
