@@ -10,6 +10,7 @@ test.describe('Start page accessibility tests', () => {
   });
 
   //The test is skipped because the start page does not meet many accessibility standards and the test fails. You can run the test to generate a report with detailed information.
+  // eslint-disable-next-line playwright/no-skipped-test
   test.skip('Check the start page', async ({ page }) => {
     //When
     await startPage.articlesButton.waitFor();
@@ -34,7 +35,7 @@ test.describe('Start page accessibility tests', () => {
     // When
     await startPage.articlesButton.waitFor();
     const axeReport = await new AxeBuilder({ page })
-      .include('[href="./articles.html"]')
+      .include(startPage.articlesHref)
       .analyze();
     // Then
     expect(axeReport.violations).toEqual([]);

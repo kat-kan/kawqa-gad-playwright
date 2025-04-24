@@ -3,7 +3,8 @@ import { Page } from '@playwright/test';
 
 export class ArticlesPage extends BasePage {
   url = '/articles.html';
-  commentsButton = this.page.locator('#btnComments');
+  commentsButtonId = '#btnComments';
+  commentsButton = this.page.locator(this.commentsButtonId);
 
   constructor(page: Page) {
     super(page);

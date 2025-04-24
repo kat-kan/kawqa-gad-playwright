@@ -15,7 +15,7 @@ test.describe('Articles page accessibility tests', () => {
   test('Check Comments button', async ({ page }) => {
     // When
     const axeBuilder = await new AxeBuilder({ page })
-      .include('#btnComments')
+      .include(articlesPage.commentsButtonId)
       .disableRules('color-contrast')
       .analyze();
     //Then
@@ -23,7 +23,7 @@ test.describe('Articles page accessibility tests', () => {
   });
 
   //The test is skipped because the articles page does not meet many accessibility standards and the test fails. You can run the test to generate a report with detailed information. At the end of the report (scroll down the error report) there is an additional attachment containing the results of the accessibility scan in json format.
-
+  // eslint-disable-next-line playwright/no-skipped-test
   test.skip('Check articles page', async ({ page }, testInfo) => {
     //When
     const axeBuilder = await new AxeBuilder({ page }).analyze();
