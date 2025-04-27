@@ -16,8 +16,11 @@ export class SimpleElementsWithIdsPage extends PracticePage {
   readonly dateInput: Locator;
   readonly colorInput: Locator;
 
+  readonly url: string;
+
   constructor(page: Page) {
     super(page);
+
     this.label = this.page.getByTestId('dti-label-element');
     this.button = this.page.getByTestId('dti-button-element');
     this.checkbox = this.page.getByTestId('dti-checkbox');
@@ -31,5 +34,7 @@ export class SimpleElementsWithIdsPage extends PracticePage {
     this.tooltip = this.page.getByTestId('dti-tooltip-element');
     this.dateInput = this.page.getByTestId('dti-date');
     this.colorInput = this.page.getByTestId('dti-color');
+
+    this.url = '/practice/simple-elements.html';
   }
 }

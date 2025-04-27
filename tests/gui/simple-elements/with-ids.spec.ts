@@ -6,8 +6,8 @@ test.describe('GUI tests for practice page - simple elements with IDs', () => {
   let simpleElementsWithIdsPage: SimpleElementsWithIdsPage;
 
   test.beforeEach(async ({ page }) => {
-    await page.goto('/practice/simple-elements.html');
     simpleElementsWithIdsPage = new SimpleElementsWithIdsPage(page);
+    await page.goto(simpleElementsWithIdsPage.url);
   });
 
   test('Label test', async ({}) => {
