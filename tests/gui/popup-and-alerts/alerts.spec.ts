@@ -5,8 +5,8 @@ test.describe('GUI tests for practice page - popup and alerts', () => {
   let alertsPage: AlertsPage;
 
   test.beforeEach(async ({ page }) => {
-    await page.goto('/practice/alerts-1.html');
     alertsPage = new AlertsPage(page);
+    await page.goto(alertsPage.url);
   });
 
   test('Simple alert box test', async ({}) => {

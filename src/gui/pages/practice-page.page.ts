@@ -3,10 +3,12 @@ import { Locator, Page } from '@playwright/test';
 export class PracticePage {
   protected page: Page;
   readonly resultsArea: Locator;
+  readonly url: string;
 
   constructor(page: Page) {
     this.page = page;
     this.resultsArea = this.page.getByTestId('dti-results');
+    this.url = '/practice/';
   }
 
   async textAreaStretching(
