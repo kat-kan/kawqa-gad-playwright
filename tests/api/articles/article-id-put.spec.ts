@@ -306,13 +306,29 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     }) => {
       // Given
       const uniqueArticleId = (await getMaxArticleId(request)) + 1;
-      const statuses = [HttpStatusCode.Created, HttpStatusCode.Ok];
-      // When first PUT request is sent with the unique ID = max(ID) + 1
-      // then the new article is created
-      // When second PUT request is sent with the same unique ID
-      // then the newly created article is updated
 
-      for (let index = 0; index <= 1; index++) {
+      const expectedResponses = [
+        {
+          // When first PUT request is sent with the unique ID = max(ID) + 1
+          // then the new article is created
+          operation: 'create',
+          expectedStatus: HttpStatusCode.Created,
+          description: 'First request should create a new article',
+        },
+        {
+          // When second PUT request is sent with the same unique ID
+          // then the newly created article is updated
+          operation: 'update',
+          expectedStatus: HttpStatusCode.Ok,
+          description: 'Second request should update the existing article',
+        },
+      ];
+
+      for (const {
+        operation,
+        expectedStatus,
+        description,
+      } of expectedResponses) {
         // When
         response = await request.put(`${articles}/${uniqueArticleId}`, {
           headers: setHeaders,
@@ -321,8 +337,11 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
         responseBody = JSON.parse(await response.text());
 
         // Then
-        expect(response.status()).toBe(statuses[index]);
-        expect(responseBody.id).toEqual(uniqueArticleId);
+        expect(response.status(), description).toBe(expectedStatus);
+        expect(
+          responseBody.id,
+          `ID of the ${operation}d article should be equal to the set article ID`,
+        ).toEqual(uniqueArticleId);
 
         // Assert that the article is really present
         // To remove flakiness due to delay in creating an article in the DB
@@ -335,7 +354,9 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
           );
           expect(responseArticleCreated.status()).toBe(HttpStatusCode.Ok);
           expect(responseBodyArticleCreated.id).toEqual(uniqueArticleId);
-        }).toPass({ timeout: 2_000 });
+        }, 'Article should be properly created in the GAD database').toPass({
+          timeout: 2_000,
+        });
       }
     });
   });
