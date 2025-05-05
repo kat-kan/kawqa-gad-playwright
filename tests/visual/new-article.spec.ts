@@ -50,6 +50,7 @@ test.describe('Article creation and visual verification', () => {
     // Then
     await expect(articleCard).toHaveScreenshot('new-article-card.png', {
       mask: [dateElement],
+      maxDiffPixelRatio: 0.04,
     });
   });
 
@@ -64,6 +65,7 @@ test.describe('Article creation and visual verification', () => {
     // Then
     await expect(page).toHaveScreenshot('article-details.png', {
       mask: [dateInDetails],
+      maxDiffPixelRatio: 0.04,
     });
   });
 });

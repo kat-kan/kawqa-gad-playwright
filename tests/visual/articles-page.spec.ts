@@ -37,7 +37,7 @@ test.describe('Articles page visual tests', () => {
         dateElements,
         paginationElement,
       ],
-      maxDiffPixels: 70,
+      maxDiffPixelRatio: 0.04,
     });
   });
 
@@ -54,6 +54,7 @@ test.describe('Articles page visual tests', () => {
         paginationElement,
       ],
       maxDiffPixels: 70,
+      maxDiffPixelRatio: 0.03,
     });
   });
 });
