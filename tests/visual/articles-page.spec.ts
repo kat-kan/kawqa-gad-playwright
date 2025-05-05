@@ -41,7 +41,7 @@ test.describe('Articles page visual tests', () => {
     });
   });
 
-  test('Verification of screenshot of article page (full page)', async ({
+  test('Verification of screenshot of articles page (full page)', async ({
     page,
   }) => {
     await expect(page).toHaveScreenshot('articlesFullPage.png', {
