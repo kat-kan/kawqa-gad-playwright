@@ -13,6 +13,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: [['html'], ['json', { outputFile: './playwright-report.json' }]],
+  snapshotPathTemplate: '{testDir}/visual/{testFileName}-snapshots/{arg}{ext}',
   use: {
     baseURL: process.env.BASE_URL,
     ignoreHTTPSErrors: true,
