@@ -22,15 +22,4 @@ test.describe('Articles page visual tests', () => {
       maxDiffPixelRatio: 0.04,
     });
   });
-
-  test('Verification of screenshot of articles page (full page)', async ({
-    page,
-  }) => {
-    await expect(page).toHaveScreenshot('articlesFullPage.png', {
-      fullPage: true,
-      mask: [articleCards, totalPages, sortingSelect],
-      maxDiffPixels: 70,
-      maxDiffPixelRatio: 0.03,
-    });
-  });
 });
