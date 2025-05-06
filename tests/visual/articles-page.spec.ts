@@ -3,43 +3,18 @@ import { ArticlesPage } from 'src/gui/pages/articles.page';
 
 test.describe('Articles page visual tests', () => {
   let articlesPage: ArticlesPage;
-  let bodyElements,
-    titleElements,
-    userElements,
-    dateElements,
-    paginationElement,
-    seeMoreLinks;
+  let articleCards;
 
   test.beforeEach(async ({ page }) => {
     articlesPage = new ArticlesPage(page);
     await page.goto(articlesPage.url);
 
-    bodyElements = page.locator(
-      '[data-testid^="article-"][data-testid$="-body"]',
-    );
-    titleElements = page.locator(
-      '[data-testid^="article-"][data-testid$="-title"]',
-    );
-    userElements = page.locator(
-      '[data-testid^="article-"][data-testid$="-user"]',
-    );
-    dateElements = page.locator(
-      '[data-testid^="article-"][data-testid$="-date"]',
-    );
-    (paginationElement = page.locator('[data-testid="total-pages"]')),
-      (seeMoreLinks = page.locator('a[id^="seeArticle"]'));
+    articleCards = page.locator('[data-testid^="article-"]');
   });
 
   test('Verification of screenshot of article page', async ({ page }) => {
     await expect(page).toHaveScreenshot('articlesPage.png', {
-      mask: [
-        bodyElements,
-        titleElements,
-        userElements,
-        dateElements,
-        paginationElement,
-        seeMoreLinks,
-      ],
+      mask: [articleCards],
       maxDiffPixelRatio: 0.04,
     });
   });
@@ -49,14 +24,7 @@ test.describe('Articles page visual tests', () => {
   }) => {
     await expect(page).toHaveScreenshot('articlesFullPage.png', {
       fullPage: true,
-      mask: [
-        bodyElements,
-        titleElements,
-        userElements,
-        dateElements,
-        paginationElement,
-        seeMoreLinks,
-      ],
+      mask: [articleCards],
       maxDiffPixels: 70,
       maxDiffPixelRatio: 0.03,
     });
