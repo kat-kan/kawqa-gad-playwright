@@ -18,6 +18,7 @@ export default defineConfig({
     baseURL: process.env.BASE_URL,
     ignoreHTTPSErrors: true,
     trace: 'retain-on-failure',
+    viewport: { width: 1280, height: 720 },
   },
   projects: [
     {
