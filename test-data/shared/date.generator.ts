@@ -11,6 +11,9 @@ const futureDateISO = new Date(
 
 const futureDate = futureDateISO.split('.')[0] + 'Z';
 
+const nowISO = new Date().toISOString();
+const now = nowISO.split('.')[0] + 'Z';
+
 const futureDates: string[] = [];
 const pastDates: string[] = [];
 pastDates.push(pastDate);
@@ -24,5 +27,6 @@ export const customDate = {
   pastDateISOFormat: pastDateISO,
   futureDateISOFormat: futureDateISO,
   futureDates,
-  pastDates
+  pastDates,
+  now,
 };
