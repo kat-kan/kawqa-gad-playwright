@@ -7,7 +7,8 @@ test.describe('Articles page visual tests', () => {
     titleElements,
     userElements,
     dateElements,
-    paginationElement;
+    paginationElement,
+    seeMoreLinks;
 
   test.beforeEach(async ({ page }) => {
     articlesPage = new ArticlesPage(page);
@@ -25,7 +26,8 @@ test.describe('Articles page visual tests', () => {
     dateElements = page.locator(
       '[data-testid^="article-"][data-testid$="-date"]',
     );
-    paginationElement = page.locator('[data-testid="total-pages"]');
+    (paginationElement = page.locator('[data-testid="total-pages"]')),
+      (seeMoreLinks = page.locator('a[id^="seeArticle"]'));
   });
 
   test('Verification of screenshot of article page', async ({ page }) => {
@@ -36,6 +38,7 @@ test.describe('Articles page visual tests', () => {
         userElements,
         dateElements,
         paginationElement,
+        seeMoreLinks,
       ],
       maxDiffPixelRatio: 0.04,
     });
@@ -52,6 +55,7 @@ test.describe('Articles page visual tests', () => {
         userElements,
         dateElements,
         paginationElement,
+        seeMoreLinks,
       ],
       maxDiffPixels: 70,
       maxDiffPixelRatio: 0.03,
