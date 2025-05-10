@@ -15,9 +15,10 @@ export async function getMaxArticleId(
 
 export async function getExistingArticleTitle(
   request: APIRequestContext,
+  articleId: number,
 ): Promise<string> {
   const articlesJSON = await getArticlesJSON(request);
-  const firstArticleTitle: string = articlesJSON[0].title;
+  const firstArticleTitle: string = articlesJSON[articleId - 1].title;
   return firstArticleTitle;
 }
 
