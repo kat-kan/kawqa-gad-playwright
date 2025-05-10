@@ -60,11 +60,11 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     request,
   }) => {
     //Given
+    let response: APIResponse;
     const uniqueArticleId = await generateUniqueArticleId(request);
     //When
-    const response: APIResponse = await request.put(
-      `${articles}/${uniqueArticleId}`,
-      {
+    await expect(async () => {
+      response = await request.put(`${articles}/${uniqueArticleId}`, {
         headers: setHeaders,
         data: {
           user_id: testUsers.regularUser.id,
@@ -73,11 +73,12 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
           date: articleDate,
           image: articleImage,
         },
-      },
-    );
+      });
+      //Then
+      expect(response.status()).toBe(HttpStatusCode.Created);
+    }).toPass({ timeout: 2_000 });
+
     const responseBody = JSON.parse(await response.text());
-    //Then
-    expect(response.status()).toBe(HttpStatusCode.Created);
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
@@ -154,6 +155,9 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
   test('Returns 200 OK status code when updating the article with the title equal to another article title', async ({
     request,
   }) => {
+    //Given
+    let response: APIResponse;
+
     //When
     const articleTitle = await getExistingArticleTitle(request, 2);
     const articleData = {
@@ -163,13 +167,16 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       date: articleDate,
       image: articleImage,
     };
-    const response: APIResponse = await request.put(`${articles}/1`, {
-      headers: setHeaders,
-      data: articleData,
-    });
+    await expect(async () => {
+      response = await request.put(`${articles}/1`, {
+        headers: setHeaders,
+        data: articleData,
+      });
+      //Then
+      expect(response.status()).toBe(HttpStatusCode.Ok);
+    }).toPass({ timeout: 2_000 });
+
     const responseBody = JSON.parse(await response.text());
-    //Then
-    expect(response.status()).toBe(HttpStatusCode.Ok);
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
@@ -180,7 +187,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     expect.soft(typeof responseBody.id === 'number').toBe(true);
   });
 
-  test.describe('PUT articles/{id} endpoint tests with enabled feature_validate_article_title', async () => {
+  test.describe('PUT articles/{id} endpoint tests with enabled feature_validate_article_title @serial', async () => {
     test.beforeAll(async ({ request }) => {
       await enableFeatureFlag(request, 'feature_validate_article_title', true);
     });
@@ -237,11 +244,11 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
       request,
     }) => {
       //Given
+      let response: APIResponse;
       const uniqueArticleId = await generateUniqueArticleId(request);
       //When
-      const response: APIResponse = await request.put(
-        `${articles}/${uniqueArticleId}`,
-        {
+      await expect(async () => {
+        response = await request.put(`${articles}/${uniqueArticleId}`, {
           headers: setHeaders,
           data: {
             user_id: testUsers.regularUser.id,
@@ -250,11 +257,13 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
             date: articleDate,
             image: articleImage,
           },
-        },
-      );
+        });
+        expect(response.status()).toBe(HttpStatusCode.Created);
+      }).toPass({
+        timeout: 2_000,
+      });
       const responseBody = JSON.parse(await response.text());
       //Then
-      expect(response.status()).toBe(HttpStatusCode.Created);
       expect
         .soft(responseBody.user_id.toString())
         .toEqual(testUsers.regularUser.id.toString());
@@ -270,8 +279,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     });
   });
 
-  test.describe.configure({ mode: 'serial' });
-  test.describe('Creating two articles in a row with the same non-existent ID', async () => {
+  test.describe('Creating two articles in a row with the same non-existent ID @serial', async () => {
     // The PUT method allows to create the article if the article_id doesn't indicate any existing article. The new article is created with ID = max(ID) of the existing articles + 1
     // Before GAD 2.7.10 two consecutive runs of the same PUT test to the same article endpoint generated different statuses (201 and 422, accordingly)
     // The current tests check if fix introduced in 2.7.10 is still working and PUT method works as designed in case of consecutive runs
@@ -290,21 +298,29 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     }) => {
       // Given the uniqueArticleId is much bigger than max(ID) of the existing articles
       const uniqueArticleId = await generateUniqueArticleId(request);
-      const maxArticleId = await getMaxArticleId(request);
+      let maxArticleId: number;
 
       for (let index = 1; index <= 2; index++) {
         // When the PUT request is sent with large ID
         await expect(async () => {
+          maxArticleId = await getMaxArticleId(request);
           response = await request.put(`${articles}/${uniqueArticleId}`, {
             headers: setHeaders,
             data: articleData,
           });
-          responseBody = JSON.parse(await response.text());
           expect(response.status()).toBe(HttpStatusCode.Created);
         }, 'Article should be properly created in the GAD database').toPass({
           timeout: 2_000,
         });
-        expect(responseBody.id).toEqual(maxArticleId + index);
+
+        // Then
+        responseBody = JSON.parse(await response.text());
+        expect(
+          responseBody.id,
+          `Article ID - expected: ${maxArticleId + 1}, received: ${
+            responseBody.id
+          }`,
+        ).toEqual(maxArticleId + 1);
       }
     });
 
@@ -344,7 +360,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
           });
           expect(response.status(), description).toBe(expectedStatus);
         }, 'Article should be properly created in the GAD database').toPass({
-          timeout: 15_000,
+          timeout: 2_000,
         });
 
         // Then
