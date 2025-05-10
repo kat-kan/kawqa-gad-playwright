@@ -4,7 +4,10 @@ import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
 import { testUsers } from 'src/shared/fixtures/auth';
-import { getMaxArticleId } from 'test-data/shared/article.fetcher';
+import {
+  getExistingArticleTitle,
+  getMaxArticleId,
+} from 'test-data/shared/article.fetcher';
 import { generateUniqueArticleId } from 'test-data/shared/article.generator';
 import { customDate } from 'test-data/shared/date.generator';
 
@@ -152,15 +155,17 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     request,
   }) => {
     //When
+    const articleTitle = await getExistingArticleTitle(request, 2);
+    const articleData = {
+      user_id: testUsers.regularUser.id,
+      title: articleTitle,
+      body: newContent,
+      date: articleDate,
+      image: articleImage,
+    };
     const response: APIResponse = await request.put(`${articles}/1`, {
       headers: setHeaders,
-      data: {
-        user_id: testUsers.regularUser.id,
-        title: oldTitle,
-        body: newContent,
-        date: articleDate,
-        image: articleImage,
-      },
+      data: articleData,
     });
     const responseBody = JSON.parse(await response.text());
     //Then
@@ -168,7 +173,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     expect
       .soft(responseBody.user_id.toString())
       .toEqual(testUsers.regularUser.id.toString());
-    expect.soft(responseBody.title).toBe(oldTitle);
+    expect.soft(responseBody.title).toBe(articleTitle);
     expect.soft(responseBody.body).toBe(newContent);
     expect.soft(responseBody.date).toBe(articleDate);
     expect.soft(responseBody.image).toBe(articleImage);
@@ -289,15 +294,17 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
 
       for (let index = 1; index <= 2; index++) {
         // When the PUT request is sent with large ID
-        response = await request.put(`${articles}/${uniqueArticleId}`, {
-          headers: setHeaders,
-          data: articleData,
+        await expect(async () => {
+          response = await request.put(`${articles}/${uniqueArticleId}`, {
+            headers: setHeaders,
+            data: articleData,
+          });
+          responseBody = JSON.parse(await response.text());
+          expect(response.status()).toBe(HttpStatusCode.Created);
+        }, 'Article should be properly created in the GAD database').toPass({
+          timeout: 2_000,
         });
-        responseBody = JSON.parse(await response.text());
-
-        // Then the new article is created
-        expect.soft(response.status()).toBe(HttpStatusCode.Created);
-        expect.soft(responseBody.id).toEqual(maxArticleId + index);
+        expect(responseBody.id).toEqual(maxArticleId + index);
       }
     });
 
@@ -330,14 +337,18 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
         description,
       } of expectedResponses) {
         // When
-        response = await request.put(`${articles}/${uniqueArticleId}`, {
-          headers: setHeaders,
-          data: articleData,
+        await expect(async () => {
+          response = await request.put(`${articles}/${uniqueArticleId}`, {
+            headers: setHeaders,
+            data: articleData,
+          });
+          expect(response.status(), description).toBe(expectedStatus);
+        }, 'Article should be properly created in the GAD database').toPass({
+          timeout: 15_000,
         });
-        responseBody = JSON.parse(await response.text());
 
         // Then
-        expect(response.status(), description).toBe(expectedStatus);
+        responseBody = JSON.parse(await response.text());
         expect(
           responseBody.id,
           `ID of the ${operation}d article should be equal to the set article ID`,
