@@ -1,12 +1,13 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { UserType } from '@_src_api/enums/user-types.enum';
+import { createArticle } from '@_src_helpers_api/create-article.helper';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, test } from '@playwright/test';
 import { testUsers } from 'src/shared/fixtures/auth';
 import { customDate } from 'test-data/shared/date.generator';
 
-test.describe('DELETE articles/{id}', () => {
-  let setHeaders: { [key: string]: string };
+test.describe('DELETE articles/{id} @serial', () => {
+  let headers: { [key: string]: string };
 
   const articles = `/api/articles`;
   const articleData = {
@@ -21,37 +22,14 @@ test.describe('DELETE articles/{id}', () => {
     request,
   }) => {
     // Given the new article is created
-    setHeaders = await createHeaders();
-
-    const createResponse: APIResponse = await request.post(articles, {
-      headers: setHeaders,
-      data: articleData,
-    });
-    const createdArticle = await createResponse.json();
-    const createdArticleId = createdArticle.id;
-
-    // Acc. to the GAD authors, there is a delay between POST request and actual creating the asset
-    // To avoid flaky tests (when sometimes the delay is bigger) I used the polling technique
-    await expect
-      .poll(
-        async () => {
-          const getResponse: APIResponse = await request.get(
-            `${articles}/${createdArticleId}`,
-          );
-          return getResponse.status();
-        },
-        {
-          intervals: [100, 500, 1_000],
-          timeout: 30_000,
-        },
-      )
-      .toBe(HttpStatusCode.Ok);
+    headers = await createHeaders();
+    const createdArticleId = await createArticle(articleData, request, headers);
 
     // When
     const deleteResponse: APIResponse = await request.delete(
       `${articles}/${createdArticleId}`,
       {
-        headers: setHeaders,
+        headers: headers,
       },
     );
 
@@ -63,34 +41,13 @@ test.describe('DELETE articles/{id}', () => {
     request,
   }) => {
     // Given the article is created by other (regular) user
-    setHeaders = await createHeaders();
-
-    const createResponse: APIResponse = await request.post(articles, {
-      headers: setHeaders,
-      data: articleData,
-    });
-    const createdArticle = await createResponse.json();
-    const createdArticleId = createdArticle.id;
-
-    await expect
-      .poll(
-        async () => {
-          const getResponse: APIResponse = await request.get(
-            `${articles}/${createdArticleId}`,
-          );
-          return getResponse.status();
-        },
-        {
-          intervals: [100, 500, 1_000],
-          timeout: 30_000,
-        },
-      )
-      .toBe(HttpStatusCode.Ok);
+    headers = await createHeaders();
+    const createdArticleId = await createArticle(articleData, request, headers);
 
     // When admin user tries to delete the article
-    setHeaders = await createHeaders(UserType.admin);
+    headers = await createHeaders(UserType.admin);
     const response = await request.delete(`${articles}/${createdArticleId}`, {
-      headers: setHeaders,
+      headers: headers,
     });
 
     // Then
@@ -101,34 +58,13 @@ test.describe('DELETE articles/{id}', () => {
     request,
   }) => {
     // Given the article is created by other user (admin)
-    setHeaders = await createHeaders(UserType.admin);
-
-    const createResponse: APIResponse = await request.post(articles, {
-      headers: setHeaders,
-      data: articleData,
-    });
-    const createdArticle = await createResponse.json();
-    const createdArticleId = createdArticle.id;
-
-    await expect
-      .poll(
-        async () => {
-          const getResponse: APIResponse = await request.get(
-            `${articles}/${createdArticleId}`,
-          );
-          return getResponse.status();
-        },
-        {
-          intervals: [100, 500, 1_000],
-          timeout: 30_000,
-        },
-      )
-      .toBe(HttpStatusCode.Ok);
+    headers = await createHeaders(UserType.admin);
+    const createdArticleId = await createArticle(articleData, request, headers);
 
     // When regular user tries to delete the article
-    setHeaders = await createHeaders();
+    headers = await createHeaders();
     const response = await request.delete(`${articles}/${createdArticleId}`, {
-      headers: setHeaders,
+      headers: headers,
     });
 
     // Then
