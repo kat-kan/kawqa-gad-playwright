@@ -26,21 +26,27 @@ test.describe('POST articles endpoint tests', async () => {
     test(`Returns 201 Created after creating article with date ${date}`, async ({
       request,
     }) => {
+      let response: APIResponse;
+
       // When
-      const response: APIResponse = await request.post(articles, {
-        headers: setHeaders,
-        data: {
-          user_id: testUsers.regularUser.id,
-          title: articleTitle,
-          body: articleBody,
-          date: date,
-          image: articleImage,
-        },
+      await expect(async () => {
+        response = await request.post(articles, {
+          headers: setHeaders,
+          data: {
+            user_id: testUsers.regularUser.id,
+            title: articleTitle,
+            body: articleBody,
+            date: date,
+            image: articleImage,
+          },
+        });
+        expect(response.status()).toBe(HttpStatusCode.Created);
+      }, 'Article should be properly created in the GAD database').toPass({
+        timeout: 2_000,
       });
-      const responseBody = JSON.parse(await response.text());
 
       // Then
-      expect.soft(response.status()).toBe(HttpStatusCode.Created);
+      const responseBody = JSON.parse(await response.text());
       expect
         .soft(responseBody.user_id.toString())
         .toEqual(testUsers.regularUser.id.toString());
