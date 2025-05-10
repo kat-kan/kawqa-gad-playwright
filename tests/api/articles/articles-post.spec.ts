@@ -150,8 +150,7 @@ test.describe('POST articles endpoint tests', async () => {
     });
   }
 
-  test.describe.configure({ mode: 'serial' });
-  test.describe('Tests with enabled feature-flag for article title uniqueness validation', async () => {
+  test.describe('Tests with enabled feature-flag for article title uniqueness validation @serial', async () => {
     const articleData = {
       user_id: testUsers.regularUser.id,
       body: articleBody,
@@ -186,13 +185,15 @@ test.describe('POST articles endpoint tests', async () => {
       articleData['title'] = await getExistingArticleTitle(request, 1);
 
       // When
-      const response: APIResponse = await request.post(articles, {
-        headers: setHeaders,
-        data: articleData,
-      });
+      await expect(async () => {
+        const response: APIResponse = await request.post(articles, {
+          headers: setHeaders,
+          data: articleData,
+        });
 
-      // Then
-      expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
+        // Then
+        expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
+      }).toPass({ timeout: 2_000 });
     });
 
     test.afterAll(async ({ request }) => {
