@@ -149,6 +149,8 @@ test.describe('POST articles endpoint tests', async () => {
       expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
     });
   }
+
+  test.describe.configure({ mode: 'serial' });
   test.describe('Tests with enabled feature-flag for article title uniqueness validation', async () => {
     const articleData = {
       user_id: testUsers.regularUser.id,
@@ -181,7 +183,7 @@ test.describe('POST articles endpoint tests', async () => {
       request,
     }) => {
       // Given
-      articleData['title'] = await getExistingArticleTitle(request);
+      articleData['title'] = await getExistingArticleTitle(request, 1);
 
       // When
       const response: APIResponse = await request.post(articles, {
