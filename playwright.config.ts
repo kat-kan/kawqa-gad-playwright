@@ -21,7 +21,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      grepInvert: /@logged/,
+      grepInvert: [/@logged/, /@serial/],
       use: { ...devices['Desktop Chrome'] },
     },
     {
@@ -36,6 +36,11 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         storageState: STORAGE_STATE,
       },
+    },
+    {
+      name: 'serial-api',
+      grep: /@serial/,
+      fullyParallel: false,
     },
   ],
 });
