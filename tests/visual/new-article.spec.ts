@@ -37,34 +37,23 @@ test.describe('Article creation and visual verification', () => {
     await page.goto(articlesPage.url);
   });
 
-  test('Verification card screenshot of new article on articles page', async ({
-    page,
-  }) => {
-    // Given
-    const articleCard = page.locator(`#article${createdArticleId}.item-card`);
-    const dateElement = page.locator(
-      `[data-testid="article-${createdArticleId}-date"]`,
-    );
+  test('Verification card screenshot of new article on articles page', async () => {
+    const articleCard = articlesPage.getArticleCardById(createdArticleId);
+    const dateElement = articlesPage.getArticleDateById(createdArticleId);
     await articleCard.waitFor();
 
-    // Then
     await expect(articleCard).toHaveScreenshot('new-article-card.png', {
       mask: [dateElement],
       maxDiffPixelRatio: 0.04,
     });
   });
 
-  test('Enter article details via "See More" and verify screenshot of new article', async ({
-    page,
-  }) => {
-    // Given
-    const seeMoreButton = page.locator(`#seeArticle${createdArticleId}`);
+  test('Enter article details via "See More" and verify screenshot of new article', async () => {
+    const seeMoreButton = articlesPage.getSeeMoreButtonById(createdArticleId);
     await seeMoreButton.click();
-    const dateInDetails = page.locator('tr:has(label:has-text("date:")) span');
 
-    // Then
-    await expect(page).toHaveScreenshot('article-details.png', {
-      mask: [dateInDetails],
+    await expect(articlesPage.page).toHaveScreenshot('article-details.png', {
+      mask: [articlesPage.articleDateInDetails],
       maxDiffPixelRatio: 0.04,
     });
   });
