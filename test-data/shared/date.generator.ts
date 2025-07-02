@@ -24,5 +24,5 @@ export const customDate = {
   pastDateISOFormat: pastDateISO,
   futureDateISOFormat: futureDateISO,
   futureDates,
-  pastDates
+  pastDates,
 };
