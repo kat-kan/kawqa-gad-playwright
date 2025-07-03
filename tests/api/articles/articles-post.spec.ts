@@ -155,7 +155,7 @@ test.describe('POST articles endpoint tests', async () => {
     };
 
     test.beforeAll(async ({ request }) => {
-      await enableFeatureFlag(request, FeatureFlags.validateArticleTitle, true);
+      await enableFeatureFlag(request, FeatureFlags.ValidateArticleTitle, true);
     });
 
     test('Returns 201 on creating article with unique title', async ({
@@ -193,7 +193,7 @@ test.describe('POST articles endpoint tests', async () => {
     test.afterAll(async ({ request }) => {
       await enableFeatureFlag(
         request,
-        FeatureFlags.validateArticleTitle,
+        FeatureFlags.ValidateArticleTitle,
         false,
       );
     });

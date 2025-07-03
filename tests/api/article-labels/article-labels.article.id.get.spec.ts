@@ -8,7 +8,7 @@ test.describe('GET article labels tests', async () => {
   const articleLabels: string = `/api/article-labels/articles`;
 
   test.beforeAll(async ({ request }) => {
-    await enableFeatureFlag(request, FeatureFlags.labels, true);
+    await enableFeatureFlag(request, FeatureFlags.Labels, true);
   });
 
   test('Returns 200 OK after getting labels for existing article', async ({
@@ -44,6 +44,6 @@ test.describe('GET article labels tests', async () => {
   });
 
   test.afterAll(async ({ request }) => {
-    await enableFeatureFlag(request, FeatureFlags.labels, false);
+    await enableFeatureFlag(request, FeatureFlags.Labels, false);
   });
 });

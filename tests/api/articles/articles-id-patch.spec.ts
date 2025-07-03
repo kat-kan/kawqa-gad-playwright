@@ -123,14 +123,14 @@ test.describe('PATCH articles/{id} endpoint tests', async () => {
   test.describe('Trying to update existing article with title exceeding the length limit', async () => {
     // Checking separately for regular and admin user, as in GAD < 2.7.11 admin could update article with title exceeding the length limit of 10000 chars
 
-    const userTypes: string[] = [UserType.regular, UserType.admin];
+    const userTypes: string[] = [UserType.Regular, UserType.Admin];
     const newTitleExceedingLengthLimit = 'test'.repeat(10001);
     const dataBody: object = {
       title: newTitleExceedingLengthLimit,
     };
 
     for (const userType of userTypes) {
-      if (userType === UserType.regular) {
+      if (userType === UserType.Regular) {
         dataBody['user_id'] = testUsers.regularUser.id;
       }
 

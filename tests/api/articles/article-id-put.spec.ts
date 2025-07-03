@@ -176,7 +176,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
 
   test.describe('PUT articles/{id} endpoint tests with enabled feature_validate_article_title', async () => {
     test.beforeAll(async ({ request }) => {
-      await enableFeatureFlag(request, FeatureFlags.validateArticleTitle, true);
+      await enableFeatureFlag(request, FeatureFlags.ValidateArticleTitle, true);
     });
 
     test('Returns 200 OK status code when updating article', async ({
@@ -262,7 +262,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     test.afterAll(async ({ request }) => {
       await enableFeatureFlag(
         request,
-        FeatureFlags.validateArticleTitle,
+        FeatureFlags.ValidateArticleTitle,
         false,
       );
     });
