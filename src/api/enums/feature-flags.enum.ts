@@ -1,0 +1,15 @@
+export enum FeatureFlags {
+  CacheControlNoStore = 'feature_cache_control_no_store',
+  Captcha = 'feature_captcha',
+  Files = 'feature_files',
+  InfiniteArticleScroll = 'feature_infinite_scroll_articles',
+  Labels = 'feature_labels',
+  Likes = 'feature_likes',
+  OnlyBackend = 'feature_only_backend',
+  QRCodes = 'feature_qrcodes',
+  SoftDeleteUsers = 'feature_soft_delete_users',
+  StrictSurnameValidation = 'strict_surname_validation',
+  UserArticleBookmarks = 'feature_user_bookmark_articles',
+  ValidateArticleTitle = 'feature_validate_article_title',
+  Visits = 'feature_visits',
+}

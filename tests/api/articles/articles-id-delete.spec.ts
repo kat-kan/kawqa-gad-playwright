@@ -88,7 +88,7 @@ test.describe('DELETE articles/{id}', () => {
       .toBe(HttpStatusCode.Ok);
 
     // When admin user tries to delete the article
-    setHeaders = await createHeaders(UserType.admin);
+    setHeaders = await createHeaders(UserType.Admin);
     const response = await request.delete(`${articles}/${createdArticleId}`, {
       headers: setHeaders,
     });
@@ -101,7 +101,7 @@ test.describe('DELETE articles/{id}', () => {
     request,
   }) => {
     // Given the article is created by other user (admin)
-    setHeaders = await createHeaders(UserType.admin);
+    setHeaders = await createHeaders(UserType.Admin);
 
     const createResponse: APIResponse = await request.post(articles, {
       headers: setHeaders,

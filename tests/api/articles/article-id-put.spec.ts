@@ -1,4 +1,5 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { FeatureFlags } from '@_src_api/enums/feature-flags.enum';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect, test } from '@playwright/test';
@@ -175,7 +176,7 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
 
   test.describe('PUT articles/{id} endpoint tests with enabled feature_validate_article_title', async () => {
     test.beforeAll(async ({ request }) => {
-      await enableFeatureFlag(request, 'feature_validate_article_title', true);
+      await enableFeatureFlag(request, FeatureFlags.ValidateArticleTitle, true);
     });
 
     test('Returns 200 OK status code when updating article', async ({
@@ -259,7 +260,11 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     });
 
     test.afterAll(async ({ request }) => {
-      await enableFeatureFlag(request, 'feature_validate_article_title', false);
+      await enableFeatureFlag(
+        request,
+        FeatureFlags.ValidateArticleTitle,
+        false,
+      );
     });
   });
 });

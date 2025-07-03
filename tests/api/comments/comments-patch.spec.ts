@@ -15,7 +15,7 @@ test.describe('PATCH comments/{id} endpoint tests', async () => {
   const newComment: string = 'I changed my mind';
 
   test.beforeAll(async () => {
-    setHeadersForRegularUser = await createHeaders(UserType.regular);
+    setHeadersForRegularUser = await createHeaders(UserType.Regular);
     setNewCommentId = await createNewComment(setHeadersForRegularUser, 1);
   });
 
