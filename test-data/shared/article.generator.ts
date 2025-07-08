@@ -1,9 +1,10 @@
+import { ArticlesRequest } from '@_src_api/requests/articles.request';
 import { faker } from '@faker-js/faker/locale/en';
-import { APIRequestContext, APIResponse } from '@playwright/test';
+import { APIResponse } from '@playwright/test';
 
 // generate unique article ID
 export async function generateUniqueArticleId(
-  request: APIRequestContext,
+  request: ArticlesRequest,
   minRange: number = 1001,
   maxRange: number = 2000,
 ): Promise<number> {
@@ -29,7 +30,7 @@ export async function generateUniqueArticleId(
 }
 
 export async function generateUniqueArticleTitle(
-  request: APIRequestContext,
+  request: ArticlesRequest,
 ): Promise<string> {
   // get list of all article titles
   const articlesJSON = await generateArticlesJSON(request);
@@ -47,7 +48,7 @@ export async function generateUniqueArticleTitle(
 }
 
 export async function getExistingArticleTitle(
-  request: APIRequestContext,
+  request: ArticlesRequest,
 ): Promise<string> {
   const articlesJSON = await generateArticlesJSON(request);
   const firstArticleTitle: string = articlesJSON[0].title;
@@ -56,7 +57,7 @@ export async function getExistingArticleTitle(
 
 // function to get articles
 export async function generateArticlesJSON(
-  request: APIRequestContext,
+  request: ArticlesRequest,
 ): Promise<{ id: number; title: string }[]> {
   const getAllArticles: APIResponse = await request.get(`/api/articles`);
   const articlesJSON = await getAllArticles.json();
