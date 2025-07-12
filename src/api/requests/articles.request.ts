@@ -16,6 +16,25 @@ export class ArticlesRequest {
     return Math.floor(Math.random() * (2000 - 1001 + 1)) + 1001;
   }
 
+  public async get(): Promise<APIResponse> {
+    return await this.request.get(`${this.url}`, {
+      headers: this.headers,
+    });
+  }
+
+  public async getOne(articleId: number): Promise<APIResponse> {
+    return await this.request.get(`${this.url}/${articleId}`, {
+      headers: this.headers,
+    });
+  }
+
+  public async post(data: ArticleData): Promise<APIResponse> {
+    return await this.request.post(`${this.url}`, {
+      headers: this.headers,
+      data,
+    });
+  }
+
   public async put(articleId: number, data: ArticleData): Promise<APIResponse> {
     return await this.request.put(`${this.url}/${articleId}`, {
       headers: this.headers,

@@ -1,13 +1,15 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { FeatureFlags } from '@_src_api/enums/feature-flags.enum';
 import { ArticleData } from '@_src_api/interfaces/article-data.interface';
-import { ArticlesRequest } from '@_src_api/requests/articles.request';
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { enableFeatureFlag } from '@_src_helpers_api/feature-flags.helper';
 import { APIResponse, expect } from '@playwright/test';
 import { requestObjectTest as test } from 'src/fixtures/api/request-object.fixture';
 import { testUsers } from 'src/shared/fixtures/auth';
-import { generateUniqueArticleId } from 'test-data/shared/article.generator';
+import {
+  createNewArticle,
+  generateUniqueArticleId,
+} from 'test-data/shared/article.generator';
 import { customDate } from 'test-data/shared/date.generator';
 
 test.describe('PUT articles/{id} endpoint tests', async () => {
@@ -150,33 +152,42 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
 
-  test.fixme(
-    'Returns 200 OK status code when updating the article with the title equal to another article title',
-    async ({ articlesRequestLogged }) => {
-      //Given
-      const existingArticleId = 1;
-      const articleDataExistingTitle = properArticleData;
-      articleDataExistingTitle.title = oldTitle;
-      //When
-      const response: APIResponse = await articlesRequestLogged.put(
-        existingArticleId,
-        articleDataExistingTitle,
-      );
+  // TODO Pomysł - tworzenie nowego artykułu przed każdym takim testem
+  // teraz tworzy nowy o kolejnym id, chociaż dostaje id
+  // sprawdzić w debugu, czy nie tworzy za każdym razem nowego artykułu
+  // za szybko próbuje robić put po aktualizacji artykułu - wait przez 1 s rozwiązuje problem
+  test('Returns 200 OK status code when updating the article with the title equal to another article title', async ({
+    articlesRequestLogged,
+    // page,
+  }) => {
+    //Given
+    // const existingArticleId = 1;
+    const newArticleId = await createNewArticle(
+      articlesRequestLogged,
+      properArticleData,
+    );
+    // await page.waitForTimeout(1_000);
+    const articleDataExistingTitle = properArticleData;
+    articleDataExistingTitle.title = oldTitle;
+    //When
+    const response: APIResponse = await articlesRequestLogged.put(
+      newArticleId,
+      articleDataExistingTitle,
+    );
 
-      const responseBody = JSON.parse(await response.text());
-      console.log(responseBody);
-      //Then
-      expect(response.status()).toBe(HttpStatusCode.Ok);
-      expect
-        .soft(responseBody.user_id.toString())
-        .toEqual(testUsers.regularUser.id.toString());
-      expect.soft(responseBody.title).toBe(oldTitle);
-      expect.soft(responseBody.body).toBe(newContent);
-      expect.soft(responseBody.date).toBe(articleDate);
-      expect.soft(responseBody.image).toBe(articleImage);
-      expect.soft(typeof responseBody.id === 'number').toBe(true);
-    },
-  );
+    const responseBody = JSON.parse(await response.text());
+
+    //Then
+    expect(response.status()).toBe(HttpStatusCode.Ok);
+    expect
+      .soft(responseBody.user_id.toString())
+      .toEqual(testUsers.regularUser.id.toString());
+    expect.soft(responseBody.title).toBe(oldTitle);
+    expect.soft(responseBody.body).toBe(newContent);
+    expect.soft(responseBody.date).toBe(articleDate);
+    expect.soft(responseBody.image).toBe(articleImage);
+    expect.soft(typeof responseBody.id === 'number').toBe(true);
+  });
 
   test.describe('PUT articles/{id} endpoint tests with enabled feature_validate_article_title', async () => {
     test.beforeAll(async ({ request }) => {
@@ -184,20 +195,28 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     });
 
     test('Returns 200 OK status code when updating article', async ({
-      request,
+      articlesRequestLogged,
     }) => {
+      //Given
+      const existingArticleId = 1;
+
       //When
-      const response: APIResponse = await request.put(`${articles}/1`, {
-        headers: setHeaders,
-        data: {
-          user_id: testUsers.regularUser.id,
-          title: newTitle,
-          body: newContent,
-          date: articleDate,
-          image: articleImage,
-        },
-      });
+      const response: APIResponse = await articlesRequestLogged.put(
+        existingArticleId,
+        properArticleData,
+      );
+      // const response: APIResponse = await request.put(`${articles}/1`, {
+      //   headers: setHeaders,
+      //   data: {
+      //     user_id: testUsers.regularUser.id,
+      //     title: newTitle,
+      //     body: newContent,
+      //     date: articleDate,
+      //     image: articleImage,
+      //   },
+      // });
       const responseBody = JSON.parse(await response.text());
+
       //Then
       expect(response.status()).toBe(HttpStatusCode.Ok);
       expect
@@ -211,46 +230,39 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     });
 
     test('Returns 422 status code when updating the article with the title equal to another article title', async ({
-      request,
+      articlesRequestLogged,
     }) => {
+      //Given
+      const existingArticleId = 1;
+      const articleDataExistingTitle = properArticleData;
+      articleDataExistingTitle.title = oldTitle;
+
       //When
-      const response: APIResponse = await request.put(`${articles}/1`, {
-        headers: setHeaders,
-        data: {
-          user_id: testUsers.regularUser.id,
-          title: oldTitle,
-          body: newContent,
-          date: articleDate,
-          image: articleImage,
-        },
-      });
-      //Then
+      const response: APIResponse = await articlesRequestLogged.put(
+        existingArticleId,
+        articleDataExistingTitle,
+      );
       const responseBody = JSON.parse(await response.text());
 
+      //Then
       expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
       expect(responseBody.error.message).toBe('Field "title" is not unique!');
     });
 
     test('Returns 201 Created status code when creating article using PUT', async ({
-      request,
+      articlesRequest,
+      articlesRequestLogged,
     }) => {
       //Given
-      const uniqueArticleId = await generateUniqueArticleId(request);
+      const uniqueArticleId = await generateUniqueArticleId(articlesRequest);
+
       //When
-      const response: APIResponse = await request.put(
-        `${articles}/${uniqueArticleId}`,
-        {
-          headers: setHeaders,
-          data: {
-            user_id: testUsers.regularUser.id,
-            title: newTitle,
-            body: newContent,
-            date: articleDate,
-            image: articleImage,
-          },
-        },
+      const response: APIResponse = await articlesRequestLogged.put(
+        uniqueArticleId,
+        properArticleData,
       );
       const responseBody = JSON.parse(await response.text());
+
       //Then
       expect(response.status()).toBe(HttpStatusCode.Created);
       expect
