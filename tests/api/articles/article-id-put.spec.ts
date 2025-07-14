@@ -152,21 +152,14 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     expect(response.status()).toBe(HttpStatusCode.UnprocessableEntity);
   });
 
-  // TODO Pomysł - tworzenie nowego artykułu przed każdym takim testem
-  // teraz tworzy nowy o kolejnym id, chociaż dostaje id
-  // sprawdzić w debugu, czy nie tworzy za każdym razem nowego artykułu
-  // za szybko próbuje robić put po aktualizacji artykułu - wait przez 1 s rozwiązuje problem
   test('Returns 200 OK status code when updating the article with the title equal to another article title', async ({
     articlesRequestLogged,
-    // page,
   }) => {
     //Given
-    // const existingArticleId = 1;
     const newArticleId = await createNewArticle(
       articlesRequestLogged,
       properArticleData,
     );
-    // await page.waitForTimeout(1_000);
     const articleDataExistingTitle = properArticleData;
     articleDataExistingTitle.title = oldTitle;
     //When
@@ -189,6 +182,11 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     expect.soft(typeof responseBody.id === 'number').toBe(true);
   });
 
+  // wykonywane równolegle te testy mogą powodować wywalanie się innych testów
+  // bo włączają globalną flagę
+  // pomysł - osobny projekt dla każdej flagi
+  // projekt puszczany osobno albo jako projekt zależny od tego projektu
+  // pomysł 2 - teardown puszczany po projekcie z niektórymi testami, teardown przywraca bazę, dopiero potem leci drugi projekt - opcja teardown w setupie projektu
   test.describe('PUT articles/{id} endpoint tests with enabled feature_validate_article_title', async () => {
     test.beforeAll(async ({ request }) => {
       await enableFeatureFlag(request, FeatureFlags.ValidateArticleTitle, true);

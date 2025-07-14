@@ -1,3 +1,4 @@
+import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { ArticleData } from '@_src_api/interfaces/article-data.interface';
 import { ArticlesRequest } from '@_src_api/requests/articles.request';
 import { faker } from '@faker-js/faker/locale/en';
@@ -70,12 +71,15 @@ export async function createNewArticle(
   data: ArticleData,
 ): Promise<number> {
   const response: APIResponse = await request.post(data);
-  const responseBody = JSON.parse(await response.text());
-  const getResponse: APIResponse = await request.getOne(responseBody.id); // TODO nic to nie daje, do wywalenia
+
+  expect(response.status()).toBe(HttpStatusCode.Created);
+
+  // Simpler method with taking responseBody.id from the above response doesn't work
+  // as it is performed too fast and next actions are done as if the new article
+  // wasn't in the GAD DB
+  const getResponse: APIResponse = await request.get();
   const getResponseBody = JSON.parse(await getResponse.text());
-  expect.soft(responseBody.title).toBe(data.title);
-  expect.soft(responseBody.body).toBe(data.body);
-  expect.soft(responseBody.date).toBe(data.date);
-  expect.soft(responseBody.image).toBe(data.image);
-  return getResponseBody.id;
+  const lastArticle = getResponseBody.pop();
+
+  return lastArticle.id;
 }
