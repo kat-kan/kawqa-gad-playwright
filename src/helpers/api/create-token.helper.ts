@@ -9,13 +9,13 @@ export async function createToken(userType: string): Promise<string> {
   let setEmail: string, setPassword: string;
   const tokenContextRequest = await request.newContext();
 
-  if (userType === UserType.regular) {
+  if (userType === UserType.Regular) {
     setEmail = testUsers.regularUser.email;
     setPassword = testUsers.regularUser.password;
-  } else if (userType === UserType.admin) {
+  } else if (userType === UserType.Admin) {
     setEmail = testUsers.admin.email;
     setPassword = testUsers.admin.password;
-  } else if (userType === UserType.custom) {
+  } else if (userType === UserType.Custom) {
     const userData: UserData = await createUser(tokenContextRequest);
     setEmail = userData.email;
     setPassword = userData.password;
@@ -37,7 +37,7 @@ export async function createToken(userType: string): Promise<string> {
 }
 
 export async function createHeaders(
-  userType: string = UserType.regular,
+  userType: string = UserType.Regular,
 ): Promise<{ [key: string]: string }> {
   const setTokenInHeaders = await createToken(userType);
   const requestHeaders = {

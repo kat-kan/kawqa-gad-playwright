@@ -1,5 +1,5 @@
 export enum UserType {
-  regular = 'regular',
-  admin = 'admin',
-  custom = 'custom',
+  Admin = 'admin',
+  Custom = 'custom',
+  Regular = 'regular',
 }

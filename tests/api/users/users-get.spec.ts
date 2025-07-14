@@ -7,7 +7,7 @@ import { APIResponse, expect, test } from '@playwright/test';
 test.describe('GET/users endpoint tests', async () => {
   const maskedData: string = '****';
   const users: string = '/api/users';
-  const userTypes: string[] = [UserType.regular, UserType.admin];
+  const userTypes: string[] = [UserType.Regular, UserType.Admin];
 
   test('Returns 200 OK - without authorization', async ({ request }) => {
     // When

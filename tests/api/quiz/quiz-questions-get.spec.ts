@@ -9,7 +9,7 @@ test.describe('GET quiz questions endpoint tests', async () => {
 
   test('Returns 200 OK with authorization', async ({ request }) => {
     //Given
-    const setHeaders = await createHeaders(UserType.custom);
+    const setHeaders = await createHeaders(UserType.Custom);
     // When
     const response: APIResponse = await request.get(quizQuestions, {
       headers: setHeaders,
