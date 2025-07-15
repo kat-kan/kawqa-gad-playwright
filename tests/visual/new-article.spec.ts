@@ -1,5 +1,6 @@
 import { createHeaders } from '@_src_helpers_api/create-token.helper';
 import { APIResponse, expect, test } from '@playwright/test';
+import { ArticlePage } from 'src/gui/pages/article.page';
 import { ArticlesPage } from 'src/gui/pages/articles.page';
 import { testUsers } from 'src/shared/fixtures/auth';
 import { customDate } from 'test-data/shared/date.generator';
@@ -14,6 +15,7 @@ test.describe('Article creation and visual verification', () => {
   let setHeaders: { [key: string]: string };
   let createdArticleId: number;
   let articlesPage: ArticlesPage;
+  let articlePage: ArticlePage;
 
   test.beforeAll(async ({ request }) => {
     setHeaders = await createHeaders();
@@ -48,12 +50,15 @@ test.describe('Article creation and visual verification', () => {
     });
   });
 
-  test('Enter article details via "See More" and verify screenshot of new article', async () => {
+  test('Enter article details via "See More" and verify screenshot of new article', async ({
+    page,
+  }) => {
     const seeMoreButton = articlesPage.getSeeMoreButtonById(createdArticleId);
     await seeMoreButton.click();
+    articlePage = new ArticlePage(page);
 
-    await expect(articlesPage.page).toHaveScreenshot('article-details.png', {
-      mask: [articlesPage.articleDateInDetails],
+    await expect(page).toHaveScreenshot('article-details.png', {
+      mask: [articlePage.articleDateInDetails],
       maxDiffPixelRatio: 0.04,
     });
   });
