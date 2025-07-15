@@ -13,7 +13,8 @@ export class ArticlesRequest {
   }
 
   public getRandomNumber(): number {
-    return Math.floor(Math.random() * (2000 - 1001 + 1)) + 1001;
+    const currentTimeStamp = new Date();
+    return currentTimeStamp.valueOf() * Math.random();
   }
 
   public async get(): Promise<APIResponse> {
