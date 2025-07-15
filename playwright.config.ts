@@ -21,7 +21,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      grepInvert: /@logged/,
+      grepInvert: [/@logged/, /@flag/],
       use: { ...devices['Desktop Chrome'] },
     },
     {
@@ -36,6 +36,11 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         storageState: STORAGE_STATE,
       },
+    },
+    {
+      name: 'validate-article-title',
+      grep: [/@validate-article-title/, /@flag/],
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
 });
