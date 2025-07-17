@@ -88,16 +88,19 @@ test.describe('PUT articles/{id} endpoint tests', async () => {
     request,
   }) => {
     //Given
+    const articleId = 1;
     // error: missing closing quotation mark
     const setHeaders = await createHeaders();
     const malformedJson: string = `{"user_id": "${testUsers.regularUser.id}", "title: "${newTitle}", "body": "${newContent}", "date": "${articleDate}", "image": "src\\\\test-data\\\\images\\\\Roasted_coffee_beans.jpg"}`;
 
     //When
-    const response: APIResponse = await request.put(articles, {
-      // TODO brakuje article ID
-      headers: setHeaders,
-      data: malformedJson,
-    });
+    const response: APIResponse = await request.put(
+      `${articles}/${articleId}`,
+      {
+        headers: setHeaders,
+        data: malformedJson,
+      },
+    );
 
     //Then
     expect(response.status()).toBe(HttpStatusCode.BadRequest);
