@@ -14,7 +14,7 @@ export class ArticlesPage extends BasePage {
     this.commentsButton = this.page.locator(this.commentsButtonId);
     this.articleCards = this.page.locator('[data-testid^="article-"]');
     this.totalPages = this.page.getByTestId('total-pages');
-    this.sortingSelect = this.page.locator('[data-testid="sorting-select"]');
+    this.sortingSelect = this.page.getByTestId('sorting-select');
   }
 
   getArticleCardById(id: number): Locator {
