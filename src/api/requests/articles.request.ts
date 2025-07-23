@@ -1,5 +1,5 @@
 import { Headers } from '../interfaces/headers.interface';
-import { ArticleData } from '@_src_api/interfaces/article-data.interface';
+import { ArticleData } from '@_src_api/interfaces/article.interface';
 import { APIRequestContext, APIResponse } from '@playwright/test';
 
 export class ArticlesRequest {

@@ -25,6 +25,11 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
+      name: 'validate-article-title',
+      grep: [/@validate-article-title/, /@flag/],
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
       name: 'setup',
       testMatch: '*.setup.ts',
     },
@@ -36,11 +41,6 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         storageState: STORAGE_STATE,
       },
-    },
-    {
-      name: 'validate-article-title',
-      grep: [/@validate-article-title/, /@flag/],
-      use: { ...devices['Desktop Chrome'] },
     },
   ],
 });

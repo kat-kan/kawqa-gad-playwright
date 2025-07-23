@@ -1,5 +1,5 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
-import { ArticleData } from '@_src_api/interfaces/article-data.interface';
+import { ArticleData } from '@_src_api/interfaces/article.interface';
 import { ArticlesRequest } from '@_src_api/requests/articles.request';
 import { faker } from '@faker-js/faker/locale/en';
 import { APIResponse, expect } from '@playwright/test';
