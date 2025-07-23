@@ -1,9 +1,12 @@
+import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
+import { ArticleData } from '@_src_api/interfaces/article.interface';
+import { ArticlesRequest } from '@_src_api/requests/articles.request';
 import { faker } from '@faker-js/faker/locale/en';
-import { APIRequestContext, APIResponse } from '@playwright/test';
+import { APIResponse, expect } from '@playwright/test';
 
 // generate unique article ID
 export async function generateUniqueArticleId(
-  request: APIRequestContext,
+  request: ArticlesRequest,
   minRange: number = 1001,
   maxRange: number = 2000,
 ): Promise<number> {
@@ -29,7 +32,7 @@ export async function generateUniqueArticleId(
 }
 
 export async function generateUniqueArticleTitle(
-  request: APIRequestContext,
+  request: ArticlesRequest,
 ): Promise<string> {
   // get list of all article titles
   const articlesJSON = await generateArticlesJSON(request);
@@ -47,7 +50,7 @@ export async function generateUniqueArticleTitle(
 }
 
 export async function getExistingArticleTitle(
-  request: APIRequestContext,
+  request: ArticlesRequest,
 ): Promise<string> {
   const articlesJSON = await generateArticlesJSON(request);
   const firstArticleTitle: string = articlesJSON[0].title;
@@ -56,9 +59,27 @@ export async function getExistingArticleTitle(
 
 // function to get articles
 export async function generateArticlesJSON(
-  request: APIRequestContext,
+  request: ArticlesRequest,
 ): Promise<{ id: number; title: string }[]> {
-  const getAllArticles: APIResponse = await request.get(`/api/articles`);
+  const getAllArticles: APIResponse = await request.get();
   const articlesJSON = await getAllArticles.json();
   return articlesJSON;
+}
+
+export async function createNewArticle(
+  request: ArticlesRequest,
+  data: ArticleData,
+): Promise<number> {
+  const response: APIResponse = await request.post(data);
+
+  expect(response.status()).toBe(HttpStatusCode.Created);
+
+  // Simpler method with taking responseBody.id from the above response doesn't work
+  // as it is performed too fast and next actions are done as if the new article
+  // wasn't in the GAD DB
+  const getResponse: APIResponse = await request.get();
+  const getResponseBody = JSON.parse(await getResponse.text());
+  const lastArticle = getResponseBody.pop();
+
+  return lastArticle.id;
 }

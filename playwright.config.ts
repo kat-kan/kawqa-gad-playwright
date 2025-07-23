@@ -23,7 +23,12 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      grepInvert: /@logged/,
+      grepInvert: [/@logged/, /@flag/],
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'validate-article-title',
+      grep: [/@validate-article-title/, /@flag/],
       use: { ...devices['Desktop Chrome'] },
     },
     {
