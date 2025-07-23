@@ -1,5 +1,6 @@
 import { HttpStatusCode } from '@_src_api/enums/api-status-code.enum';
 import { FeatureFlags } from '@_src_api/enums/feature-flags.enum';
+import { logConsole } from '@_src_api/utils/log-levels';
 import { APIRequestContext, APIResponse, expect } from '@playwright/test';
 
 /**
@@ -27,4 +28,9 @@ export async function enableFeatureFlag(
   });
 
   expect(response.status()).toBe(HttpStatusCode.Ok);
+
+  if (response.status() == HttpStatusCode.Ok) {
+    const flagState = isEnabled ? 'enabled' : 'disabled';
+    logConsole(`Flag "${flagName}" is ${flagState}`);
+  }
 }
